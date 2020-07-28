@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class IPPSnackBar {
-  static formSavingSnackBar(String message) {
+  static formSavingSnackBar(String message,{bgColor:Colors.green}) {
     return SnackBar(
       content: Container(
         height: 50.0,
@@ -13,7 +13,7 @@ class IPPSnackBar {
             )),
       ),
       duration: Duration(seconds: 2),
-      backgroundColor: Colors.green,
+      backgroundColor: bgColor,
     );
   }
 }

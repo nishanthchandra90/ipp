@@ -4,7 +4,9 @@ import 'package:internal_portal_projects/common_components/ipp_dialogs.dart';
 import 'package:internal_portal_projects/common_components/ipp_inputelements.dart';
 import 'package:internal_portal_projects/common_components/ipp_snackbar.dart';
 import 'package:internal_portal_projects/common_components/ipp_text.dart';
+import 'package:internal_portal_projects/db/database.dart';
 import 'package:internal_portal_projects/model/project_details.dart';
+import 'package:internal_portal_projects/repo/projects_repo.dart';
 
 class AddProjectScreen extends StatefulWidget {
   final ProjectDetails projectDetails;
@@ -144,7 +146,7 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
       Dialogs.showProgressDialog(context, globalStateKey, "Please wait...!");
       await new Future.delayed(const Duration(seconds: 1)); //invoking login
       if (project == null) {
-//        await AccountBloc().addAccount(projectDetails);
+        await ProjectsRepo().newProject(projectDetails);
         resetForm();
       } else {
 //        await AccountBloc().updateAccount(projectDetails);
@@ -153,7 +155,8 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
       Navigator.of(_scaffoldKey.currentContext, rootNavigator: false)
           .pop(); //close the dialogue
     } catch (error) {
-      _displaySnackBar(error);
+      Navigator.pop(context);
+      _displaySnackBar("Something Went Wrong! Try again.", color:Colors.red);
     }
   }
 
@@ -173,8 +176,9 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
     tenureTextEditor.clear();
   }
 
-  _displaySnackBar(String message) {
-    final snackBar = IPPSnackBar.formSavingSnackBar(message);
+
+  _displaySnackBar(String message, {MaterialColor color}) {
+    final snackBar = IPPSnackBar.formSavingSnackBar(message,bgColor: color);
     _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 

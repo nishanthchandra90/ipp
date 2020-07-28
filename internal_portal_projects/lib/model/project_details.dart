@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class ProjectDetails {
   String _id;
   String _projectName;
@@ -7,8 +9,8 @@ class ProjectDetails {
   String _skills;
   String _tenure;
 
-  ProjectDetails(this._id, this._projectName, this._projectId, this._managerName,
-      this._description, this._skills, this._tenure);
+  ProjectDetails(this._id, this._projectName, this._projectId,
+      this._managerName, this._description, this._skills, this._tenure);
 
   String get tenure => _tenure;
 
@@ -42,4 +44,14 @@ class ProjectDetails {
       json['description'],
       json['skills'],
       json['tenure']);
+
+  ProjectDetails projectFromJson(String str) {
+    final jsonData = json.decode(str);
+    return ProjectDetails.fromJson(jsonData);
+  }
+
+  String projectToJson(ProjectDetails data) {
+    final dyn = data.toJson();
+    return json.encode(dyn);
+  }
 }
