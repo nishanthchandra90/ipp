@@ -4,7 +4,6 @@ import 'package:internal_portal_projects/common_components/ipp_dialogs.dart';
 import 'package:internal_portal_projects/common_components/ipp_inputelements.dart';
 import 'package:internal_portal_projects/common_components/ipp_snackbar.dart';
 import 'package:internal_portal_projects/common_components/ipp_text.dart';
-import 'package:internal_portal_projects/db/database.dart';
 import 'package:internal_portal_projects/model/project_details.dart';
 import 'package:internal_portal_projects/repo/projects_repo.dart';
 
@@ -105,7 +104,7 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
         children: [
           BackButton(onPressed: () => Navigator.pop(context)),
           Padding(
-              padding: EdgeInsets.fromLTRB(60,0,0,0),
+              padding: EdgeInsets.fromLTRB(60, 0, 0, 0),
               child: IPPText.simpleText(_screenHeading,
                   fontSize: 22.0, fontWeight: FontWeight.bold))
         ],
@@ -122,7 +121,7 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
   }
 
   void saveForm() {
-//    _addDummyProjects(2);
+//    _addDummyProjects();
     _formKey.currentState.validate();
     _formKey.currentState.save();
     if (!_formKey.currentState.validate()) {
@@ -135,7 +134,7 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
     String projectDesc = projectDescTextEditor.text ?? '';
     String skills = skillSetsTextEditor.text ?? '';
     String tenure = tenureTextEditor.text ?? '';
-    var projectDetails = new ProjectDetails(id, projectId, projectName,
+    var projectDetails = new ProjectDetails(id, projectName, projectId,
         projectManager, projectDesc, skills, tenure);
     _handleSubmit(context, projectDetails);
   }
@@ -144,19 +143,19 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
       BuildContext context, ProjectDetails projectDetails) async {
     try {
       Dialogs.showProgressDialog(context, globalStateKey, "Please wait...!");
-      await new Future.delayed(const Duration(seconds: 1)); //invoking login
+      await new Future.delayed(const Duration(seconds: 1));
       if (project == null) {
         await ProjectsRepo().newProject(projectDetails);
         resetForm();
       } else {
-//        await AccountBloc().updateAccount(projectDetails);
+        await ProjectsRepo().updateProject(projectDetails);
       }
       _displaySnackBar('Project details saved Successfully!');
       Navigator.of(_scaffoldKey.currentContext, rootNavigator: false)
           .pop(); //close the dialogue
     } catch (error) {
       Navigator.pop(context);
-      _displaySnackBar("Something Went Wrong! Try again.", color:Colors.red);
+      _displaySnackBar("Something Went Wrong! Try again.", color: Colors.red);
     }
   }
 
@@ -176,17 +175,22 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
     tenureTextEditor.clear();
   }
 
-
   _displaySnackBar(String message, {MaterialColor color}) {
-    final snackBar = IPPSnackBar.formSavingSnackBar(message,bgColor: color);
+    final snackBar = IPPSnackBar.formSavingSnackBar(message, bgColor: color);
     _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
-  _addDummyProjects(int d) {
-    new ProjectDetails(UniqueKey().toString(), "Project A", "PR-1234",
-        "Manager", 'descr', "java, #net", "1 year");
-    new ProjectDetails(UniqueKey().toString(), "Project B", "PR-12798",
-        "Manager", 'descr', "python, java, #net", "2 year");
+  _addDummyProjects() async {
+    await ProjectsRepo().newProject(new ProjectDetails(UniqueKey().toString(),
+        "Project A", "PR-1234", "Manager", 'descr', "java, #net", "1 year"));
+    await ProjectsRepo().newProject(new ProjectDetails(
+        UniqueKey().toString(),
+        "Project B",
+        "PR-12798",
+        "Manager",
+        'descr',
+        "python, java, #net",
+        "2 year"));
   }
 
   void populateForm(ProjectDetails project) {
