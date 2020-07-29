@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:internal_portal_projects/common_components/ipp_text.dart';
 import 'package:internal_portal_projects/screens/projects.dart';
+import 'package:internal_portal_projects/service/auth_service.dart';
 
+import 'login_screen.dart';
 import 'matched_candidates.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -20,6 +22,11 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget tab1 = _createTab(Icons.book, 'Projects');
+    Widget tab2 = _createTab(
+      Icons.assignment_ind,
+      'Matches',
+    );
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -27,50 +34,66 @@ class MyHomePage extends StatelessWidget {
             centerTitle: true,
             bottom: new PreferredSize(
                 preferredSize: new Size(30.0, 30.0),
-                child: new Container(
-                    height: 50,
-                    child: new TabBar(
-                      indicatorColor: Colors.black,
-                      tabs: [
-                        Tab(
-                          icon: Icon(
-                            Icons.book,
-                            size: 20,
-                          ),
-                          text: 'Projects',
-                        ),
-                        Tab(
-                          icon: Icon(
-                            Icons.assignment_ind,
-                            size: 20,
-                          ),
-                          text: 'Matches',
-                        ),
-                      ],
-                    ))),
+                child: _createTabBar([tab1, tab2])),
             title: IPPText.simpleText("Manage Projects",
-                fontSize: 22.0, align: TextAlign.right)),
+                fontSize: 20.0, align: TextAlign.right, color: Colors.white)),
         body: TabBarView(
           children: [
             Projects(),
             MatchedCandidates(),
           ],
         ),
-        drawer: Drawer(
-          child: ListView(
-            children: <Widget>[
-              ListTile(
-                title: Text("Menu 1"),
-                trailing: Icon(Icons.arrow_forward),
-              ),
-              ListTile(
-                title: Text("Menu 2"),
-                trailing: Icon(Icons.arrow_forward),
-              ),
-            ],
-          ),
-        ),
+        drawer: _createDrawer(context),
       ),
+    );
+  }
+
+  _createDrawer(BuildContext context) {
+    return Drawer(
+        child: Column(
+      children: <Widget>[
+        Container(
+          color: Colors.indigo,
+          height: MediaQuery.of(context).size.width * 0.4,
+        ),
+        Row(
+          children: <Widget>[
+            Icon(Icons.power_settings_new),
+            FlatButton(
+              textColor: Colors.blue,
+              child: Text('Logout'),
+              onPressed: () async => {
+                await AuthService().logout(),
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      settings: RouteSettings(name: "LoginPage"),
+                      builder: (BuildContext context) => LoginPage()),
+                )
+              },
+            )
+          ],
+        ),
+      ],
+    ));
+  }
+
+  _createTabBar(List<Widget> tabs) {
+    return new Container(
+        height: 60,
+        child: new TabBar(
+          indicatorColor: Colors.black,
+          tabs: tabs,
+        ));
+  }
+
+  _createTab(IconData icon, String text) {
+    return Tab(
+      icon: Icon(
+        icon,
+        size: 20,
+      ),
+      text: text,
     );
   }
 }

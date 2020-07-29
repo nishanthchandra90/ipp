@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:internal_portal_projects/screens/home_screen.dart';
+import 'package:internal_portal_projects/service/auth_service.dart';
+
+import '../common_components/ipp_inputelements.dart';
+import 'home_screen.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -9,45 +13,71 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  String _password;
-  String _email;
+  bool _loginFailed = false;
+  TextEditingController emailEditingController = TextEditingController();
+  TextEditingController passwordEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-            padding: EdgeInsets.all(20.0),
+        body: SafeArea(
             child: Form(
-              // <= NEW
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(height: 20.0),
-                  Text(
-                    "TCS Internal Projects",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  SizedBox(height: 20.0),
-                  TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      decoration:
-                          InputDecoration(labelText: "Email or Username")),
-                  TextFormField(
-                      obscureText: true,
-                      decoration: InputDecoration(labelText: "Password")),
-                  SizedBox(height: 20.0),
-                  RaisedButton(
-                      child: Text("LOGIN"),
-                      onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => MyHomePage(
-                              title: 'Manage Projects',
-                            ),
-                          ))),
-                ],
-              ),
-            )));
+      // <= NEW
+      key: _formKey,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(height: 20.0),
+          Text(
+            "TCS Internal Projects",
+            style: TextStyle(fontSize: 20),
+          ),
+          SizedBox(height: 20.0),
+          IPPInputs.simpleTextFormField(
+              "Email or Username", '', emailEditingController, true, context,
+              keyboardType: TextInputType.emailAddress),
+          IPPInputs.simpleTextFormField(
+              "Password", '', passwordEditingController, true, context,
+              obscureText: true),
+          SizedBox(height: 20.0),
+          RaisedButton(child: Text("LOGIN"), onPressed: () => _saveLoginForm()),
+          Visibility(
+            visible: _loginFailed,
+            child: Text(
+              'Invalid Credentials',
+              style: TextStyle(color: Colors.red),
+            ),
+          )
+        ],
+      ),
+    )));
+  }
+
+  _saveLoginForm() async {
+    final form = _formKey.currentState;
+    form.save();
+    if (form.validate()) {
+      await AuthService()
+          .loginUser(
+              email: emailEditingController.text,
+              password: passwordEditingController.text)
+          .then((value) => {
+                if (value != null)
+                  {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          settings: RouteSettings(name: "/home"),
+                          builder: (BuildContext context) => MyHomePage()),
+                    )
+                  }
+                else
+                  {
+                    setState(() {
+                      _loginFailed = true;
+                    })
+                  }
+              });
+    }
   }
 }

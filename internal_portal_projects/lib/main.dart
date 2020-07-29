@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:internal_portal_projects/screens/home_screen.dart';
 import 'package:internal_portal_projects/screens/login_screen.dart';
+import 'package:internal_portal_projects/service/auth_service.dart';
+import 'package:provider/provider.dart';
+
+import 'screens/home_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider<AuthService>(
+      child: MyApp(),
+      create: (BuildContext context) {
+        return AuthService();
+      },
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -28,7 +38,27 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: LoginPage(),
+      initialRoute: '/',
+      routes: {
+        // When navigating to the "/" route, build the FirstScreen widget.
+        '/login': (context) => LoginPage(),
+        '/home': (context) => MyHomePage()
+      },
+
+      // When navigating to the "/second" route, build the SecondScreen widget.
+      home: FutureBuilder(
+        // get the Provider, and call the getUser method
+        future: Provider.of<AuthService>(context).getUser(),
+        // wait for the future to resolve and render the appropriate
+        // widget for HomePage or LoginPage
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return snapshot.hasData ? MyHomePage() : LoginPage();
+          } else {
+            return Container(color: Colors.white);
+          }
+        },
+      ),
     );
   }
 }
