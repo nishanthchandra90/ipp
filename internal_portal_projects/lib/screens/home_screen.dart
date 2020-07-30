@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:internal_portal_projects/common_components/ipp_text.dart';
-import 'package:internal_portal_projects/screens/projects.dart';
+import 'package:internal_portal_projects/screens/show_all_employees_screen.dart';
+import 'package:internal_portal_projects/screens/show_all_projects.dart';
 import 'package:internal_portal_projects/service/auth_service.dart';
 
 import 'login_screen.dart';
-import 'matched_candidates.dart';
+import 'show_matched_candidates.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -27,21 +28,22 @@ class MyHomePage extends StatelessWidget {
       Icons.assignment_ind,
       'Matches',
     );
+    Widget tab3 = _createTab(
+      Icons.group,
+      'Employees',
+    );
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
             centerTitle: true,
             bottom: new PreferredSize(
                 preferredSize: new Size(30.0, 30.0),
-                child: _createTabBar([tab1, tab2])),
+                child: _createTabBar([tab1, tab2, tab3])),
             title: IPPText.simpleText("Manage Projects",
                 fontSize: 20.0, align: TextAlign.right, color: Colors.white)),
         body: TabBarView(
-          children: [
-            Projects(),
-            MatchedCandidates(),
-          ],
+          children: [Projects(), MatchedCandidates(), EmployeesScreen()],
         ),
         drawer: _createDrawer(context),
       ),

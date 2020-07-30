@@ -3,7 +3,7 @@ import 'package:internal_portal_projects/bloc/project_bloc.dart';
 import 'package:internal_portal_projects/common_components/ipp_actionbutton.dart';
 import 'package:internal_portal_projects/common_components/ipp_text.dart';
 import 'package:internal_portal_projects/model/project_details.dart';
-import 'package:internal_portal_projects/screens/show_project_screen.dart';
+import 'package:internal_portal_projects/screens/show_project_details_screen.dart';
 
 import 'add_project_screen.dart';
 

@@ -5,7 +5,6 @@ class PMServiceDevice {
   PMServiceDevice() {}
 
   getAllProjects() async {
-    print("Device Service");
     return await ProjectsRepoDevice().getAllProjects();
   }
 
