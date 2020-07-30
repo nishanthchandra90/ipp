@@ -1,8 +1,6 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:internal_portal_projects/model/project_details.dart';
-import 'package:internal_portal_projects/model/project_skills.dart';
 
 class ProjectsRepo {
   HttpClient httpClient = new HttpClient();
@@ -14,18 +12,18 @@ class ProjectsRepo {
 
   factory ProjectsRepo() => _instance;
 
-  postMatchRate(String skills) async {
+  getMatchedProjects(String skills) async {
     StringBuffer urlStringBuffer = new StringBuffer("http://");
     urlStringBuffer.write(localIp);
     urlStringBuffer.write(":");
     urlStringBuffer.write(port);
     urlStringBuffer.write("/getMatchedProjects");
+    urlStringBuffer.write("?skills=" + skills);
     final request =
-        await httpClient.postUrl(Uri.parse(urlStringBuffer.toString()));
+        await httpClient.getUrl(Uri.parse(urlStringBuffer.toString()));
     request.headers
         .set(HttpHeaders.contentTypeHeader, "application/json; charset=UTF-8");
-    var jsonData = json.encode(new ProjectSkill("skills", skills));
-    request.add(utf8.encode(jsonData));
+    urlStringBuffer.clear();
     return await request.close();
   }
 
@@ -36,7 +34,7 @@ class ProjectsRepo {
     urlStringBuffer.write(port);
     urlStringBuffer.write("/getAllProjects");
     final request =
-        await httpClient.postUrl(Uri.parse(urlStringBuffer.toString()));
+        await httpClient.getUrl(Uri.parse(urlStringBuffer.toString()));
     request.headers
         .set(HttpHeaders.contentTypeHeader, "application/json; charset=UTF-8");
     urlStringBuffer.clear();

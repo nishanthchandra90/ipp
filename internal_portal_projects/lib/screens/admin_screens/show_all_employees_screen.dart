@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:internal_portal_projects/bloc/employee_bloc.dart';
 import 'package:internal_portal_projects/common_components/ipp_text.dart';
 import 'package:internal_portal_projects/model/employee_details.dart';
-import 'package:internal_portal_projects/screens/show_employee_detail.dart';
+import 'package:internal_portal_projects/screens/admin_screens/show_employee_detail.dart';
 
 class EmployeesScreen extends StatefulWidget {
   @override

@@ -11,8 +11,16 @@ class ProjectsBloc {
 
   final _projectController = StreamController<List<ProjectDetails>>.broadcast();
 
+  final _matchedProjectsController =
+      StreamController<List<ProjectDetails>>.broadcast();
+
+  get allProjects => _projectController.stream;
+
+  get matchedProjects => _matchedProjectsController.stream;
+
   dispose() {
     _projectController.close();
+    _matchedProjectsController.close();
   }
 
 //  getProjects() async {
@@ -20,10 +28,14 @@ class ProjectsBloc {
 //  }
 
   getProjects() async {
-    _projectController.sink.add(await ProjectManagementService().getAllProjects());
+    _projectController.sink
+        .add(await ProjectManagementService().getAllProjects());
   }
 
-  get projects => _projectController.stream;
+  getMatchedProjects(String skills) async {
+    _matchedProjectsController.sink
+        .add(await ProjectManagementService().getMatchedProjects(skills));
+  }
 
   add(ProjectDetails project) {
     PMServiceDevice().newProject(project);

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:internal_portal_projects/model/employee_details.dart';
 import 'package:internal_portal_projects/screens/home_screen.dart';
 import 'package:internal_portal_projects/service/auth_service.dart';
 
@@ -14,6 +15,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   bool _loginFailed = false;
+  EmployeeDetails employee;
   TextEditingController emailEditingController = TextEditingController();
   TextEditingController passwordEditingController = TextEditingController();
 
@@ -64,12 +66,10 @@ class _LoginPageState extends State<LoginPage> {
           .then((value) => {
                 if (value != null)
                   {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          settings: RouteSettings(name: "/home"),
-                          builder: (BuildContext context) => MyHomePage()),
-                    )
+                    setState(() {
+                      employee = value;
+                    }),
+                    _navigateToHomeScreen()
                   }
                 else
                   {
@@ -79,5 +79,14 @@ class _LoginPageState extends State<LoginPage> {
                   }
               });
     }
+  }
+
+  _navigateToHomeScreen() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+          settings: RouteSettings(name: "/home"),
+          builder: (BuildContext context) => MyHomePage(employee: employee)),
+    );
   }
 }

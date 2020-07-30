@@ -17,7 +17,7 @@ class EmployeesRepo {
     urlStringBuffer.write(localIp);
     urlStringBuffer.write(":");
     urlStringBuffer.write(port);
-    urlStringBuffer.write("/getAllUsers");
+    urlStringBuffer.write("/getAllEmployees");
     final request =
         await httpClient.getUrl(Uri.parse(urlStringBuffer.toString()));
     request.headers
@@ -31,8 +31,9 @@ class EmployeesRepo {
     urlStringBuffer.write(localIp);
     urlStringBuffer.write(":");
     urlStringBuffer.write(port);
-    urlStringBuffer.write("/getUserByEmailName");
+    urlStringBuffer.write("/getEmployeeByEmailName");
     urlStringBuffer.write("?emailOrName=" + emailOrName);
+
     final request =
         await httpClient.getUrl(Uri.parse(urlStringBuffer.toString()));
     request.headers

@@ -38,7 +38,7 @@ class _ProjectState extends State<Projects> {
   _buildScreen() {
     return Container(
       child: StreamBuilder(
-        stream: bloc.projects,
+        stream: bloc.allProjects,
         builder: (BuildContext context,
             AsyncSnapshot<List<ProjectDetails>> snapshot) {
           if (snapshot.hasData) {
