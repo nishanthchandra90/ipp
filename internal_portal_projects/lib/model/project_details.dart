@@ -6,15 +6,15 @@ class ProjectDetails {
   String _projectId;
   String _managerName;
   String _description;
-  String _skills;
+  String _requiredSkills;
   String _tenure;
 
   ProjectDetails(this._id, this._projectName, this._projectId,
-      this._managerName, this._description, this._skills, this._tenure);
+      this._managerName, this._description, this._requiredSkills, this._tenure);
 
   String get tenure => _tenure;
 
-  String get skills => _skills;
+  String get skills => _requiredSkills;
 
   String get description => _description;
 
@@ -32,7 +32,7 @@ class ProjectDetails {
         'projectId': _projectId,
         'managerName': _managerName,
         'description': _description,
-        'skills': _skills,
+        'requiredSkills': _requiredSkills,
         'tenure': _tenure,
       };
 
@@ -42,7 +42,7 @@ class ProjectDetails {
       json['projectId'],
       json['managerName'],
       json['description'],
-      json['skills'],
+      _formatString(json['requiredSkills'].toString()),
       json['tenure']);
 
   ProjectDetails projectFromJson(String str) {
@@ -53,5 +53,9 @@ class ProjectDetails {
   String projectToJson(ProjectDetails data) {
     final dyn = data.toJson();
     return json.encode(dyn);
+  }
+
+  static String _formatString(String list) {
+    return list.replaceAll("[", '').replaceAll("]", '');
   }
 }

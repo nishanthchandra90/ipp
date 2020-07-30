@@ -85,7 +85,7 @@ class _ProjectState extends State<Projects> {
               builder: (context) => new ShowProjectScreen(project))),
       leading:
           IPPText.simpleText(project.projectName.toUpperCase(), fontSize: 20.0),
-      title: Text(project.skills),
+      title: Container(width: 40, child: Text(project.skills)),
     );
   }
 

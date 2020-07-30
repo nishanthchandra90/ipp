@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:internal_portal_projects/bloc/project_bloc.dart';
 import 'package:internal_portal_projects/common_components/ipp_dialogs.dart';
 import 'package:internal_portal_projects/common_components/ipp_inputelements.dart';
 import 'package:internal_portal_projects/common_components/ipp_snackbar.dart';
 import 'package:internal_portal_projects/common_components/ipp_text.dart';
 import 'package:internal_portal_projects/model/project_details.dart';
-import 'package:internal_portal_projects/repo/projects_repo.dart';
 
 class AddProjectScreen extends StatefulWidget {
   final ProjectDetails projectDetails;
@@ -145,10 +145,10 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
       Dialogs.showProgressDialog(context, globalStateKey, "Please wait...!");
       await new Future.delayed(const Duration(seconds: 1));
       if (project == null) {
-        await ProjectsRepo().newProject(projectDetails);
+        await ProjectsBloc().add(projectDetails);
         resetForm();
       } else {
-        await ProjectsRepo().updateProject(projectDetails);
+        await ProjectsBloc().edit(projectDetails);
       }
       _displaySnackBar('Project details saved Successfully!');
       Navigator.of(_scaffoldKey.currentContext, rootNavigator: false)
@@ -181,9 +181,9 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
   }
 
   _addDummyProjects() async {
-    await ProjectsRepo().newProject(new ProjectDetails(UniqueKey().toString(),
+    await ProjectsBloc().add(new ProjectDetails(UniqueKey().toString(),
         "Project A", "PR-1234", "Manager", 'descr', "java, #net", "1 year"));
-    await ProjectsRepo().newProject(new ProjectDetails(
+    await ProjectsBloc().add(new ProjectDetails(
         UniqueKey().toString(),
         "Project B",
         "PR-12798",

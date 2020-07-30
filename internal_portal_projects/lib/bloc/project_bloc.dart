@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:internal_portal_projects/model/project_details.dart';
-import 'package:internal_portal_projects/repo/projects_repo.dart';
+import 'package:internal_portal_projects/service/PMServiceDevice.dart';
 
 class ProjectsBloc {
   ProjectsBloc() {
@@ -15,23 +15,23 @@ class ProjectsBloc {
   }
 
   getProjects() async {
-    _projectController.sink.add(await ProjectsRepo().getAllProjects());
+    _projectController.sink.add(await PMServiceDevice().getAllProjects());
   }
 
   get projects => _projectController.stream;
 
   add(ProjectDetails project) {
-    ProjectsRepo().newProject(project);
+    PMServiceDevice().newProject(project);
     getProjects();
   }
 
   edit(ProjectDetails project) {
-    ProjectsRepo().updateProject(project);
+    PMServiceDevice().updateProject(project);
     getProjects();
   }
 
   delete(String projectId) {
-    ProjectsRepo().deleteProject(projectId);
+    PMServiceDevice().deleteProject(projectId);
     getProjects();
   }
 }

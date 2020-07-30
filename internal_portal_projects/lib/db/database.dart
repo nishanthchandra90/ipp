@@ -30,7 +30,7 @@ class DBProvider {
           "projectId TEXT,"
           "managerName TEXT,"
           "description TEXT,"
-          "skills TEXT,"
+          "requiredSkills TEXT,"
           "tenure TEXT"
           ")");
     });
