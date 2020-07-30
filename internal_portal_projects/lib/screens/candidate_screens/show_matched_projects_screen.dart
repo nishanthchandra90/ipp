@@ -7,16 +7,24 @@ import 'package:internal_portal_projects/model/project_details.dart';
 import '../show_project_details_screen.dart';
 
 class ShowMatchedProjects extends StatefulWidget {
+  final String empId;
+
+  const ShowMatchedProjects(this.empId);
+
   @override
-  State<StatefulWidget> createState() => ShowMatchedProjectsState();
+  State<StatefulWidget> createState() => ShowMatchedProjectsState(empId);
 }
 
 class ShowMatchedProjectsState extends State<ShowMatchedProjects> {
   final bloc = ProjectsBloc();
+  String empId;
+  String _actionText = 'Apply';
+
+  ShowMatchedProjectsState(this.empId);
 
   @override
   Widget build(BuildContext context) {
-    bloc.getMatchedProjects("skills");
+    bloc.getMatchedProjects(empId);
     return Scaffold(body: _buildScreen());
   }
 
@@ -73,7 +81,8 @@ class ShowMatchedProjectsState extends State<ShowMatchedProjects> {
       trailing: Container(
         color: Colors.blue,
         child: FlatButton(
-          child: Text('Apply'),
+          onPressed: () {},
+          child: Text(_actionText),
         ),
       ),
     );

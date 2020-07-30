@@ -12,13 +12,28 @@ class ProjectsRepo {
 
   factory ProjectsRepo() => _instance;
 
-  getMatchedProjects(String skills) async {
+  getAppliedProjects(String empId) async {
+    StringBuffer urlStringBuffer = new StringBuffer("http://");
+    urlStringBuffer.write(localIp);
+    urlStringBuffer.write(":");
+    urlStringBuffer.write(port);
+    urlStringBuffer.write("/getAppliedProjects");
+    urlStringBuffer.write("?empId=" + empId);
+    final request =
+        await httpClient.getUrl(Uri.parse(urlStringBuffer.toString()));
+    request.headers
+        .set(HttpHeaders.contentTypeHeader, "application/json; charset=UTF-8");
+    urlStringBuffer.clear();
+    return await request.close();
+  }
+
+  getMatchedProjects(String empId) async {
     StringBuffer urlStringBuffer = new StringBuffer("http://");
     urlStringBuffer.write(localIp);
     urlStringBuffer.write(":");
     urlStringBuffer.write(port);
     urlStringBuffer.write("/getMatchedProjects");
-    urlStringBuffer.write("?skills=" + skills);
+    urlStringBuffer.write("?empId=" + empId);
     final request =
         await httpClient.getUrl(Uri.parse(urlStringBuffer.toString()));
     request.headers

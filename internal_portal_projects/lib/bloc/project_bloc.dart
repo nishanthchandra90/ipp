@@ -14,27 +14,34 @@ class ProjectsBloc {
   final _matchedProjectsController =
       StreamController<List<ProjectDetails>>.broadcast();
 
+  final _appliedProjectsController =
+  StreamController<List<ProjectDetails>>.broadcast();
+
   get allProjects => _projectController.stream;
 
   get matchedProjects => _matchedProjectsController.stream;
 
+  get appliedProjects => _appliedProjectsController.stream;
+
   dispose() {
     _projectController.close();
     _matchedProjectsController.close();
+    _appliedProjectsController.close();
   }
-
-//  getProjects() async {
-//    _projectController.sink.add(await PMServiceDevice().getAllProjects());
-//  }
 
   getProjects() async {
     _projectController.sink
         .add(await ProjectManagementService().getAllProjects());
   }
 
-  getMatchedProjects(String skills) async {
+  getMatchedProjects(String empId) async {
     _matchedProjectsController.sink
-        .add(await ProjectManagementService().getMatchedProjects(skills));
+        .add(await ProjectManagementService().getMatchedProjects(empId));
+  }
+
+  getAppliedProjects(String empId) async {
+    _appliedProjectsController.sink
+        .add(await ProjectManagementService().getAppliedProjects(empId));
   }
 
   add(ProjectDetails project) {
@@ -51,4 +58,8 @@ class ProjectsBloc {
     PMServiceDevice().deleteProject(projectId);
     getProjects();
   }
+
+   deleteAppliedProject(ProjectDetails project) {
+//     appliedProjects.
+   }
 }

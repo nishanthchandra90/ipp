@@ -7,23 +7,30 @@ import 'package:internal_portal_projects/model/project_details.dart';
 import '../show_project_details_screen.dart';
 
 class ShowAppliedProjects extends StatefulWidget {
+  final String empId;
+
+  const ShowAppliedProjects(this.empId);
+
   @override
-  State<StatefulWidget> createState() => ShowAppliedProjectsState();
+  State<StatefulWidget> createState() => ShowAppliedProjectsState(empId);
 }
 
 class ShowAppliedProjectsState extends State<ShowAppliedProjects> {
   final bloc = ProjectsBloc();
+  String empId;
+
+  ShowAppliedProjectsState(this.empId);
 
   @override
   Widget build(BuildContext context) {
-    bloc.getMatchedProjects("skills");
+    bloc.getAppliedProjects(empId);
     return Scaffold(body: _buildScreen());
   }
 
   _buildScreen() {
     return Container(
       child: StreamBuilder(
-        stream: bloc.matchedProjects,
+        stream: bloc.appliedProjects,
         builder: (BuildContext context,
             AsyncSnapshot<List<ProjectDetails>> snapshot) {
           if (snapshot.hasData) {
@@ -70,6 +77,15 @@ class ShowAppliedProjectsState extends State<ShowAppliedProjects> {
       leading:
           IPPText.simpleText(project.projectName.toUpperCase(), fontSize: 20.0),
       title: Container(width: 40, child: Text(project.skills)),
+      trailing: Container(
+        color: Colors.red,
+        child: FlatButton(
+          onPressed: () {
+            bloc.deleteAppliedProject(project);
+          },
+          child: Text("Withdraw"),
+        ),
+      ),
     );
   }
 }

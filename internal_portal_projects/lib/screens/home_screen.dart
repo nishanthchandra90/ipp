@@ -43,8 +43,8 @@ class MyHomePage extends StatelessWidget {
           children: employee.isAdmin
               ? [Projects(), MatchedCandidates(), EmployeesScreen()]
               : [
-                  ShowMatchedProjects(),
-                  ShowAppliedProjects(),
+                  ShowMatchedProjects(employee.employeeId),
+                  ShowAppliedProjects(employee.employeeId),
                 ],
         ),
         drawer: _createDrawer(context),
