@@ -1,0 +1,12 @@
+/BusinessAppService/target/BusinessAppService-1.0-SNAPSHOT.jar
+/BusinessAppService/target/BusinessAppService-1.0-SNAPSHOT.jar.original
+/BusinessAppService/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+/BusinessAppService/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst
+/BusinessAppService/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+/BusinessAppService/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst
+/BusinessAppService/target/classes/com/tcs/ipp/controller/IPPController.class
+/BusinessAppService/target/test-classes/META-INF/IPPService.kotlin_module
+/BusinessAppService/target/maven-archiver/pom.properties
+/BusinessAppService/target/classes/com/tcs/ipp/model/ProjectDTO.class
+/BusinessAppService/target/classes/com/tcs/ipp/ProjectManagementApp.class
+/BusinessAppService/target/classes/com/tcs/ipp/service/ProjectsRepo.class
