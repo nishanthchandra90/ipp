@@ -28,4 +28,10 @@ public class ProjectsRepo {
     public List<ProjectDTO> getAllProjects() {
         return projects;
     }
+
+    public ProjectDTO getProjectById(String id) {
+        return projects.stream().filter(project -> project.getProjectId().equalsIgnoreCase(id)).findFirst().orElse(null);
+    }
+
+
 }
