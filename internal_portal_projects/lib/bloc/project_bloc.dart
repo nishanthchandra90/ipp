@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:internal_portal_projects/model/potential_candidates.dart';
 import 'package:internal_portal_projects/model/project_details.dart';
 import 'package:internal_portal_projects/service/PMServiceDevice.dart';
 import 'package:internal_portal_projects/service/project_manage_service.dart';
@@ -15,7 +16,10 @@ class ProjectsBloc {
       StreamController<List<ProjectDetails>>.broadcast();
 
   final _appliedProjectsController =
-  StreamController<List<ProjectDetails>>.broadcast();
+      StreamController<List<ProjectDetails>>.broadcast();
+
+  final _applicationsAndMatchesController =
+      StreamController<List<PotentialCandidates>>.broadcast();
 
   get allProjects => _projectController.stream;
 
@@ -23,10 +27,13 @@ class ProjectsBloc {
 
   get appliedProjects => _appliedProjectsController.stream;
 
+  get potentialCandidates => _applicationsAndMatchesController.stream;
+
   dispose() {
     _projectController.close();
     _matchedProjectsController.close();
     _appliedProjectsController.close();
+    _applicationsAndMatchesController.close();
   }
 
   getProjects() async {
@@ -44,6 +51,11 @@ class ProjectsBloc {
         .add(await ProjectManagementService().getAppliedProjects(empId));
   }
 
+  getApplicationsAndMatches() async {
+    _applicationsAndMatchesController.sink
+        .add(await ProjectManagementService().getApplicationsAndMatches());
+  }
+
   add(ProjectDetails project) {
     PMServiceDevice().newProject(project);
     getProjects();
@@ -59,7 +71,7 @@ class ProjectsBloc {
     getProjects();
   }
 
-   deleteAppliedProject(ProjectDetails project) {
+  deleteAppliedProject(ProjectDetails project) {
 //     appliedProjects.
-   }
+  }
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:internal_portal_projects/model/employee_details.dart';
+import 'package:internal_portal_projects/model/potential_candidates.dart';
 import 'package:internal_portal_projects/model/project_details.dart';
 import 'package:internal_portal_projects/repo/employees_repo.dart';
 import 'package:internal_portal_projects/repo/projects_repo.dart';
@@ -68,5 +69,17 @@ class ProjectManagementService {
       }
     }
     return null;
+  }
+
+  getApplicationsAndMatches() async {
+    var response = await new ProjectsRepo().getApplicationsAndMatches();
+    if (response.statusCode == 200) {
+      String reply = await response.transform(utf8.decoder).join();
+      final decoded = _decodeResponse(reply);
+      return decoded
+          .map<PotentialCandidates>((j) => PotentialCandidates.fromJson(j))
+          .toList();
+    }
+    return <PotentialCandidates>[];
   }
 }

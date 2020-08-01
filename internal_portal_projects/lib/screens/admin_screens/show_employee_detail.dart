@@ -50,22 +50,22 @@ class ShowEmployeeState extends State<ShowEmployeeScreen> {
           ])),
     );
   }
-}
 
-_createRow(String fieldName, String fieldVal) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      IPPText.simpleText(fieldName,
-          fontWeight: FontWeight.bold, fontSize: 22, color: Colors.blue),
-      SizedBox(
-        width: 50,
-      ),
-      Expanded(
-          child: IPPText.simpleText(
-        fieldVal,
-        fontSize: 20,
-      )),
-    ],
-  );
+  _createRow(String fieldName, String fieldVal) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        IPPText.simpleText(fieldName,
+            fontWeight: FontWeight.bold, fontSize: 22, color: Colors.blue),
+        SizedBox(
+          width: 50,
+        ),
+        Expanded(
+            child: IPPText.simpleText(
+          fieldVal,
+          fontSize: 20,
+        )),
+      ],
+    );
+  }
 }

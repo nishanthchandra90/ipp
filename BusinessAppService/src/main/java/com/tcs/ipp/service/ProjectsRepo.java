@@ -9,7 +9,6 @@ import java.util.List;
 @Component
 public class ProjectsRepo {
 
-
     private static final List<ProjectDTO> projects = new ArrayList<>();
 
     static {
@@ -32,6 +31,5 @@ public class ProjectsRepo {
     public ProjectDTO getProjectById(String id) {
         return projects.stream().filter(project -> project.getProjectId().equalsIgnoreCase(id)).findFirst().orElse(null);
     }
-
 
 }

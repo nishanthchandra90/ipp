@@ -56,9 +56,25 @@ class ProjectsRepo {
     return await request.close();
   }
 
+
+  getApplicationsAndMatches() async{
+    StringBuffer urlStringBuffer = new StringBuffer("http://");
+    urlStringBuffer.write(localIp);
+    urlStringBuffer.write(":");
+    urlStringBuffer.write(port);
+    urlStringBuffer.write("/getApplicationsAndMatches");
+    final request =
+    await httpClient.getUrl(Uri.parse(urlStringBuffer.toString()));
+    request.headers
+        .set(HttpHeaders.contentTypeHeader, "application/json; charset=UTF-8");
+    urlStringBuffer.clear();
+    return await request.close();
+  }
+
   newProject(ProjectDetails newProject) async {}
 
   updateProject(ProjectDetails project) async {}
 
   deleteProject(String id) async {}
+
 }
