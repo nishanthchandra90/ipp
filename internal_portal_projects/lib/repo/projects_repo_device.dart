@@ -11,7 +11,7 @@ class ProjectsRepoDevice {
   getAllProjects() async {
     final db = await DBProvider.db.database;
     var res = await db.query("Project");
-    List<ProjectDetails> list = res.isNotEmpty
+    List<ProjectDetails> list = res.isNotEmpty && res.length > 0
         ? res.map((c) => ProjectDetails.fromJson(c)).toList()
         : [];
     return list;
@@ -20,7 +20,7 @@ class ProjectsRepoDevice {
   updateProject(ProjectDetails project) async {
     final db = await DBProvider.db.database;
     var res = await db.update("Project", project.toJson(),
-        where: "id = ?", whereArgs: [project.id]);
+        where: "id = ?", whereArgs: [project.projectId]);
     return res;
   }
 

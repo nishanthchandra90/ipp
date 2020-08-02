@@ -76,7 +76,7 @@ class ShowAppliedProjectsState extends State<ShowAppliedProjects> {
               builder: (context) => new ShowProjectScreen(project))),
       leading:
           IPPText.simpleText(project.projectName.toUpperCase(), fontSize: 20.0),
-      title: Container(width: 40, child: Text(project.skills)),
+      title: Container(width: 40, child: Text(project.skills.toString())),
       trailing: Container(
         color: Colors.red,
         child: FlatButton(

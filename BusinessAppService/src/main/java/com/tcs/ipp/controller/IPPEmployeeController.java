@@ -6,9 +6,7 @@ import com.tcs.ipp.repository.EmployeeRepo;
 import com.tcs.ipp.repository.ProjectRepo;
 import com.tcs.ipp.service.AppliedProjectsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,18 +51,38 @@ public class IPPEmployeeController {
         return employeeRepo.findById(empId).orElse(null);
     }
 
+    @PostMapping("/saveEmployee")
+    public EmployeeDto saveEmployee(@RequestBody EmployeeDto employee) {
+        System.out.println("Saving Employee with Id:" + employee.getEmployeeId());
+        return employeeRepo.save(employee);
+    }
+
+    @PostMapping("/updateEmployee")
+    public EmployeeDto updateEmployee(@RequestBody EmployeeDto employee) {
+        System.out.println("Updating Employee with Id:" + employee.getEmployeeId());
+        return employeeRepo.save(employee);
+    }
+
+    @GetMapping("/deleteEmployee")
+    public void deleteEmployee(@RequestParam String employeeId) {
+        System.out.println("Deleting Employee with Id:" + employeeId);
+        employeeRepo.deleteById(employeeId);
+    }
+
     @GetMapping("/getAppliedProjects")
     public List<ProjectDTO> getAppliedProjectsById(@RequestParam String empId) {
         System.out.println("Getting Projects applied by Employee with Id:" + empId);
         return appliedProjectsRepo.getAppliedProjectByEmpId(empId).stream()
-                .map(p -> projectsRepo.findById(p).orElse(null)).collect(Collectors.toList());
+                .filter(p -> projectsRepo.findById(p).isPresent())
+                .map(p -> projectsRepo.findById(p).get()).collect(Collectors.toList());
     }
 
     @GetMapping("/getMatchedProjects")
     public List<ProjectDTO> getMatchedProjects(@RequestParam String empId) {
         System.out.println("Getting Projects matching with Employee skills for Employee:" + empId);
         return appliedProjectsRepo.getMyMatchedProjects(empId).stream()
-                .map(p -> projectsRepo.findById(p).orElse(null)).collect(Collectors.toList());
+                .filter(p -> projectsRepo.findById(p).isPresent())
+                .map(p -> projectsRepo.findById(p).get()).collect(Collectors.toList());
     }
 
 }

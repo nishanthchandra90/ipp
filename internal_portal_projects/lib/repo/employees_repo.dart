@@ -58,7 +58,9 @@ class EmployeesRepo {
     return await request.close();
   }
 
-  newUser(ProjectDetails newProject) async {}
+  newUser(ProjectDetails newProject) async {
+
+  }
 
   updateUser(ProjectDetails project) async {}
 

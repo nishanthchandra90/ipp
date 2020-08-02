@@ -127,15 +127,18 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
     if (!_formKey.currentState.validate()) {
       return;
     }
-    String id = project == null ? UniqueKey().toString() : project.id;
     String projectId = projectIdTextEditor.text;
     String projectName = projectNameTextEditor.text;
     String projectManager = projectManagerTextEditor.text ?? '';
     String projectDesc = projectDescTextEditor.text ?? '';
-    String skills = skillSetsTextEditor.text ?? '';
+    String skills = skillSetsTextEditor.text;
+    var skillSet = [];
+    if (skills != null && skills.isNotEmpty) {
+      skillSet = skills.split(",").toList();
+    }
     String tenure = tenureTextEditor.text ?? '';
-    var projectDetails = new ProjectDetails(id, projectName, projectId,
-        projectManager, projectDesc, skills, tenure);
+    var projectDetails = new ProjectDetails(
+        projectName, projectId, projectManager, projectDesc, skillSet, tenure);
     _handleSubmit(context, projectDetails);
   }
 
@@ -181,16 +184,10 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
   }
 
   _addDummyProjects() async {
-    await ProjectsBloc().add(new ProjectDetails(UniqueKey().toString(),
-        "Project A", "PR-1234", "Manager", 'descr', "java, #net", "1 year"));
     await ProjectsBloc().add(new ProjectDetails(
-        UniqueKey().toString(),
-        "Project B",
-        "PR-12798",
-        "Manager",
-        'descr',
-        "python, java, #net",
-        "2 year"));
+        "Project A", "PR-1234", "Manager", 'descr', ["java, #net"], "1 year"));
+    await ProjectsBloc().add(new ProjectDetails("Project B", "PR-12798",
+        "Manager", 'descr', ["python, java, #net"], "2 year"));
   }
 
   void populateForm(ProjectDetails project) {
@@ -198,7 +195,7 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
     projectIdTextEditor.text = project.projectId;
     projectManagerTextEditor.text = project.managerName;
     projectDescTextEditor.text = project.description;
-    skillSetsTextEditor.text = project.skills;
+    skillSetsTextEditor.text = project.skills.toString();
     tenureTextEditor.text = project.tenure;
   }
 }

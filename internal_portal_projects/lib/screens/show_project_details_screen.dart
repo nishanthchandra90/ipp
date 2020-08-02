@@ -50,7 +50,7 @@ class ShowProjectState extends State<ShowProjectScreen> {
             SizedBox(
               height: 30,
             ),
-            _createRow("Skill Sets", project.skills),
+            _createRow("Skill Sets", project.skills.toString()),
             SizedBox(
               height: 30,
             ),

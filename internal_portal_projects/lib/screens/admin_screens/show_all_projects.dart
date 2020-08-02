@@ -14,7 +14,6 @@ class Projects extends StatefulWidget {
 
 class _ProjectState extends State<Projects> {
   final bloc = ProjectsBloc();
-  final GlobalKey<ScaffoldState> _key = new GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +22,9 @@ class _ProjectState extends State<Projects> {
             MaterialPageRoute(
               builder: (BuildContext context) => AddProjectScreen(),
             )).then((value) {
-          setState(() {});
+          setState(() {
+            ProjectsBloc().getProjects();
+          });
         });
     return Scaffold(
         body: _buildScreen(),
@@ -85,7 +86,7 @@ class _ProjectState extends State<Projects> {
               builder: (context) => new ShowProjectScreen(project))),
       leading:
           IPPText.simpleText(project.projectName.toUpperCase(), fontSize: 20.0),
-      title: Container(width: 40, child: Text(project.skills)),
+      title: Container(width: 40, child: Text(project.skills.toString())),
     );
   }
 
@@ -114,12 +115,15 @@ class _ProjectState extends State<Projects> {
         setState(() {}),
         Navigator.pop(context),
         Navigator.push(
-          context,
-          new MaterialPageRoute(
-              builder: (context) => new AddProjectScreen(
-                    projectDetails: project,
-                  )),
-        )
+            context,
+            new MaterialPageRoute(
+                builder: (context) => new AddProjectScreen(
+                      projectDetails: project,
+                    ))).then((value) {
+          setState(() {
+            ProjectsBloc().getProjects();
+          });
+        }),
       },
     );
   }
@@ -130,7 +134,10 @@ class _ProjectState extends State<Projects> {
       color: Colors.blue,
       onPressed: () => {
         Navigator.pop(context),
-        ProjectsBloc().delete(project.id),
+        ProjectsBloc().delete(project.projectId),
+        setState(() {
+          ProjectsBloc().getProjects();
+        }),
       },
     );
   }

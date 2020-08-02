@@ -11,6 +11,9 @@ class ProjectManagementService {
     var response = await new ProjectsRepo().getAppliedProjects(empId);
     if (response.statusCode == 200) {
       String reply = await response.transform(utf8.decoder).join();
+      if (reply.length < 5) {
+        return [];
+      }
       final decoded = _decodeResponse(reply);
       return decoded
           .map<ProjectDetails>((json) => ProjectDetails.fromJson(json))
@@ -51,6 +54,9 @@ class ProjectManagementService {
     var response = await new EmployeesRepo().getAllUsers();
     if (response.statusCode == 200) {
       String reply = await response.transform(utf8.decoder).join();
+      if (reply.length < 5) {
+        return [];
+      }
       final decoded = _decodeResponse(reply);
       return decoded
           .map<EmployeeDetails>((j) => EmployeeDetails.fromJson(j))
@@ -63,6 +69,9 @@ class ProjectManagementService {
     var response = await new EmployeesRepo().getUserByEmail(email);
     if (response.statusCode == 200) {
       String reply = await response.transform(utf8.decoder).join();
+      if (reply.length < 5) {
+        return [];
+      }
       if (reply.isNotEmpty) {
         var json = jsonDecode(reply);
         return EmployeeDetails.fromJson(json);
@@ -75,6 +84,9 @@ class ProjectManagementService {
     var response = await new EmployeesRepo().getUserByName(name);
     if (response.statusCode == 200) {
       String reply = await response.transform(utf8.decoder).join();
+      if (reply.length < 5) {
+        return [];
+      }
       if (reply.isNotEmpty) {
         var json = jsonDecode(reply);
         return EmployeeDetails.fromJson(json);
@@ -87,6 +99,9 @@ class ProjectManagementService {
     var response = await new ProjectsRepo().getApplicationsAndMatches();
     if (response.statusCode == 200) {
       String reply = await response.transform(utf8.decoder).join();
+      if (reply.length < 5) {
+        return [];
+      }
       final decoded = _decodeResponse(reply);
       return decoded
           .map<PotentialCandidates>((j) => PotentialCandidates.fromJson(j))
