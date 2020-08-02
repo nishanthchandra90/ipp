@@ -2,6 +2,7 @@ package com.tcs.ipp.service;
 
 import com.tcs.ipp.model.AppliedMatchedCandidates;
 import com.tcs.ipp.model.ProjectDTO;
+import com.tcs.ipp.repo.ProjectsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

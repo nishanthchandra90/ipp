@@ -2,9 +2,9 @@ package com.tcs.ipp.controller;
 
 import com.tcs.ipp.model.EmployeeDto;
 import com.tcs.ipp.model.ProjectDTO;
+import com.tcs.ipp.repo.ProjectsRepo;
+import com.tcs.ipp.repository.EmployeeRepo;
 import com.tcs.ipp.service.AppliedProjectsRepo;
-import com.tcs.ipp.service.EmployeesRepo;
-import com.tcs.ipp.service.ProjectsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,8 +15,10 @@ import java.util.stream.Collectors;
 
 @RestController
 public class IPPEmployeeController {
+
     @Autowired
-    private EmployeesRepo employeeRepo;
+    private EmployeeRepo employeeRepo;
+
 
     @Autowired
     private ProjectsRepo projectsRepo;
@@ -24,23 +26,31 @@ public class IPPEmployeeController {
     @Autowired
     private AppliedProjectsRepo appliedProjectsRepo;
 
+
     @GetMapping("/getAllEmployees")
     public List<EmployeeDto> getAllEmployees() {
         System.out.println("Sending all employees as response...");
-        return employeeRepo.getAllEmployees();
+        return employeeRepo.findAll();
     }
 
-    @GetMapping("/getEmployeeByEmailName")
-    public EmployeeDto getEmployee(@RequestParam String emailOrName) {
-        System.out.println("Getting Employee with name/email:" + emailOrName);
-        return employeeRepo.getEmployeeByName(emailOrName);
+    @GetMapping("/getEmployeeByName")
+    public EmployeeDto getEmployeeByName(@RequestParam String name) {
+        System.out.println("Getting Employee with name/email:" + name);
+        return employeeRepo.findByEmployeeName(name);
+
+    }
+
+    @GetMapping("/getEmployeeByEmail")
+    public EmployeeDto getEmployeeByEmail(@RequestParam String email) {
+        System.out.println("Getting Employee with name/email:" + email);
+        return employeeRepo.findByEmail(email);
 
     }
 
     @GetMapping("/getEmployeeById")
     public EmployeeDto getEmployeeById(@RequestParam String empId) {
         System.out.println("Getting Employee with Id:" + empId);
-        return employeeRepo.getEmployeeById(empId);
+        return employeeRepo.findById(empId).orElse(null);
     }
 
     @GetMapping("/getAppliedProjects")

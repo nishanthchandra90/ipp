@@ -1,10 +1,16 @@
 package com.tcs.ipp.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.List;
 import java.util.Objects;
 
+
+@Document(collection = "project")
 public class ProjectDTO {
 
+    @Id
     private final String projectId;
 
     private final String projectName;

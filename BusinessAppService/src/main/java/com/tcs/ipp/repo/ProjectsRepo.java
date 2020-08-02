@@ -1,4 +1,4 @@
-package com.tcs.ipp.service;
+package com.tcs.ipp.repo;
 
 import com.tcs.ipp.model.ProjectDTO;
 import org.springframework.stereotype.Component;

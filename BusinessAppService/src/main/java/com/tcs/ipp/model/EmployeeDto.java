@@ -1,9 +1,14 @@
 package com.tcs.ipp.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.Objects;
 
+@Document(collection = "employee")
 public class EmployeeDto {
 
+    @Id
     String employeeId;
 
     String employeeName;
