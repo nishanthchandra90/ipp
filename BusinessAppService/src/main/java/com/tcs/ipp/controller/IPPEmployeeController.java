@@ -35,14 +35,14 @@ public class IPPEmployeeController {
 
     @GetMapping("/getEmployeeByName")
     public EmployeeDto getEmployeeByName(@RequestParam String name) {
-        System.out.println("Getting Employee with name/email:" + name);
+        System.out.println("Getting Employee with email:" + name);
         return employeeRepo.findByEmployeeName(name);
 
     }
 
     @GetMapping("/getEmployeeByEmail")
     public EmployeeDto getEmployeeByEmail(@RequestParam String email) {
-        System.out.println("Getting Employee with name/email:" + email);
+        System.out.println("Getting Employee with email:" + email);
         return employeeRepo.findByEmail(email);
 
     }
@@ -62,7 +62,7 @@ public class IPPEmployeeController {
 
     @GetMapping("/getMatchedProjects")
     public List<ProjectDTO> getMatchedProjects(@RequestParam String empId) {
-        System.out.println("Getting Projects matching with Employee skills with for Employee:" + empId);
+        System.out.println("Getting Projects matching with Employee skills for Employee:" + empId);
         return appliedProjectsRepo.getMyMatchedProjects(empId).stream()
                 .map(p -> projectsRepo.findById(p).orElse(null)).collect(Collectors.toList());
     }

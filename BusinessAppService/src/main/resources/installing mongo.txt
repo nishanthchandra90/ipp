@@ -3,7 +3,7 @@ sudo apt-get install mongodb-org
 mkdir /data/db
 sudo chmod -R go+w /data/db
 
-mongod
+mongo
 
 use admin
 

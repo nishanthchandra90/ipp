@@ -22,17 +22,17 @@ public class AppliedProjectsRepo {
     private static final Map<String, List<String>> appliedProjects = new HashMap<>();
 
     static {
-        employeeProjectMatches.put("EMP-2332332", List.of("Project-2328356", "Project-273698646"));
-        employeeProjectMatches.put("EMP-273698646", List.of("Project-9876372", "Project-2332332", "Project-03843984", "Project-273698646"));
-        employeeProjectMatches.put("EMP-9876372", List.of("Project-273698646", "Project-2332332", "Project-9876372", "Project-2328356"));
-        employeeProjectMatches.put("EMP-03843984", List.of("Project-2328356", "Project-273698646"));
+        employeeProjectMatches.put("emp-2332332", List.of("project-2328356", "project-273698646"));
+        employeeProjectMatches.put("emp-273698646", List.of("project-9876372", "project-2332332", "project-03843984", "project-273698646"));
+        employeeProjectMatches.put("emp-9876372", List.of("project-273698646", "project-2332332", "project-9876372", "project-2328356"));
+        employeeProjectMatches.put("emp-03843984", List.of("project-2328356", "project-273698646"));
     }
 
     static {
-        appliedProjects.put("EMP-2332332", List.of("Project-2328356"));
-        appliedProjects.put("EMP-273698646", List.of("Project-9876372"));
-        appliedProjects.put("EMP-9876372", List.of("Project-273698646", "Project-2332332", "Project-9876372"));
-        appliedProjects.put("EMP-03843984", List.of("Project-273698646"));
+        appliedProjects.put("emp-2332332", List.of("project-2328356"));
+        appliedProjects.put("emp-273698646", List.of("project-9876372"));
+        appliedProjects.put("emp-9876372", List.of("project-273698646", "project-2332332", "project-9876372"));
+        appliedProjects.put("emp-03843984", List.of("project-273698646"));
     }
 
     public List<String> getMyMatchedProjects(String employeeID) {
