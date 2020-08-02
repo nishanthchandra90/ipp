@@ -2,7 +2,8 @@ package com.tcs.ipp.service;
 
 import com.tcs.ipp.model.AppliedMatchedCandidates;
 import com.tcs.ipp.model.ProjectDTO;
-import com.tcs.ipp.repo.ProjectsRepo;
+import com.tcs.ipp.repository.EmployeeRepo;
+import com.tcs.ipp.repository.ProjectRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 public class AppliedProjectsRepo {
 
     @Autowired
-    private EmployeesRepo employeesRepo;
+    private EmployeeRepo employeesRepo;
 
     private static final Map<String, List<String>> employeeProjectMatches = new HashMap<>();
     private static final Map<String, List<String>> appliedProjects = new HashMap<>();
@@ -46,8 +47,8 @@ public class AppliedProjectsRepo {
         return employeeProjectMatches.entrySet().stream()
                 .filter((e) -> e.getValue().contains(projectId))
                 .map(Map.Entry::getKey)
-                .collect(Collectors.toList()).stream()
-                .map(eId -> employeesRepo.getEmployeeById(eId).getEmployeeName())
+                .collect(Collectors.toList()).stream().filter(eId -> employeesRepo.findById(eId).isPresent())
+                .map(emp -> employeesRepo.findById(emp).get().getEmployeeName())
                 .collect(Collectors.toList());
     }
 
@@ -55,14 +56,13 @@ public class AppliedProjectsRepo {
         return appliedProjects.entrySet().stream()
                 .filter((e) -> e.getValue().contains(projectId))
                 .map(Map.Entry::getKey)
-                .collect(Collectors.toList())
-                .stream()
-                .map(eId -> employeesRepo.getEmployeeById(eId).getEmployeeName())
+                .collect(Collectors.toList()).stream().filter(eId -> employeesRepo.findById(eId).isPresent())
+                .map(emp -> employeesRepo.findById(emp).get().getEmployeeName())
                 .collect(Collectors.toList());
     }
 
-    public List<AppliedMatchedCandidates> getPotentialCandidates(ProjectsRepo projectsRepo) {
-        return projectsRepo.getAllProjects().stream()
+    public List<AppliedMatchedCandidates> getPotentialCandidates(ProjectRepo projectsRepo) {
+        return projectsRepo.findAll().stream()
                 .map(this::createPotentialCandidateList).collect(Collectors.toList());
     }
 

@@ -2,7 +2,6 @@ package com.tcs.ipp.service;
 
 import com.tcs.ipp.model.EmployeeDto;
 import com.tcs.ipp.model.ProjectDTO;
-import com.tcs.ipp.repo.ProjectsRepo;
 import com.tcs.ipp.repository.EmployeeRepo;
 import com.tcs.ipp.repository.ProjectRepo;
 import org.springframework.beans.factory.annotation.Autowired;

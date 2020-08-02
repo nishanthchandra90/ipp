@@ -2,7 +2,6 @@ package com.tcs.ipp.controller;
 
 import com.tcs.ipp.model.AppliedMatchedCandidates;
 import com.tcs.ipp.model.ProjectDTO;
-import com.tcs.ipp.repo.ProjectsRepo;
 import com.tcs.ipp.repository.ProjectRepo;
 import com.tcs.ipp.service.AppliedProjectsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +32,10 @@ public class IPPProjectController {
         return projectRepo.findAll();
     }
 
-//    @GetMapping("/getApplicationsAndMatches")
-//    public List<AppliedMatchedCandidates> getPotentialCandidates() {
-//        System.out.println("Getting Potential Candidates...");
-//        return appliedProjectsRepo.getPotentialCandidates(projectsRepo);
-//    }
+    @GetMapping("/getApplicationsAndMatches")
+    public List<AppliedMatchedCandidates> getPotentialCandidates() {
+        System.out.println("Getting Potential Candidates...");
+        return appliedProjectsRepo.getPotentialCandidates(projectRepo);
+    }
 
 }

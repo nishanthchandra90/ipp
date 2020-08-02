@@ -1,0 +1,16 @@
+sudo apt-get update
+sudo apt-get install mongodb-org
+mkdir /data/db
+sudo chmod -R go+w /data/db
+
+mongod
+
+use admin
+
+db.createUser(
+{
+user: "myUserAdmin",
+pwd: "root",
+roles: [ { role: "userAdminAnyDatabase", db: "admin" }, "readWriteAnyDatabase" ]
+}
+)

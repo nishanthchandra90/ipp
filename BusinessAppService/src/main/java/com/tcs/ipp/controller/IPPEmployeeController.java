@@ -2,8 +2,8 @@ package com.tcs.ipp.controller;
 
 import com.tcs.ipp.model.EmployeeDto;
 import com.tcs.ipp.model.ProjectDTO;
-import com.tcs.ipp.repo.ProjectsRepo;
 import com.tcs.ipp.repository.EmployeeRepo;
+import com.tcs.ipp.repository.ProjectRepo;
 import com.tcs.ipp.service.AppliedProjectsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +21,7 @@ public class IPPEmployeeController {
 
 
     @Autowired
-    private ProjectsRepo projectsRepo;
+    private ProjectRepo projectsRepo;
 
     @Autowired
     private AppliedProjectsRepo appliedProjectsRepo;
@@ -57,14 +57,14 @@ public class IPPEmployeeController {
     public List<ProjectDTO> getAppliedProjectsById(@RequestParam String empId) {
         System.out.println("Getting Projects applied by Employee with Id:" + empId);
         return appliedProjectsRepo.getAppliedProjectByEmpId(empId).stream()
-                .map(p -> projectsRepo.getProjectById(p)).collect(Collectors.toList());
+                .map(p -> projectsRepo.findById(p).orElse(null)).collect(Collectors.toList());
     }
 
     @GetMapping("/getMatchedProjects")
     public List<ProjectDTO> getMatchedProjects(@RequestParam String empId) {
         System.out.println("Getting Projects matching with Employee skills with for Employee:" + empId);
         return appliedProjectsRepo.getMyMatchedProjects(empId).stream()
-                .map(p -> projectsRepo.getProjectById(p)).collect(Collectors.toList());
+                .map(p -> projectsRepo.findById(p).orElse(null)).collect(Collectors.toList());
     }
 
 }
