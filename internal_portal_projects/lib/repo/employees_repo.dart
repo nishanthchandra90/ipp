@@ -26,13 +26,29 @@ class EmployeesRepo {
     return await request.close();
   }
 
-  getUserByEmailName(String emailOrName) async {
+  getUserByName(String name) async {
     StringBuffer urlStringBuffer = new StringBuffer("http://");
     urlStringBuffer.write(localIp);
     urlStringBuffer.write(":");
     urlStringBuffer.write(port);
-    urlStringBuffer.write("/getEmployeeByEmailName");
-    urlStringBuffer.write("?emailOrName=" + emailOrName);
+    urlStringBuffer.write("/getEmployeeByName");
+    urlStringBuffer.write("?name=" + name);
+
+    final request =
+        await httpClient.getUrl(Uri.parse(urlStringBuffer.toString()));
+    request.headers
+        .set(HttpHeaders.contentTypeHeader, "application/json; charset=UTF-8");
+    urlStringBuffer.clear();
+    return await request.close();
+  }
+
+  getUserByEmail(String email) async {
+    StringBuffer urlStringBuffer = new StringBuffer("http://");
+    urlStringBuffer.write(localIp);
+    urlStringBuffer.write(":");
+    urlStringBuffer.write(port);
+    urlStringBuffer.write("/getEmployeeByEmail");
+    urlStringBuffer.write("?email=" + email);
 
     final request =
         await httpClient.getUrl(Uri.parse(urlStringBuffer.toString()));

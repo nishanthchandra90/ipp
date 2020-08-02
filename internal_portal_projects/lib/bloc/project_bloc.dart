@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:internal_portal_projects/model/potential_candidates.dart';
 import 'package:internal_portal_projects/model/project_details.dart';
-import 'package:internal_portal_projects/service/PMServiceDevice.dart';
 import 'package:internal_portal_projects/service/project_manage_service.dart';
 
 class ProjectsBloc {
@@ -57,17 +56,17 @@ class ProjectsBloc {
   }
 
   add(ProjectDetails project) {
-    PMServiceDevice().newProject(project);
+    ProjectManagementService().newProject(project);
     getProjects();
   }
 
   edit(ProjectDetails project) {
-    PMServiceDevice().updateProject(project);
+    ProjectManagementService().updateProject(project);
     getProjects();
   }
 
   delete(String projectId) {
-    PMServiceDevice().deleteProject(projectId);
+    ProjectManagementService().deleteProject(projectId);
     getProjects();
   }
 

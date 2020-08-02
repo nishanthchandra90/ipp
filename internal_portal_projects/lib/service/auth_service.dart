@@ -23,8 +23,14 @@ class AuthService with ChangeNotifier {
       String email,
       String password}) async {}
 
-  Future loginUser({String email, String password}) async{
-    return await ProjectManagementService().getUserByEmailName(email);
+  Future loginUser({String email, String password}) async {
+    bool isEmail = RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(email);
+    if (isEmail) {
+      return await ProjectManagementService().getUserByEmail(email.toLowerCase());
+    } else
+      return await ProjectManagementService().getUserByName(email.toLowerCase());
 
     if (StringUtils.equalsIgnoreCase(email, 'Admin') ||
         StringUtils.equalsIgnoreCase(email, 'emp')) {

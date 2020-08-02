@@ -59,8 +59,20 @@ class ProjectManagementService {
     return <EmployeeDetails>[];
   }
 
-  getUserByEmailName(String emailOrName) async {
-    var response = await new EmployeesRepo().getUserByEmailName(emailOrName);
+  getUserByEmail(String email) async {
+    var response = await new EmployeesRepo().getUserByEmail(email);
+    if (response.statusCode == 200) {
+      String reply = await response.transform(utf8.decoder).join();
+      if (reply.isNotEmpty) {
+        var json = jsonDecode(reply);
+        return EmployeeDetails.fromJson(json);
+      }
+    }
+    return null;
+  }
+
+  getUserByName(String name) async {
+    var response = await new EmployeesRepo().getUserByName(name);
     if (response.statusCode == 200) {
       String reply = await response.transform(utf8.decoder).join();
       if (reply.isNotEmpty) {
@@ -81,5 +93,17 @@ class ProjectManagementService {
           .toList();
     }
     return <PotentialCandidates>[];
+  }
+
+  newProject(ProjectDetails project) async {
+    await new ProjectsRepo().newProject(project);
+  }
+
+  updateProject(ProjectDetails project) async {
+    await new ProjectsRepo().updateProject(project);
+  }
+
+  deleteProject(String projectId) async {
+    await new ProjectsRepo().deleteProject(projectId);
   }
 }
