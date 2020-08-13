@@ -122,16 +122,16 @@ class ProjectManagementService {
     await new ProjectsRepo().deleteProject(projectId);
   }
 
-  Future<String> checkEmail(String emailId) async {
-//    var response = await new EmployeesRepo().isNewUser(emailId);
-//    if (response.statusCode == 200) {
-//      String reply = await response.transform(utf8.decoder).join();
-//      if (reply.isNotEmpty) {
-//        var json = jsonDecode(reply);
-//        return json['newUser'];
-//      }
-//    }
-    return 'true';
+  isNewUser(String emailId) async {
+    var response = await new EmployeesRepo().isNewUser(emailId);
+    if (response.statusCode == 200) {
+      String reply = await response.transform(utf8.decoder).join();
+      if (reply.isNotEmpty) {
+        var json = jsonDecode(reply);
+        return json['newUser'];
+      }
+    }
+    return false;
   }
 
   checkOTP(String otp) async {

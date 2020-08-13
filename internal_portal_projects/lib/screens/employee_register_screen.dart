@@ -1,4 +1,3 @@
-import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:internal_portal_projects/common_components/ipp_inputelements.dart';
@@ -104,17 +103,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
     _setVerificationMsg(false, '');
-    await AuthService().verifyEmail(emailId).then((value) => {
+    await AuthService().isNewUser(emailId).then((value) => {
           if (value != null)
             {
-              if (StringUtils.equalsIgnoreCase("false", value))
+              if (value)
+                {_toggleNextBtn(false), _toggleOTPField(true)}
+              else
                 {
                   _setVerificationMsg(true, 'Email is already registered'),
                   _toggleNextBtn(true),
                   _toggleOTPField(false)
                 }
-              else
-                {_toggleNextBtn(false), _toggleOTPField(true)}
             }
         });
   }
@@ -128,7 +127,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   _toggleNextBtn(bool show) {
     setState(() {
-      _validEmail = true;
+      _validEmail = !show;
       _showNextBtn = show;
     });
   }

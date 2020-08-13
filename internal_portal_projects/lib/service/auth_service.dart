@@ -28,9 +28,11 @@ class AuthService with ChangeNotifier {
             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(email);
     if (isEmail) {
-      return await ProjectManagementService().getUserByEmail(email.toLowerCase());
+      return await ProjectManagementService()
+          .getUserByEmail(email.toLowerCase());
     } else
-      return await ProjectManagementService().getUserByName(email.toLowerCase());
+      return await ProjectManagementService()
+          .getUserByName(email.toLowerCase());
 
     if (StringUtils.equalsIgnoreCase(email, 'Admin') ||
         StringUtils.equalsIgnoreCase(email, 'emp')) {
@@ -43,11 +45,11 @@ class AuthService with ChangeNotifier {
     }
   }
 
-  Future verifyEmail(String emailId) async{
-    return await ProjectManagementService().checkEmail(emailId.toLowerCase());
+  Future isNewUser(String emailId) async {
+    return await ProjectManagementService().isNewUser(emailId.toLowerCase());
   }
 
-  verifyOtp(String otp) async{
+  verifyOtp(String otp) async {
     return await ProjectManagementService().checkOTP(otp);
   }
 }
