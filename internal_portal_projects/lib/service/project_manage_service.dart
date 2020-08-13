@@ -134,15 +134,15 @@ class ProjectManagementService {
     return false;
   }
 
-  checkOTP(String otp) async {
-    var response = await new EmployeesRepo().checkOTP(otp);
+  verifyOTP(String otp) async {
+    var response = await new EmployeesRepo().verifyOTP(otp);
     if (response.statusCode == 200) {
       String reply = await response.transform(utf8.decoder).join();
       if (reply.isNotEmpty) {
         var json = jsonDecode(reply);
-        return json['email'];
+        return json['valid'];
       }
     }
-    return null;
+    return false;
   }
 }

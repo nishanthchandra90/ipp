@@ -49,7 +49,7 @@ class AuthService with ChangeNotifier {
     return await ProjectManagementService().isNewUser(emailId.toLowerCase());
   }
 
-  verifyOtp(String otp) async {
-    return await ProjectManagementService().checkOTP(otp);
+  Future verifyOtp(String otp) async {
+    return await ProjectManagementService().verifyOTP(otp);
   }
 }

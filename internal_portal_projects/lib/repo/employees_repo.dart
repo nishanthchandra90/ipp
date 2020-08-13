@@ -82,7 +82,7 @@ class EmployeesRepo {
 
   deleteUser(String id) async {}
 
-  checkOTP(String otp) async{
+  verifyOTP(String otp) async{
     StringBuffer urlStringBuffer = new StringBuffer("http://");
     urlStringBuffer.write(localIp);
     urlStringBuffer.write(":");

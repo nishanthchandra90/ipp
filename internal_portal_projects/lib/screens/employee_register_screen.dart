@@ -4,6 +4,8 @@ import 'package:internal_portal_projects/common_components/ipp_inputelements.dar
 import 'package:internal_portal_projects/common_components/ipp_text.dart';
 import 'package:internal_portal_projects/service/auth_service.dart';
 
+import 'candidate_screens/employee_signup_screen.dart';
+
 class RegisterScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _RegisterScreenState();
@@ -17,6 +19,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _showOTPField = false;
   bool _validEmail = false;
   String _verificationMsg = '';
+  String _otpVerificationMsg = '';
   final TextEditingController emailIdController = TextEditingController();
   final TextEditingController otpController = TextEditingController();
 
@@ -24,6 +27,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+            centerTitle: true,
             leading: BackButton(onPressed: () => Navigator.pop(context)),
             title: IPPText.simpleText('Register',
                 fontSize: 22.0, fontWeight: FontWeight.bold)),
@@ -77,12 +81,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: Column(
                 children: <Widget>[
                   Divider(),
-                  IPPText.simpleText('Enter the OTP sent to the above Email'),
+                  IPPText.simpleText(
+                      'Enter 5-Digit OTP sent to the above Email'),
                   IPPInputs.simpleNumberField(
-                      'OTP', '', otpController, true, context),
+                      'OTP', '', otpController, true, context,
+                      charLimit: 5),
                   IPPInputs.formButton("Verify", onPressed: () {
                     _verifyOTP();
                   }),
+                  IPPText.simpleText(_otpVerificationMsg),
                 ],
               ),
             )));
@@ -103,10 +110,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
     _setVerificationMsg(false, '');
-    await AuthService().isNewUser(emailId).then((value) => {
-          if (value != null)
+    await AuthService().isNewUser(emailId).then((isNewUser) => {
+          if (isNewUser != null)
             {
-              if (value)
+              if (isNewUser)
                 {_toggleNextBtn(false), _toggleOTPField(true)}
               else
                 {
@@ -143,8 +150,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
     form.save();
     if (form.validate()) {
       String otp = otpController.text;
-      await new AuthService().verifyOtp(otp);
+      String email = emailIdController.text;
+      await new AuthService().verifyOtp(otp).then((validOTP) => {
+            if (validOTP)
+              {_navigateToEmployeeSignUpScreen(email), _otpVerificationMsg = ''}
+            else
+              {
+                setState(() {
+                  _otpVerificationMsg = 'invalid otp';
+                })
+              }
+          });
       // call verify email by sending otp
     }
+  }
+
+  _navigateToEmployeeSignUpScreen(String email) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (BuildContext context) => EmployeeSignUpScreen(email)),
+    );
   }
 }

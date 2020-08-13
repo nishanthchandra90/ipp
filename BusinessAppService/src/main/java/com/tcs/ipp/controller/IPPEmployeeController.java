@@ -5,10 +5,13 @@ import com.tcs.ipp.model.ProjectDTO;
 import com.tcs.ipp.repository.EmployeeRepo;
 import com.tcs.ipp.repository.ProjectRepo;
 import com.tcs.ipp.service.AppliedProjectsRepo;
+import com.tcs.ipp.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -23,6 +26,27 @@ public class IPPEmployeeController {
 
     @Autowired
     private AppliedProjectsRepo appliedProjectsRepo;
+
+
+    @GetMapping(value = "/verifyOTP", produces = "application/json")
+    public Map<String, Boolean> verifyOTP(@RequestParam String otp) {
+        System.out.println("verifying OTP...");
+        if (otp.equalsIgnoreCase("12345")) {
+            System.out.println("Delete email id and otp from db");
+            return Collections.singletonMap("valid", true);
+        }
+        return Collections.singletonMap("valid", false);
+    }
+
+    @GetMapping(value = "/isNewUser", produces = "application/json")
+    public Map<String, Boolean> isNewUser(@RequestParam String email) {
+        System.out.println("checking email...");
+        if (email.equalsIgnoreCase("test@gmail.com")) {
+            new EmailService().sendOTP("tejustpr@gmail.com");
+            return Collections.singletonMap("newUser", true);
+        }
+        return Collections.singletonMap("newUser", false);
+    }
 
 
     @GetMapping("/getAllEmployees")
