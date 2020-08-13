@@ -58,6 +58,22 @@ class EmployeesRepo {
     return await request.close();
   }
 
+  isNewUser(String emailId) async{
+    StringBuffer urlStringBuffer = new StringBuffer("http://");
+    urlStringBuffer.write(localIp);
+    urlStringBuffer.write(":");
+    urlStringBuffer.write(port);
+    urlStringBuffer.write("/isNewUser");
+    urlStringBuffer.write("?email=" + emailId);
+
+    final request =
+        await httpClient.getUrl(Uri.parse(urlStringBuffer.toString()));
+    request.headers
+        .set(HttpHeaders.contentTypeHeader, "application/json; charset=UTF-8");
+    urlStringBuffer.clear();
+    return await request.close();
+  }
+
   newUser(ProjectDetails newProject) async {
 
   }
@@ -65,4 +81,20 @@ class EmployeesRepo {
   updateUser(ProjectDetails project) async {}
 
   deleteUser(String id) async {}
+
+  checkOTP(String otp) async{
+    StringBuffer urlStringBuffer = new StringBuffer("http://");
+    urlStringBuffer.write(localIp);
+    urlStringBuffer.write(":");
+    urlStringBuffer.write(port);
+    urlStringBuffer.write("/verifyOTP");
+    urlStringBuffer.write("?otp=" + otp);
+
+    final request =
+        await httpClient.getUrl(Uri.parse(urlStringBuffer.toString()));
+    request.headers
+        .set(HttpHeaders.contentTypeHeader, "application/json; charset=UTF-8");
+    urlStringBuffer.clear();
+    return await request.close();
+  }
 }

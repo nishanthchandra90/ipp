@@ -42,4 +42,12 @@ class AuthService with ChangeNotifier {
       return Future.value(null);
     }
   }
+
+  Future verifyEmail(String emailId) async{
+    return await ProjectManagementService().checkEmail(emailId.toLowerCase());
+  }
+
+  verifyOtp(String otp) async{
+    return await ProjectManagementService().checkOTP(otp);
+  }
 }
