@@ -41,9 +41,12 @@ public class IPPEmployeeController {
     @GetMapping(value = "/isNewUser", produces = "application/json")
     public Map<String, Boolean> isNewUser(@RequestParam String email) {
         System.out.println("checking email...");
-        if (email.equalsIgnoreCase("test@gmail.com")) {
-            new EmailService().sendOTP("tejustpr@gmail.com");
-            return Collections.singletonMap("newUser", true);
+        EmployeeDto employeeDto = employeeRepo.findByEmail(email);
+        if (employeeDto == null) {
+            boolean mailSent = new EmailService().sendOTP(email);
+            if (mailSent) {
+                return Collections.singletonMap("newUser", true);
+            }
         }
         return Collections.singletonMap("newUser", false);
     }

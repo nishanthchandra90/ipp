@@ -24,7 +24,6 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(),
         centerTitle: true,
         title: IPPText.simpleText('New Candidate',
             fontWeight: FontWeight.bold, fontSize: 22.0),

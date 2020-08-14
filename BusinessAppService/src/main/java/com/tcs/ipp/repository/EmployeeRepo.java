@@ -15,4 +15,6 @@ public interface EmployeeRepo extends MongoRepository<EmployeeDto, String> {
     EmployeeDto findByEmployeeName(String name);
 
     EmployeeDto findByEmail(String email);
+
+
 }
