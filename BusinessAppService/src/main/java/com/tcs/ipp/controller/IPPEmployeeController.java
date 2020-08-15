@@ -1,8 +1,10 @@
 package com.tcs.ipp.controller;
 
 import com.tcs.ipp.model.EmployeeDto;
+import com.tcs.ipp.model.OTPDTO;
 import com.tcs.ipp.model.ProjectDTO;
 import com.tcs.ipp.repository.EmployeeRepo;
+import com.tcs.ipp.repository.OTPRepo;
 import com.tcs.ipp.repository.ProjectRepo;
 import com.tcs.ipp.service.AppliedProjectsRepo;
 import com.tcs.ipp.service.EmailService;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -20,6 +23,8 @@ public class IPPEmployeeController {
     @Autowired
     private EmployeeRepo employeeRepo;
 
+    @Autowired
+    private OTPRepo otpRepo;
 
     @Autowired
     private ProjectRepo projectsRepo;
@@ -27,24 +32,14 @@ public class IPPEmployeeController {
     @Autowired
     private AppliedProjectsRepo appliedProjectsRepo;
 
-
-    @GetMapping(value = "/verifyOTP", produces = "application/json")
-    public Map<String, Boolean> verifyOTP(@RequestParam String otp) {
-        System.out.println("verifying OTP...");
-        if (otp.equalsIgnoreCase("12345")) {
-            System.out.println("Delete email id and otp from db");
-            return Collections.singletonMap("valid", true);
-        }
-        return Collections.singletonMap("valid", false);
-    }
-
     @GetMapping(value = "/isNewUser", produces = "application/json")
     public Map<String, Boolean> isNewUser(@RequestParam String email) {
         System.out.println("checking email...");
         EmployeeDto employeeDto = employeeRepo.findByEmail(email);
         if (employeeDto == null) {
-            boolean mailSent = new EmailService().sendOTP(email);
-            if (mailSent) {
+            int otp = new EmailService().sendOTP(email);
+            if (otp > 0) {
+                otpRepo.save(new OTPDTO(email, otp));
                 return Collections.singletonMap("newUser", true);
             }
         }
@@ -56,8 +51,11 @@ public class IPPEmployeeController {
         System.out.println("checking for Registered email..." + email);
         EmployeeDto employeeDto = employeeRepo.findByEmail(email.toLowerCase());
         if (employeeDto != null) {
-            boolean mailSent = new EmailService().sendOTP(email);
-            return Collections.singletonMap("registeredUser", true);
+            int otp = new EmailService().sendOTP(email);
+            if (otp > 0) {
+                otpRepo.save(new OTPDTO(email, otp));
+                return Collections.singletonMap("registeredUser", true);
+            }
         }
         return Collections.singletonMap("registeredUser", false);
     }
@@ -87,20 +85,32 @@ public class IPPEmployeeController {
         return employeeRepo.save(employee);
     }
 
+    @PostMapping("/updateEmployee")
+    public EmployeeDto updateEmployee(@RequestBody EmployeeDto employee) {
+        System.out.println("Updating Employee with Id:" + employee.getEmployeeId());
+        return employeeRepo.save(employee);
+    }
+
     @PostMapping("/updatePWD")
     public void updatePWD(@RequestBody String data) {
         System.out.println("Saving new password");
-        System.out.println(data);
         String[] split = data.split(":");
         EmployeeDto emp = employeeRepo.findByEmail(split[0]);
         emp.setPassword(split[1].trim());
         employeeRepo.save(emp);
     }
 
-    @PostMapping("/updateEmployee")
-    public EmployeeDto updateEmployee(@RequestBody EmployeeDto employee) {
-        System.out.println("Updating Employee with Id:" + employee.getEmployeeId());
-        return employeeRepo.save(employee);
+    @PostMapping(value = "/verifyOTP")
+    public Map<String, Boolean> verifyOTP(@RequestBody String data) {
+        System.out.println("verifying OTP...");
+        String[] split = data.split(":");
+        Optional<OTPDTO> validOtp = otpRepo.findById(split[0].trim());
+        int otp = Integer.parseInt(split[1].trim());
+        if (validOtp.isPresent() && validOtp.get().getOtp() == otp) {
+            otpRepo.delete(validOtp.get());
+            return Collections.singletonMap("valid", true);
+        }
+        return Collections.singletonMap("valid", false);
     }
 
     @GetMapping("/deleteEmployee")

@@ -17,22 +17,23 @@ public class EmailService {
     private String from;
 
 
-    public boolean sendOTP(String emailId) {
+    public int sendOTP(String emailId) {
 
+        int otp = getOTP();
         System.out.println("Sending email to " + emailId);
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(from);
         message.setTo(emailId);
         message.setSubject("<No-Reply>: Email verification OTP");
         message.setText("This is an email by TCS internal job portal. " +
-                "Please enter the below 5-Digit in the App to Sign Up.\n" + getOTP());
+                "Please enter the below 5-Digit in the App to Sign Up.\n" + otp);
         try {
             emailSender.send(message);
-            return true;
+            return otp;
         } catch (Exception e) {
             System.out.println(e);
         }
-        return false;
+        return 0;
     }
 
     private int getOTP() {
