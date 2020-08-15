@@ -44,6 +44,25 @@ class EmployeesRepo {
     return await request.close();
   }
 
+
+  verifyOTP(String email, String otp) async {
+    StringBuffer urlStringBuffer = new StringBuffer("http://");
+    urlStringBuffer.write(localIp);
+    urlStringBuffer.write(":");
+    urlStringBuffer.write(port);
+    urlStringBuffer.write("/verifyOTP");
+
+    String data = email + ":" + otp;
+    final request =
+    await httpClient.postUrl(Uri.parse(urlStringBuffer.toString()));
+    request.headers
+        .set(HttpHeaders.contentTypeHeader, "application/json; charset=UTF-8");
+    urlStringBuffer.clear();
+    request.add(utf8.encode(data));
+    print(data);
+    return await request.close();
+  }
+
   getUserById(String name) async {
     StringBuffer urlStringBuffer = new StringBuffer("http://");
     urlStringBuffer.write(localIp);
@@ -127,19 +146,4 @@ class EmployeesRepo {
 
   deleteUser(String id) async {}
 
-  verifyOTP(String otp) async {
-    StringBuffer urlStringBuffer = new StringBuffer("http://");
-    urlStringBuffer.write(localIp);
-    urlStringBuffer.write(":");
-    urlStringBuffer.write(port);
-    urlStringBuffer.write("/verifyOTP");
-    urlStringBuffer.write("?otp=" + otp);
-
-    final request =
-        await httpClient.getUrl(Uri.parse(urlStringBuffer.toString()));
-    request.headers
-        .set(HttpHeaders.contentTypeHeader, "application/json; charset=UTF-8");
-    urlStringBuffer.clear();
-    return await request.close();
-  }
 }

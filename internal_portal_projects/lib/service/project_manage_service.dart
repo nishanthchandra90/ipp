@@ -134,8 +134,8 @@ class ProjectManagementService {
     return false;
   }
 
-  verifyOTP(String otp) async {
-    var response = await new EmployeesRepo().verifyOTP(otp);
+  verifyOTP(String email, String otp) async {
+    var response = await new EmployeesRepo().verifyOTP(email, otp);
     if (response.statusCode == 200) {
       String reply = await response.transform(utf8.decoder).join();
       if (reply.isNotEmpty) {

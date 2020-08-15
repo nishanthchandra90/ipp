@@ -64,7 +64,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           fontWeight: FontWeight.bold, fontSize: 22.0)
                       : IPPInputs.simpleTextFormField(
                           'Email', 'email id', emailIdController, true, context,
-                          keyboardType: TextInputType.emailAddress),
+                          keyboardType: TextInputType.emailAddress,
+                          charLimit: 30),
                   Visibility(
                       visible: _showNextBtn,
                       child: IPPInputs.formButton("Next", color: Colors.green,
@@ -153,7 +154,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (form.validate()) {
       String otp = otpController.text;
       String email = emailIdController.text;
-      await new AuthService().verifyOtp(otp).then((validOTP) => {
+      await new AuthService().verifyOtp(email, otp).then((validOTP) => {
             if (validOTP)
               {
                 _otpVerificationMsg = '',
