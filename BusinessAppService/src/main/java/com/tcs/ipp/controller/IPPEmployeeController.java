@@ -51,6 +51,17 @@ public class IPPEmployeeController {
         return Collections.singletonMap("newUser", false);
     }
 
+    @GetMapping(value = "/isRegisteredUser", produces = "application/json")
+    public Map<String, Boolean> isRegisteredUser(@RequestParam String email) {
+        System.out.println("checking for Registered email..." + email);
+        EmployeeDto employeeDto = employeeRepo.findByEmail(email.toLowerCase());
+        if (employeeDto != null) {
+            boolean mailSent = new EmailService().sendOTP(email);
+            return Collections.singletonMap("registeredUser", true);
+        }
+        return Collections.singletonMap("registeredUser", false);
+    }
+
 
     @GetMapping("/getAllEmployees")
     public List<EmployeeDto> getAllEmployees() {
@@ -58,18 +69,10 @@ public class IPPEmployeeController {
         return employeeRepo.findAll();
     }
 
-    @GetMapping("/getEmployeeByName")
-    public EmployeeDto getEmployeeByName(@RequestParam String name) {
-        System.out.println("Getting Employee with email:" + name);
-        return employeeRepo.findByEmployeeName(name);
-
-    }
-
     @GetMapping("/getEmployeeByEmail")
     public EmployeeDto getEmployeeByEmail(@RequestParam String email) {
         System.out.println("Getting Employee with email:" + email);
         return employeeRepo.findByEmail(email);
-
     }
 
     @GetMapping("/getEmployeeById")
@@ -82,6 +85,16 @@ public class IPPEmployeeController {
     public EmployeeDto saveEmployee(@RequestBody EmployeeDto employee) {
         System.out.println("Saving Employee with Id:" + employee.getEmployeeId());
         return employeeRepo.save(employee);
+    }
+
+    @PostMapping("/updatePWD")
+    public void updatePWD(@RequestBody String data) {
+        System.out.println("Saving new password");
+        System.out.println(data);
+        String[] split = data.split(":");
+        EmployeeDto emp = employeeRepo.findByEmail(split[0]);
+        emp.setPassword(split[1].trim());
+        employeeRepo.save(emp);
     }
 
     @PostMapping("/updateEmployee")

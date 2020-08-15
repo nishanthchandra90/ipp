@@ -24,11 +24,11 @@ public class DemoData {
     public void appReady(ApplicationReadyEvent event) {
 
         employeeRepo.saveAll(List.of(
-                new EmployeeDto("emp-2328356", "admin", "john.joey@tcs.com", true),
-                new EmployeeDto("emp-2332332", "blob", "blob.byne@tcs.com", false),
-                new EmployeeDto("emp-273698646", "alice", "alice.ar@tcs.com", false),
-                new EmployeeDto("emp-9876372", "wells", "wells.white@tcs.com", false),
-                new EmployeeDto("emp-03843984", "micheal", "micheal.est@tcs.com", false)
+                new EmployeeDto("emp-2328356", "john", "joey", "12345", "john.joey@tcs.com", true),
+                new EmployeeDto("emp-2332332", "blob", "byne", "12354", "blob.byne@tcs.com", false),
+                new EmployeeDto("emp-273698646", "alice", "ar", "12354", "alice.ar@tcs.com", false),
+                new EmployeeDto("emp-9876372", "wells", "white", "12354", "wells.white@tcs.com", false),
+                new EmployeeDto("emp-03843984", "micheal", "est", "12354", "micheal.est@tcs.com", false)
 
         ));
 

@@ -12,7 +12,7 @@ public interface EmployeeRepo extends MongoRepository<EmployeeDto, String> {
 
     List<EmployeeDto> findAll();
 
-    EmployeeDto findByEmployeeName(String name);
+    EmployeeDto findByEmployeeId(String id);
 
     EmployeeDto findByEmail(String email);
 

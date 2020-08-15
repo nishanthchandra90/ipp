@@ -20,3 +20,8 @@ roles: [ { role: "userAdminAnyDatabase", db: "admin" }, "readWriteAnyDatabase" ]
 sudo echo "PATH=/usr/local/mongodb/bin/:$PATH" >> ~/.bash_profile
 
 sudo mongod --dbpath /System/Volumes/Data/data/db
+
+------------------------
+to start email service
+
+sudo postfix start

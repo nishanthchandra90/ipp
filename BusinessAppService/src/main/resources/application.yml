@@ -9,6 +9,6 @@ spring:
       port: 27017
       database: test_db
   mail:
-    username: xxxxxx@gmail.com
-    password: xxxxxx
+    username: tejustpr@gmail.com
+    password: Tej@Born90
     host: localhost
