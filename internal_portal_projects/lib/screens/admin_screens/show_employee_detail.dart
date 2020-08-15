@@ -34,7 +34,10 @@ class ShowEmployeeState extends State<ShowEmployeeScreen> {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-            _createRow("Name", employee.employeeName.toUpperCase()),
+            _createRow(
+              "Name",
+              employee.empFName.toUpperCase() + employee.empLName.toUpperCase(),
+            ),
             SizedBox(
               height: 30,
             ),

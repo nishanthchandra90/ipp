@@ -66,7 +66,8 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
           context,
           new MaterialPageRoute(
               builder: (context) => new ShowEmployeeScreen(employee))),
-      leading: IPPText.simpleText(employee.employeeName.toUpperCase(),
+      leading: IPPText.simpleText(
+          employee.empFName.toUpperCase() + employee.empLName.toUpperCase(),
           fontSize: 20.0),
       title: Container(width: 40, child: Text(employee.employeeId)),
     );

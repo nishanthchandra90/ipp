@@ -57,15 +57,15 @@ class MyHomePage extends StatelessWidget {
         child: Column(
       children: <Widget>[
         Container(
-          color: Colors.indigo,
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.width * 0.4,
-          child: Center(
-              child: Text(
-            employee.employeeName,
-            style: TextStyle(fontSize: 22.0),
-          )),
-        ),
+            color: Colors.indigo,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.width * 0.4,
+            child: Center(
+              child: IPPText.simpleText(
+                  employee.empFName.toUpperCase() +
+                      employee.empLName.toUpperCase(),
+                  fontSize: 22.0),
+            )),
         Row(
           children: <Widget>[
             Icon(Icons.power_settings_new),

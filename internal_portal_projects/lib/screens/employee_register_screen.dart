@@ -5,10 +5,15 @@ import 'package:internal_portal_projects/common_components/ipp_text.dart';
 import 'package:internal_portal_projects/service/auth_service.dart';
 
 import 'candidate_screens/employee_signup_screen.dart';
+import 'candidate_screens/reset_password_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
+  final bool toRegister;
+
+  RegisterScreen({this.toRegister});
+
   @override
-  State<StatefulWidget> createState() => _RegisterScreenState();
+  State<StatefulWidget> createState() => _RegisterScreenState(toRegister);
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
@@ -20,8 +25,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _validEmail = false;
   String _verificationMsg = '';
   String _otpVerificationMsg = '';
+  bool toRegister;
   final TextEditingController emailIdController = TextEditingController();
   final TextEditingController otpController = TextEditingController();
+
+  _RegisterScreenState(this.toRegister);
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +37,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
         appBar: AppBar(
             centerTitle: true,
             leading: BackButton(onPressed: () => Navigator.pop(context)),
-            title: IPPText.simpleText('Register',
-                fontSize: 22.0, fontWeight: FontWeight.bold)),
+            title: IPPText.simpleText(
+                toRegister ? 'Register' : 'Password Reset',
+                fontSize: 22.0,
+                fontWeight: FontWeight.bold)),
         body: Center(child: _buildEmailVerificationForm()));
   }
 
@@ -110,19 +120,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
     _setVerificationMsg(false, '');
-    await AuthService().isNewUser(emailId).then((isNewUser) => {
-          if (isNewUser != null)
-            {
-              if (isNewUser)
-                {_toggleNextBtn(false), _toggleOTPField(true)}
-              else
-                {
-                  _setVerificationMsg(true, 'Email is already registered'),
-                  _toggleNextBtn(true),
-                  _toggleOTPField(false)
-                }
-            }
-        });
+    if (toRegister) {
+      _registerNewEmail(emailId);
+    } else {
+      _resetPassword(emailId);
+    }
   }
 
   _setVerificationMsg(bool showText, String msg) {
@@ -153,7 +155,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
       String email = emailIdController.text;
       await new AuthService().verifyOtp(otp).then((validOTP) => {
             if (validOTP)
-              {_navigateToEmployeeSignUpScreen(email), _otpVerificationMsg = ''}
+              {
+                _otpVerificationMsg = '',
+                toRegister
+                    ? _navigateToEmployeeSignUpScreen(email)
+                    : _navigateToNewPWDScreen(email)
+              }
             else
               {
                 setState(() {
@@ -171,5 +178,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
       MaterialPageRoute(
           builder: (BuildContext context) => EmployeeSignUpScreen(email)),
     );
+  }
+
+  _navigateToNewPWDScreen(String email) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (BuildContext context) => NewPasswordScreen(email)),
+    );
+  }
+
+  void _registerNewEmail(String emailId) async {
+    await AuthService().isNewUser(emailId).then((isNewUser) => {
+          if (isNewUser != null)
+            {
+              if (isNewUser)
+                {_toggleNextBtn(false), _toggleOTPField(true)}
+              else
+                {
+                  _setVerificationMsg(true, 'Email is already registered'),
+                  _toggleNextBtn(true),
+                  _toggleOTPField(false)
+                }
+            }
+        });
+  }
+
+  void _resetPassword(String emailId) async {
+    await AuthService().isRegisteredUser(emailId).then((isRegisteredUser) => {
+          if (isRegisteredUser != null)
+            {
+              if (isRegisteredUser)
+                {_toggleNextBtn(false), _toggleOTPField(true)}
+              else
+                {
+                  _setVerificationMsg(true, 'Email is not registered'),
+                  _toggleNextBtn(true),
+                  _toggleOTPField(false)
+                }
+            }
+        });
   }
 }

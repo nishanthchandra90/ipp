@@ -32,7 +32,7 @@ class AuthService with ChangeNotifier {
           .getUserByEmail(email.toLowerCase());
     } else
       return await ProjectManagementService()
-          .getUserByName(email.toLowerCase());
+          .getUserById(email.toLowerCase());
 
     if (StringUtils.equalsIgnoreCase(email, 'Admin') ||
         StringUtils.equalsIgnoreCase(email, 'emp')) {
@@ -51,5 +51,9 @@ class AuthService with ChangeNotifier {
 
   Future verifyOtp(String otp) async {
     return await ProjectManagementService().verifyOTP(otp);
+  }
+
+  isRegisteredUser(String emailId) async {
+    return await ProjectManagementService().isRegisteredUser(emailId);
   }
 }

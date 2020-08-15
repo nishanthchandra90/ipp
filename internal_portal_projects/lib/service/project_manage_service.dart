@@ -80,8 +80,8 @@ class ProjectManagementService {
     return null;
   }
 
-  getUserByName(String name) async {
-    var response = await new EmployeesRepo().getUserByName(name);
+  getUserById(String id) async {
+    var response = await new EmployeesRepo().getUserById(id);
     if (response.statusCode == 200) {
       String reply = await response.transform(utf8.decoder).join();
       if (reply.length < 5) {
@@ -141,6 +141,18 @@ class ProjectManagementService {
       if (reply.isNotEmpty) {
         var json = jsonDecode(reply);
         return json['valid'];
+      }
+    }
+    return false;
+  }
+
+  isRegisteredUser(String emailId) async {
+    var response = await new EmployeesRepo().isRegisteredUser(emailId);
+    if (response.statusCode == 200) {
+      String reply = await response.transform(utf8.decoder).join();
+      if (reply.isNotEmpty) {
+        var json = jsonDecode(reply);
+        return json['registeredUser'];
       }
     }
     return false;
