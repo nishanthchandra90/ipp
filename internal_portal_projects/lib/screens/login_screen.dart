@@ -25,9 +25,12 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
-            child: Center(
+
+            child: Container(
+              color: Colors.blueGrey,
+                child: Center(
                 child: Form(
-                    // <= NEW
+                  // <= NEW
                     key: _formKey,
                     child: new SingleChildScrollView(
                       child: Column(
@@ -35,11 +38,11 @@ class _LoginPageState extends State<LoginPage> {
                         children: <Widget>[
                           SizedBox(height: 20.0),
                           Text(
-                            "TCS Internal Projects",
+                            "Pick your own Projects",
                             style: TextStyle(fontSize: 20),
                           ),
                           SizedBox(height: 20.0),
-                          IPPInputs.simpleTextFormField("Email or Username", '',
+                          IPPInputs.simpleTextFormField("Employee Id", '',
                               emailEditingController, true, context,
                               keyboardType: TextInputType.emailAddress,
                               charLimit: 30),
@@ -93,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ],
                       ),
-                    )))));
+                    ))))));
   }
 
   _saveLoginForm() async {

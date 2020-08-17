@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 
@@ -16,18 +17,24 @@ public class ProjectDTO {
     private final String projectName;
     private final String managerName;
     private final String description;
+    private final String projLocation;
+
+    private final Map<String, String> primarySkills;
     private final List<String> requiredSkills;
     private final String tenure;
 
 
     public ProjectDTO(String projectId, String projectName,
-                      String managerName, String description, List<String> requiredSkills, String tenure) {
+                      String managerName, String description, List<String> requiredSkills, String tenure,
+                      String projLocation, Map<String, String> primarySkills) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.managerName = managerName;
         this.description = description;
         this.requiredSkills = requiredSkills;
         this.tenure = tenure;
+        this.projLocation = projLocation;
+        this.primarySkills = primarySkills;
     }
 
     public String getProjectId() {
@@ -54,6 +61,14 @@ public class ProjectDTO {
         return tenure;
     }
 
+    public String getProjLocation() {
+        return projLocation;
+    }
+
+    public Map<String, String> getPrimarySkills() {
+        return primarySkills;
+    }
+
     @Override
     public String toString() {
         return "ProjectDTO{" +
@@ -61,6 +76,8 @@ public class ProjectDTO {
                 ", projectName='" + projectName + '\'' +
                 ", managerName='" + managerName + '\'' +
                 ", description='" + description + '\'' +
+                ", projLocation='" + projLocation + '\'' +
+                ", primarySkills=" + primarySkills +
                 ", requiredSkills=" + requiredSkills +
                 ", tenure='" + tenure + '\'' +
                 '}';
@@ -75,12 +92,14 @@ public class ProjectDTO {
                 getProjectName().equals(that.getProjectName()) &&
                 getManagerName().equals(that.getManagerName()) &&
                 getDescription().equals(that.getDescription()) &&
+                getProjLocation().equals(that.getProjLocation()) &&
+                getPrimarySkills().equals(that.getPrimarySkills()) &&
                 getRequiredSkills().equals(that.getRequiredSkills()) &&
-                Objects.equals(getTenure(), that.getTenure());
+                getTenure().equals(that.getTenure());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getProjectId(), getProjectName(), getManagerName(), getDescription(), getRequiredSkills(), getTenure());
+        return Objects.hash(getProjectId(), getProjectName(), getManagerName(), getDescription(), getProjLocation(), getPrimarySkills(), getRequiredSkills(), getTenure());
     }
 }

@@ -1,13 +1,10 @@
 package com.tcs.ipp.controller;
 
 import com.tcs.ipp.model.EmployeeDto;
-import com.tcs.ipp.model.OTPDTO;
 import com.tcs.ipp.model.ProjectDTO;
 import com.tcs.ipp.repository.EmployeeRepo;
-import com.tcs.ipp.repository.OTPRepo;
 import com.tcs.ipp.repository.ProjectRepo;
 import com.tcs.ipp.service.AppliedProjectsRepo;
-import com.tcs.ipp.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,9 +21,6 @@ public class IPPEmployeeController {
     private EmployeeRepo employeeRepo;
 
     @Autowired
-    private OTPRepo otpRepo;
-
-    @Autowired
     private ProjectRepo projectsRepo;
 
     @Autowired
@@ -37,11 +31,7 @@ public class IPPEmployeeController {
         System.out.println("checking email...");
         EmployeeDto employeeDto = employeeRepo.findByEmail(email);
         if (employeeDto == null) {
-            int otp = new EmailService().sendOTP(email);
-            if (otp > 0) {
-                otpRepo.save(new OTPDTO(email, otp));
                 return Collections.singletonMap("newUser", true);
-            }
         }
         return Collections.singletonMap("newUser", false);
     }
@@ -51,11 +41,7 @@ public class IPPEmployeeController {
         System.out.println("checking for Registered email..." + email);
         EmployeeDto employeeDto = employeeRepo.findByEmail(email.toLowerCase());
         if (employeeDto != null) {
-            int otp = new EmailService().sendOTP(email);
-            if (otp > 0) {
-                otpRepo.save(new OTPDTO(email, otp));
                 return Collections.singletonMap("registeredUser", true);
-            }
         }
         return Collections.singletonMap("registeredUser", false);
     }
@@ -98,19 +84,6 @@ public class IPPEmployeeController {
         EmployeeDto emp = employeeRepo.findByEmail(split[0]);
         emp.setPassword(split[1].trim());
         employeeRepo.save(emp);
-    }
-
-    @PostMapping(value = "/verifyOTP")
-    public Map<String, Boolean> verifyOTP(@RequestBody String data) {
-        System.out.println("verifying OTP...");
-        String[] split = data.split(":");
-        Optional<OTPDTO> validOtp = otpRepo.findById(split[0].trim());
-        int otp = Integer.parseInt(split[1].trim());
-        if (validOtp.isPresent() && validOtp.get().getOtp() == otp) {
-            otpRepo.delete(validOtp.get());
-            return Collections.singletonMap("valid", true);
-        }
-        return Collections.singletonMap("valid", false);
     }
 
     @GetMapping("/deleteEmployee")

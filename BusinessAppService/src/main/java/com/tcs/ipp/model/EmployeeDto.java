@@ -3,6 +3,7 @@ package com.tcs.ipp.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Map;
 import java.util.Objects;
 
 @Document(collection = "employee")
@@ -14,6 +15,14 @@ public class EmployeeDto {
     String empFName;
 
     String empLName;
+
+    int experience;
+
+    String workLocation;
+
+    String building;
+
+    Map<String, String> primarySecondarySkills;
 
     String password;
 
