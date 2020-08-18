@@ -62,7 +62,6 @@ public class IPPProjectController {
     @GetMapping("/getPrimaryPlatforms")
     public List<PrimarySkillsDTO> getPrimaryPlatforms() {
         System.out.println("Getting Potential Candidates...");
-        System.out.println((long) platformRepo.findAll().size());
         return platformRepo.findAll();
     }
 

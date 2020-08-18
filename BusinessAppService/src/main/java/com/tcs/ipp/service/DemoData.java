@@ -58,6 +58,7 @@ public class DemoData {
                         "Kochi - Non-STP", Map.of("a", "S"))
         ));
 
+        locationRepo.deleteAll();
         locationRepo.saveAll(List.of(
                 new LocationDTO("APOL - Hyderabad"),
                 new LocationDTO("CEDG - Mumbai"),
@@ -87,7 +88,7 @@ public class DemoData {
                 new LocationDTO("TCS e-Serve IL - Mumbai"),
                 new LocationDTO("TCS e-Serve IL - New Delhi"),
                 new LocationDTO("TCS e-Serve IL - Pune")));
-
+        buildingRepo.deleteAll();
         buildingRepo.saveAll(List.of(new BuildingDTO("Abhilash - STP"),
                 new BuildingDTO("Adibatla - SEZ"),
                 new BuildingDTO("Adibatla - Unit 1 - SEZ"),
@@ -217,36 +218,28 @@ public class DemoData {
                 new BuildingDTO(" Lucknow (Gomti Nagar) - STP"),
                 new BuildingDTO(" Madhapur - STP"),
                 new BuildingDTO(" Mahape - STP")));
-
+        platformRepo.deleteAll();
         platformRepo.saveAll(List.of(
                 new PrimarySkillsDTO("API Platform", List.of("RedHat", "Scale", "API Connect", "APIgee", "Dell Boomi", "Kong API Platform", "Mulesoft", "WSO2 OpenSource", "Zuul API Platform")),
                 new PrimarySkillsDTO("Automation", List.of("Ansible", "Chef", "Puppet", "Terraform", "CFEngine", "Python", "Json", "Shell", "Power Shell")),
-                new PrimarySkillsDTO("Batch", List.of("Ansible" +
-                        "Chef" +
-                        "Puppet" +
-                        "Terraform" +
-                        "CFEngine " +
-                        "Python" +
-                        "Json" +
-                        "Shell" +
-                        "Power Shell")),
-                new PrimarySkillsDTO("BigData", List.of("Ansible" +
-                        "Chef" +
-                        "Puppet" +
-                        "Terraform" +
-                        "CFEngine " +
-                        "Python" +
-                        "Json" +
-                        "Shell" +
-                        "Power Shell")),
-                new PrimarySkillsDTO("Blockchain Platform", List.of("Corda" +
-                        "Ethereum" +
-                        "Hyperledger" +
+                new PrimarySkillsDTO("Batch", List.of("Automic",
+                        "Autosys",
+                        "CA7",
+                        "ControlM",
+                        "ESP",
+                        "TWS")),
+                new PrimarySkillsDTO("BigData", List.of("Hadoop",
+                        "NoSql",
+                        "Kafka",
+                        "Spark")),
+                new PrimarySkillsDTO("Blockchain Platform", List.of("Corda",
+                        "Ethereum",
+                        "Hyperledger",
                         "Quorum")),
-                new PrimarySkillsDTO("Cloud", List.of("AZURE" +
-                        "AWS" +
+                new PrimarySkillsDTO("Cloud", List.of("AZURE",
+                        "AWS",
                         "GOOGLE")),
-                new PrimarySkillsDTO("Command Center", List.of("Command Center Mgmt" +
+                new PrimarySkillsDTO("Command Center", List.of("Command Center Mgmt",
                         "IoT CC Mgmt"))));
 
     }
