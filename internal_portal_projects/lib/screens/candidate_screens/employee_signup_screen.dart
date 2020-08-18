@@ -27,7 +27,12 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
   final TextEditingController lNameEditCntrlr = TextEditingController();
   final TextEditingController pwdEditCntrlr = TextEditingController();
   final TextEditingController skillsEditCntrlr = TextEditingController();
+  final TextEditingController certsEditCntrlr = TextEditingController();
   String experienceErrorText = '';
+  String locErrorText = '';
+  String buildingErrorText = '';
+  String platformErrorText = '';
+  String platformTypeErrorText = '';
   bool validExperiencePeriod = false;
   String _yearsSelected = '0';
   String _monthsSelected = '0';
@@ -112,17 +117,17 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
         [yearsPickerInput, monthsPickerInput]);
 
     Widget locDropDownRow = IPPInputs.widgetRow(IPPText.simpleText('Location'),
-        experienceErrorText, validExperiencePeriod, [workLocationDropdown()]);
+        locErrorText, validExperiencePeriod, [workLocationDropdown()]);
 
     Widget buildingDropDownRow = IPPInputs.widgetRow(
         IPPText.simpleText('Building'),
-        experienceErrorText,
+        buildingErrorText,
         validExperiencePeriod,
         [workBuildingDropdown()]);
 
     Widget platformDropDownRow = IPPInputs.widgetRow(
         IPPText.simpleText('Platform'),
-        experienceErrorText,
+        platformErrorText,
         validExperiencePeriod,
         [platformDropdown()]);
 
@@ -130,7 +135,7 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
         "Secondary Skills", "skills", skillsEditCntrlr, true, context,
         charLimit: 100);
     Widget certificationsTextBox = IPPInputs.simpleTextFormField(
-        "Certifications", "certification", skillsEditCntrlr, false, context,
+        "Certifications", "certification", certsEditCntrlr, false, context,
         charLimit: 100);
     return Form(
         key: _employeeFormKey,
@@ -173,7 +178,10 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
   Future<void> _saveEmployee() async {
     var formState = _employeeFormKey.currentState;
     formState.save();
-    formState.validate();
+    validateSelects();
+    if (!formState.validate() || !validateSelects()) {
+      return;
+    }
     String _employeeId = empIdEditCntrlr.text;
     String email = empEmailEditCntrlr.text;
     String _empFName = nameEditCntrlr.text;
@@ -213,6 +221,20 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
     empIdEditCntrlr.clear();
     pwdEditCntrlr.clear();
     skillsEditCntrlr.clear();
+    certsEditCntrlr.clear();
+    setState(() {
+      _yearsSelected = '0';
+      _monthsSelected = '0';
+      _locationSelected = null;
+      _buildingSelected = null;
+      _platformSelected = null;
+      _platformTypeSelected = null;
+      experienceErrorText = '';
+      locErrorText = '';
+      buildingErrorText = '';
+      platformErrorText = '';
+      platformTypeErrorText = '';
+    });
   }
 
   Widget workLocationDropdown() {
@@ -305,8 +327,8 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
   _changePlatform(List<PrimarySkill> platform, String newValue) {
     setState(() {
       _platformSelected = newValue;
-      platformTypes=[];
-      _platformTypeSelected=null;
+      platformTypes = [];
+      _platformTypeSelected = null;
       platformTypes = List<String>.from(platform
           .singleWhere((element) =>
               StringUtils.equalsIgnoreCase(element.platformName, newValue))
@@ -338,5 +360,30 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
     setState(() {
       _platformTypeSelected = value;
     });
+  }
+
+  validateSelects() {
+    int yearsSelected = int.parse(_yearsSelected);
+    int monthsSelected = int.parse(_monthsSelected);
+    setState(() {
+      experienceErrorText = yearsSelected + monthsSelected < 1
+          ? 'Please enter your Experience'
+          : '';
+      locErrorText = _locationSelected == null ? 'Please select Location' : '';
+      buildingErrorText =
+          _buildingSelected == null ? 'Please select Building' : '';
+      platformErrorText =
+          _platformSelected == null ? 'Please select Platform' : '';
+      platformTypeErrorText =
+          _platformTypeSelected == null ? 'Please select Platform Type' : '';
+    });
+    if (experienceErrorText.isNotEmpty ||
+        locErrorText.isNotEmpty ||
+        buildingErrorText.isNotEmpty ||
+        platformTypeErrorText.isNotEmpty ||
+        platformErrorText.isNotEmpty) {
+      return false;
+    }
+    return true;
   }
 }

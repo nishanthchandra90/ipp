@@ -32,16 +32,6 @@ class AuthService with ChangeNotifier {
           .getUserByEmail(email.toLowerCase());
     } else
       return await ProjectManagementService().getUserById(email.toLowerCase());
-
-    if (StringUtils.equalsIgnoreCase(email, 'Admin') ||
-        StringUtils.equalsIgnoreCase(email, 'emp')) {
-      this.currentUser = {'email': email};
-      notifyListeners();
-      return Future.value(currentUser);
-    } else {
-      this.currentUser = null;
-      return Future.value(null);
-    }
   }
 
   Future isNewUser(String emailId) async {

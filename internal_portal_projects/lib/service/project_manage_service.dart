@@ -87,7 +87,7 @@ class ProjectManagementService {
     if (response.statusCode == 200) {
       String reply = await response.transform(utf8.decoder).join();
       if (reply.length < 5) {
-        return [];
+        return null;
       }
       if (reply.isNotEmpty) {
         var json = jsonDecode(reply);
