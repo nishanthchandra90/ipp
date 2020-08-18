@@ -18,7 +18,7 @@ public class ProjectDTO {
     private final String managerName;
     private final String description;
     private final String projLocation;
-
+    private final String projBuilding;
     private final Map<String, String> primarySkills;
     private final List<String> requiredSkills;
     private final String tenure;
@@ -26,7 +26,7 @@ public class ProjectDTO {
 
     public ProjectDTO(String projectId, String projectName,
                       String managerName, String description, List<String> requiredSkills, String tenure,
-                      String projLocation, Map<String, String> primarySkills) {
+                      String projLocation, String projBuilding, Map<String, String> primarySkills) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.managerName = managerName;
@@ -34,6 +34,7 @@ public class ProjectDTO {
         this.requiredSkills = requiredSkills;
         this.tenure = tenure;
         this.projLocation = projLocation;
+        this.projBuilding = projBuilding;
         this.primarySkills = primarySkills;
     }
 
@@ -65,6 +66,10 @@ public class ProjectDTO {
         return projLocation;
     }
 
+    public String getProjBuilding() {
+        return projBuilding;
+    }
+
     public Map<String, String> getPrimarySkills() {
         return primarySkills;
     }
@@ -77,6 +82,7 @@ public class ProjectDTO {
                 ", managerName='" + managerName + '\'' +
                 ", description='" + description + '\'' +
                 ", projLocation='" + projLocation + '\'' +
+                ", projBuilding='" + projBuilding + '\'' +
                 ", primarySkills=" + primarySkills +
                 ", requiredSkills=" + requiredSkills +
                 ", tenure='" + tenure + '\'' +
@@ -93,6 +99,7 @@ public class ProjectDTO {
                 getManagerName().equals(that.getManagerName()) &&
                 getDescription().equals(that.getDescription()) &&
                 getProjLocation().equals(that.getProjLocation()) &&
+                getProjBuilding().equals(that.getProjBuilding()) &&
                 getPrimarySkills().equals(that.getPrimarySkills()) &&
                 getRequiredSkills().equals(that.getRequiredSkills()) &&
                 getTenure().equals(that.getTenure());
@@ -100,6 +107,7 @@ public class ProjectDTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getProjectId(), getProjectName(), getManagerName(), getDescription(), getProjLocation(), getPrimarySkills(), getRequiredSkills(), getTenure());
+        return Objects.hash(getProjectId(), getProjectName(), getManagerName(), getDescription(), getProjLocation(),
+                getProjBuilding(), getPrimarySkills(), getRequiredSkills(), getTenure());
     }
 }

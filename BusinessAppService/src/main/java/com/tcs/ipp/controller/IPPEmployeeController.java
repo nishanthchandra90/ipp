@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -31,7 +30,7 @@ public class IPPEmployeeController {
         System.out.println("checking email...");
         EmployeeDto employeeDto = employeeRepo.findByEmail(email);
         if (employeeDto == null) {
-                return Collections.singletonMap("newUser", true);
+            return Collections.singletonMap("newUser", true);
         }
         return Collections.singletonMap("newUser", false);
     }
@@ -41,7 +40,7 @@ public class IPPEmployeeController {
         System.out.println("checking for Registered email..." + email);
         EmployeeDto employeeDto = employeeRepo.findByEmail(email.toLowerCase());
         if (employeeDto != null) {
-                return Collections.singletonMap("registeredUser", true);
+            return Collections.singletonMap("registeredUser", true);
         }
         return Collections.singletonMap("registeredUser", false);
     }
