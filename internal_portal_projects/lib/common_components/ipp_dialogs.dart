@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 class Dialogs {
   static Future<void> showProgressDialog(
@@ -28,5 +29,43 @@ class Dialogs {
                     )
                   ]));
         });
+  }
+
+  static numberPickerDialog(
+      String initialText,
+      String dialogTitle,
+      int initialValue,
+      int minVal,
+      int maxVal,
+      Function onChanged,
+      BuildContext context,
+      {double width: 70,
+        String labelText: ''}) {
+    return new GestureDetector(
+      child: SizedBox(
+          width: width,
+          child: InputDecorator(
+            child: Text(
+              initialText,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 20),
+            ),
+            decoration: InputDecoration(
+              labelText: labelText,
+            ),
+          )),
+      onTap: () {
+        showDialog<int>(
+            context: context,
+            builder: (BuildContext context) {
+              return new NumberPickerDialog.integer(
+                minValue: minVal,
+                maxValue: maxVal,
+                title: new Text(dialogTitle),
+                initialIntegerValue: initialValue,
+              );
+            }).then((value) => {onChanged(value)});
+      },
+    );
   }
 }

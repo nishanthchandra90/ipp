@@ -126,4 +126,63 @@ class IPPInputs {
       ),
     );
   }
+
+  static Widget widgetRow(Widget widget, String errorText, bool validInput,
+      List<Widget> dropDownButtons) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+      child: new Column(
+        children: <Widget>[
+          new ListTile(
+            leading: widget,
+            title: Row(children: dropDownButtons),
+          ),
+          SizedBox(height: validInput ? 0.0 : 5.0),
+          Text(
+            validInput ? '' : errorText,
+            style: TextStyle(
+                color: Colors.redAccent.shade700,
+                fontSize: validInput ? 0.0 : 12.0),
+          ),
+        ],
+      ),
+    );
+  }
+
+  static Widget dropdown(List menuItems, String labelText, String field,
+      BuildContext context, Function function) {
+    return Container(
+        width: 120,
+        child: Column(children: <Widget>[
+          InputDecorator(
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                labelText: labelText,
+                labelStyle: TextStyle(fontSize: 20),
+              ),
+              child: new DropdownButton(
+                isExpanded: true,
+                style: TextStyle(color: Colors.black, fontSize: 18),
+                isDense: true,
+                underline: SizedBox(),
+                value: field,
+                onChanged: (val) => function(val),
+                items: dropdownMenuItems(menuItems),
+              )),
+        ]));
+  }
+
+  static List<DropdownMenuItem> dropdownMenuItems(List options) {
+    return options
+        .map((val) => new DropdownMenuItem(
+      value: '$val',
+      child: SizedBox(
+          child: Text(
+            '$val',
+            softWrap: false,
+            textAlign: TextAlign.right,
+          )),
+    ))
+        .toList();
+  }
 }

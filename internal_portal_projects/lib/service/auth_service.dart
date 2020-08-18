@@ -48,10 +48,6 @@ class AuthService with ChangeNotifier {
     return await ProjectManagementService().isNewUser(emailId.toLowerCase());
   }
 
-  Future verifyOtp(String email, String otp) async {
-    return await ProjectManagementService().verifyOTP(email, otp);
-  }
-
   isRegisteredUser(String emailId) async {
     return await ProjectManagementService().isRegisteredUser(emailId);
   }

@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:internal_portal_projects/model/employee_details.dart';
 import 'package:internal_portal_projects/model/potential_candidates.dart';
+import 'package:internal_portal_projects/model/primary_skill_details.dart';
 import 'package:internal_portal_projects/model/project_details.dart';
 import 'package:internal_portal_projects/repo/employees_repo.dart';
+import 'package:internal_portal_projects/repo/locatoin_repo.dart';
 import 'package:internal_portal_projects/repo/projects_repo.dart';
 
 class ProjectManagementService {
@@ -134,18 +136,6 @@ class ProjectManagementService {
     return false;
   }
 
-  verifyOTP(String email, String otp) async {
-    var response = await new EmployeesRepo().verifyOTP(email, otp);
-    if (response.statusCode == 200) {
-      String reply = await response.transform(utf8.decoder).join();
-      if (reply.isNotEmpty) {
-        var json = jsonDecode(reply);
-        return json['valid'];
-      }
-    }
-    return false;
-  }
-
   isRegisteredUser(String emailId) async {
     var response = await new EmployeesRepo().isRegisteredUser(emailId);
     if (response.statusCode == 200) {
@@ -156,5 +146,42 @@ class ProjectManagementService {
       }
     }
     return false;
+  }
+
+  getAllLocations() async {
+    var response = await new LocationRepo().getCompanyLocations();
+    if (response.statusCode == 200) {
+      String reply = await response.transform(utf8.decoder).join();
+      List<String> locationList =
+          (jsonDecode(reply) as List<dynamic>).cast<String>();
+      return locationList;
+    }
+    return [];
+  }
+
+  getAllBuildings() async {
+    var response = await new LocationRepo().getCompanyBuildings();
+    if (response.statusCode == 200) {
+      String reply = await response.transform(utf8.decoder).join();
+      List<String> buildingList =
+          (jsonDecode(reply) as List<dynamic>).cast<String>();
+      return buildingList;
+    }
+    return [];
+  }
+
+  getPrimaryPlatforms() async {
+    var response = await new ProjectsRepo().getPrimaryPlatforms();
+    if (response.statusCode == 200) {
+      String reply = await response.transform(utf8.decoder).join();
+      if (reply.isEmpty) {
+        return [];
+      }
+      final decoded = _decodeResponse(reply);
+      return decoded
+          .map<PrimarySkill>((json) => PrimarySkill.fromJson(json))
+          .toList();
+    }
+    return [];
   }
 }

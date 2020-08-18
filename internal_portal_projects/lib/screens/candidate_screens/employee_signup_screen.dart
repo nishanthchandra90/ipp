@@ -1,3 +1,4 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:internal_portal_projects/common_components/ipp_dialogs.dart';
@@ -5,87 +6,153 @@ import 'package:internal_portal_projects/common_components/ipp_inputelements.dar
 import 'package:internal_portal_projects/common_components/ipp_snackbar.dart';
 import 'package:internal_portal_projects/common_components/ipp_text.dart';
 import 'package:internal_portal_projects/model/employee_details.dart';
+import 'package:internal_portal_projects/model/primary_skill_details.dart';
 import 'package:internal_portal_projects/repo/employees_repo.dart';
+import 'package:internal_portal_projects/service/project_manage_service.dart';
 
 class EmployeeSignUpScreen extends StatefulWidget {
-  final String email;
-
-  const EmployeeSignUpScreen(this.email);
+  const EmployeeSignUpScreen();
 
   @override
-  State<StatefulWidget> createState() => _EmployeeSignUpScreenState(email);
+  State<StatefulWidget> createState() => _EmployeeSignUpScreenState();
 }
 
 class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
   final _employeeFormKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<State> globalStateKey = new GlobalKey<State>();
-  final String email;
   final TextEditingController empIdEditCntrlr = TextEditingController();
-  final TextEditingController fNameEditCntrlr = TextEditingController();
+  final TextEditingController empEmailEditCntrlr = TextEditingController();
+  final TextEditingController nameEditCntrlr = TextEditingController();
   final TextEditingController lNameEditCntrlr = TextEditingController();
   final TextEditingController pwdEditCntrlr = TextEditingController();
   final TextEditingController skillsEditCntrlr = TextEditingController();
+  String experienceErrorText = '';
+  bool validExperiencePeriod = false;
+  String _yearsSelected = '0';
+  String _monthsSelected = '0';
+  var citiesFuture;
+  var buildingsFuture;
+  var primarySkills;
+  String _locationSelected;
+  String _buildingSelected;
+  String _platformSelected;
+  String _platformTypeSelected;
+  List<String> platformTypes = [];
 
-  _EmployeeSignUpScreenState(this.email);
+  _EmployeeSignUpScreenState();
+
+  @override
+  void initState() {
+    super.initState();
+    citiesFuture = new ProjectManagementService().getAllLocations();
+    buildingsFuture = new ProjectManagementService().getAllBuildings();
+    primarySkills = new ProjectManagementService().getPrimaryPlatforms();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        centerTitle: true,
-        title: IPPText.simpleText('New Candidate',
-            fontWeight: FontWeight.bold, fontSize: 22.0),
-      ),
-      body: _buildEmployeeForm(),
-    );
-  }
-
-  _buildEmployeeForm() {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          IPPText.simpleText(email,
-              fontSize: 22.0, fontWeight: FontWeight.bold),
-          Divider(
-            thickness: 2.0,
+        key: _scaffoldKey,
+        appBar: AppBar(
+          centerTitle: true,
+          title: IPPText.simpleText('New Candidate',
+              fontWeight: FontWeight.bold, fontSize: 22.0),
+        ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: _form(),
           ),
-          _form(),
-        ],
-      ),
-    );
+        ));
   }
 
   _form() {
+    Widget headingText = IPPText.simpleText(
+        'Please fill out this form to complete the registration',
+        color: Colors.blue);
+    Widget empIdTextBox = IPPInputs.simpleTextFormField(
+        "Employee Id", "emp id", empIdEditCntrlr, true, context,
+        charLimit: 20);
+    Widget passwordTextBox = IPPInputs.simpleTextFormField(
+        "Password", "password", pwdEditCntrlr, true, context,
+        charLimit: 20, obscureText: true);
+    Widget emailTextBox = IPPInputs.simpleTextFormField(
+        "Employee Email", "abc.xyz.tcs.com", empEmailEditCntrlr, true, context,
+        charLimit: 20);
+    Widget empNameTextBox = IPPInputs.simpleTextFormField(
+        "Name", "first name, last name", nameEditCntrlr, true, context,
+        charLimit: 20);
+    var yearsPickerInput = Dialogs.numberPickerDialog(
+        _yearsSelected,
+        'Please Select number of years of experience',
+        0,
+        0,
+        25,
+        (newValue) => setState(() => {
+              print(newValue),
+              _yearsSelected =
+                  newValue != null ? newValue.toString() : _yearsSelected,
+            }),
+        context,
+        labelText: 'Years');
+    var monthsPickerInput = Dialogs.numberPickerDialog(
+        _monthsSelected,
+        "Please select months of Experience",
+        0,
+        0,
+        11,
+        (newValue) => setState(() => _monthsSelected =
+            newValue != null ? newValue.toString() : _monthsSelected),
+        context,
+        labelText: "Months");
+    Widget experienceDropDownRow = IPPInputs.widgetRow(
+        IPPText.simpleText('Experience'),
+        experienceErrorText,
+        validExperiencePeriod,
+        [yearsPickerInput, monthsPickerInput]);
+
+    Widget locDropDownRow = IPPInputs.widgetRow(IPPText.simpleText('Location'),
+        experienceErrorText, validExperiencePeriod, [workLocationDropdown()]);
+
+    Widget buildingDropDownRow = IPPInputs.widgetRow(
+        IPPText.simpleText('Building'),
+        experienceErrorText,
+        validExperiencePeriod,
+        [workBuildingDropdown()]);
+
+    Widget platformDropDownRow = IPPInputs.widgetRow(
+        IPPText.simpleText('Platform'),
+        experienceErrorText,
+        validExperiencePeriod,
+        [platformDropdown()]);
+
+    Widget skillsTextBox = IPPInputs.simpleTextFormField(
+        "Secondary Skills", "skills", skillsEditCntrlr, true, context,
+        charLimit: 100);
+    Widget certificationsTextBox = IPPInputs.simpleTextFormField(
+        "Certifications", "certification", skillsEditCntrlr, false, context,
+        charLimit: 100);
     return Form(
         key: _employeeFormKey,
         child: Padding(
-            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+            padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                IPPText.simpleText(
-                    'Please fill out this form to complete the registration',
-                    color: Colors.blue),
-                IPPInputs.simpleTextFormField(
-                    "Employee Id", "emp id", empIdEditCntrlr, true, context,
-                    charLimit: 20),
-                IPPInputs.simpleTextFormField(
-                    "First Name", "first name", fNameEditCntrlr, true, context,
-                    charLimit: 20),
-                IPPInputs.simpleTextFormField(
-                    "Last Name", "last name", lNameEditCntrlr, true, context,
-                    charLimit: 20),
-                IPPInputs.simpleTextFormField(
-                    "Password", "password", pwdEditCntrlr, true, context,
-                    charLimit: 20, obscureText: true),
-                IPPInputs.simpleTextFormField(
-                    "Skills", "skills", skillsEditCntrlr, true, context,
-                    charLimit: 20),
+                headingText,
+                empIdTextBox,
+                passwordTextBox,
+                emailTextBox,
+                empNameTextBox,
+                experienceDropDownRow,
+                locDropDownRow,
+                buildingDropDownRow,
+                platformDropDownRow,
+                platformSkillsDropdown(),
+                skillsTextBox,
+                certificationsTextBox,
                 ButtonBar(
-                  mainAxisSize: MainAxisSize.max,
+                  alignment: MainAxisAlignment.center,
                   children: <Widget>[
                     RaisedButton(
                         onPressed: () {
@@ -108,7 +175,8 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
     formState.save();
     formState.validate();
     String _employeeId = empIdEditCntrlr.text;
-    String _empFName = fNameEditCntrlr.text;
+    String email = empEmailEditCntrlr.text;
+    String _empFName = nameEditCntrlr.text;
     String _empLName = lNameEditCntrlr.text;
     String password = pwdEditCntrlr.text;
     EmployeeDetails employee = new EmployeeDetails(
@@ -140,10 +208,135 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
     var formState = _employeeFormKey.currentState;
     formState.reset();
     empIdEditCntrlr.clear();
-    fNameEditCntrlr.clear();
+    nameEditCntrlr.clear();
     lNameEditCntrlr.clear();
     empIdEditCntrlr.clear();
     pwdEditCntrlr.clear();
     skillsEditCntrlr.clear();
+  }
+
+  Widget workLocationDropdown() {
+    return FutureBuilder(
+        future: citiesFuture,
+        builder: (context, snapshot) {
+          List<String> cities = snapshot.hasData ? snapshot.data : [];
+          return DropdownButton<String>(
+            value: _locationSelected,
+            onChanged: (String newValue) {
+              _changeWorkLocation(newValue);
+            },
+            hint: new Text('Select'),
+            items: cities.map((String value) {
+              return DropdownMenuItem(
+                value: value,
+                child: Container(
+                  width: 200,
+                  child: IPPText.simpleText(value, overflow: TextOverflow.clip),
+                ),
+              );
+            }).toList(),
+          );
+        });
+  }
+
+  _changeWorkLocation(String value) {
+    setState(() {
+      _locationSelected = value;
+    });
+  }
+
+  Widget workBuildingDropdown() {
+    return FutureBuilder(
+        future: buildingsFuture,
+        builder: (context, snapshot) {
+          List<String> buildings = snapshot.hasData ? snapshot.data : [];
+          return DropdownButton<String>(
+            value: _buildingSelected,
+            onChanged: (String newValue) {
+              _changeWorkBuilding(newValue);
+            },
+            hint: new Text('Select'),
+            items: buildings.map((String value) {
+              return DropdownMenuItem(
+                value: value,
+                child: Container(
+                  width: 200,
+                  child: IPPText.simpleText(value, overflow: TextOverflow.clip),
+                ),
+              );
+            }).toList(),
+          );
+        });
+  }
+
+  _changeWorkBuilding(String value) {
+    setState(() {
+      _buildingSelected = value;
+    });
+  }
+
+  Widget platformDropdown() {
+    return FutureBuilder(
+        future: primarySkills,
+        builder: (context, snapshot) {
+          List<PrimarySkill> platforms = snapshot.hasData ? snapshot.data : [];
+          return DropdownButton<String>(
+            value: _platformSelected,
+            onChanged: (String newValue) {
+              _changePlatform(platforms, newValue);
+            },
+            hint: new Text('Select'),
+            items: platforms
+                .map((e) => e.platformName)
+                .toList()
+                .map((String value) {
+              return DropdownMenuItem(
+                value: value,
+                child: Container(
+                  width: 200,
+                  child: IPPText.simpleText(value, overflow: TextOverflow.clip),
+                ),
+              );
+            }).toList(),
+          );
+        });
+  }
+
+  _changePlatform(List<PrimarySkill> platform, String newValue) {
+    setState(() {
+      _platformSelected = newValue;
+      platformTypes=[];
+      _platformTypeSelected=null;
+      platformTypes = List<String>.from(platform
+          .singleWhere((element) =>
+              StringUtils.equalsIgnoreCase(element.platformName, newValue))
+          .types);
+      print(platformTypes.length);
+    });
+  }
+
+  Widget platformSkillsDropdown() {
+    return DropdownButton<String>(
+      value: _platformTypeSelected,
+      onChanged: (String newValue) {
+        _changePlatformType(newValue);
+      },
+      hint: new Text('Select'),
+      items: platformTypes.map((String value) {
+        return DropdownMenuItem(
+          value: value,
+          child: Container(
+            width: 200,
+            child: IPPText.simpleText(value, overflow: TextOverflow.clip),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  _changePlatformType(String value) {
+    setState(() {
+      _platformTypeSelected = value;
+    });
   }
 }

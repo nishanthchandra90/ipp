@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:internal_portal_projects/screens/employee_register_screen.dart';
+import 'package:internal_portal_projects/screens/candidate_screens/employee_signup_screen.dart';
 import 'package:internal_portal_projects/screens/login_screen.dart';
 import 'package:internal_portal_projects/service/auth_service.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
       routes: {
         // When navigating to the "/" route, build the FirstScreen widget.
         '/login': (context) => LoginPage(),
-        '/register': (context) => RegisterScreen(),
+        '/register': (context) => EmployeeSignUpScreen(),
         '/home': (context) => MyHomePage()
       },
 
