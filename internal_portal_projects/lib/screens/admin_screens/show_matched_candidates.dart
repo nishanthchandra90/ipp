@@ -53,7 +53,8 @@ class _MatchedCandidateState extends State<MatchedCandidates> {
             onTap: () => Navigator.push(
                 context,
                 new MaterialPageRoute(
-                    builder: (context) => new ShowMatchApplication(potentialCandidate))),
+                    builder: (context) =>
+                        new ShowMatchApplication(potentialCandidate))),
           ),
         );
       },
@@ -70,7 +71,7 @@ class _MatchedCandidateState extends State<MatchedCandidates> {
         fontSize: 18,
         color: Colors.blue);
     Widget projLoc = IPPText.simpleText(
-        'TCS-Banglore dfddfdfdfdfdfdfadfhweuogi'.toUpperCase(),
+        potentialCandidate.location??'',
         fontSize: 15);
     Widget matched = IPPText.simpleText(
         'Matched: ' + potentialCandidate.matchedCandidates.length.toString(),
@@ -115,5 +116,3 @@ class _MatchedCandidateState extends State<MatchedCandidates> {
         ));
   }
 }
-
-

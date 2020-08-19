@@ -8,7 +8,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class DemoData {
@@ -53,19 +52,19 @@ public class DemoData {
         projectRepo.saveAll(List.of(
                 new ProjectDTO("2328356", "sita", "Manager1", "Hobby Project",
                         List.of("Java", "Spring", "Hibernates", "Docker"), "5 Years", "APOL - Hyderabad",
-                        "Hyderabad - Non STP", Map.of("a", "f")),
+                        "Hyderabad - Non STP", "Cloud", "GOOGLE"),
                 new ProjectDTO("2332332", "amex", "Manager2", "AMEX Project",
                         List.of("#NET", "asp", "Database", "Docker"), "2 Years", "TCS - Indore",
-                        "Indore - Unit 1 - SEZ", Map.of("a", "S")),
+                        "Indore - Unit 1 - SEZ", "Cloud", "GOOGLE"),
                 new ProjectDTO("273698646", "clinton", "Manager3", "Clinton Project",
                         List.of("BigData", "AWS", "ML", "AI"), "5 Years", "TCS - Bangalore",
-                        "Bangalore - Salarpuria - STP", Map.of("a", "S")),
+                        "Bangalore - Salarpuria - STP", "Cloud", "GOOGLE"),
                 new ProjectDTO("9876372", "dcs", "Manager4", "DCS Project",
                         List.of("Java", "Spring", "AWS", "Elastic"), "8 Years", "TCS - Chennai",
-                        "Chennai-Velachery Centre - STP", Map.of("a", "S")),
+                        "Chennai-Velachery Centre - STP", "Cloud", "GOOGLE"),
                 new ProjectDTO("03843984", "gsl", "Manager5", "GSL Project",
                         List.of("Java", "Spring", "Hibernates", "AWS"), "temporary", "TCS - Kochi",
-                        "Kochi - Non-STP", Map.of("a", "S"))
+                        "Kochi - Non-STP", "Cloud", "GOOGLE")
         ));
 
         locationRepo.deleteAll();

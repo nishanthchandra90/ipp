@@ -1,3 +1,4 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:internal_portal_projects/bloc/project_bloc.dart';
@@ -5,7 +6,9 @@ import 'package:internal_portal_projects/common_components/ipp_dialogs.dart';
 import 'package:internal_portal_projects/common_components/ipp_inputelements.dart';
 import 'package:internal_portal_projects/common_components/ipp_snackbar.dart';
 import 'package:internal_portal_projects/common_components/ipp_text.dart';
+import 'package:internal_portal_projects/model/primary_skill_details.dart';
 import 'package:internal_portal_projects/model/project_details.dart';
+import 'package:internal_portal_projects/service/project_manage_service.dart';
 
 class AddProjectScreen extends StatefulWidget {
   final ProjectDetails projectDetails;
@@ -27,6 +30,9 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
         _screenHeading = 'Update Project';
       });
     }
+    citiesFuture = new ProjectManagementService().getAllLocations();
+    buildingsFuture = new ProjectManagementService().getAllBuildings();
+    platforms = new ProjectManagementService().getPrimaryPlatforms();
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -38,6 +44,18 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
   TextEditingController projectDescTextEditor = new TextEditingController();
   TextEditingController skillSetsTextEditor = new TextEditingController();
   TextEditingController tenureTextEditor = new TextEditingController();
+  String locErrorText = '';
+  String buildingErrorText = '';
+  String platformErrorText = '';
+  String platformNameErrorText = '';
+  var citiesFuture;
+  var buildingsFuture;
+  var platforms;
+  String _locationSelected;
+  String _buildingSelected;
+  String _platformSelected;
+  String _platformNameSelected;
+  List<String> platformNames = [];
   ProjectDetails project;
   String _saveBtnText = 'Save';
   String _screenHeading = 'New Project';
@@ -82,6 +100,21 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
         'project description', projectDescTextEditor, true, context,
         charLimit: 20);
 
+    Widget locDropDownRow = IPPInputs.widgetRow(IPPText.simpleText('Location'),
+        locErrorText, true, [workLocationDropdown()]);
+
+    Widget buildingDropDownRow = IPPInputs.widgetRow(
+        IPPText.simpleText('Building'),
+        buildingErrorText,
+        true,
+        [workBuildingDropdown()]);
+
+    Widget platformDropDownRow = IPPInputs.widgetRow(
+        IPPText.simpleText('Platform'),
+        platformErrorText,
+        true,
+        [platformDropdown()]);
+
     Widget skillsTextField = IPPInputs.simpleTextAreaField(
         'Skill Sets', 'skills', skillSetsTextEditor, true, context);
 
@@ -113,6 +146,10 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
       projectNameTextField,
       managerFieldTextBox,
       descriptionTextField,
+      locDropDownRow,
+      buildingDropDownRow,
+      platformDropDownRow,
+      platformSkillsDropdown(),
       skillsTextField,
       tenureTextField,
       formButtonRow,
@@ -121,10 +158,11 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
   }
 
   void saveForm() {
-//    _addDummyProjects();
-    _formKey.currentState.validate();
-    _formKey.currentState.save();
-    if (!_formKey.currentState.validate()) {
+    var formState = _formKey.currentState;
+    formState.validate();
+    formState.save();
+    bool validSelects = validateSelects();
+    if (!formState.validate() || !validSelects) {
       return;
     }
     String projectId = projectIdTextEditor.text;
@@ -138,7 +176,16 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
     }
     String tenure = tenureTextEditor.text ?? '';
     var projectDetails = new ProjectDetails(
-        projectName, projectId, projectManager, projectDesc, skillSet, tenure);
+        projectName,
+        projectId,
+        projectManager,
+        projectDesc,
+        _locationSelected,
+        _buildingSelected,
+        _platformSelected,
+        _platformNameSelected,
+        skillSet,
+        tenure);
     _handleSubmit(context, projectDetails);
   }
 
@@ -176,18 +223,21 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
     skillSetsTextEditor.clear();
     projectDescTextEditor.clear();
     tenureTextEditor.clear();
+    setState(() {
+      _locationSelected = null;
+      _buildingSelected = null;
+      _platformSelected = null;
+      _platformNameSelected = null;
+      locErrorText = '';
+      buildingErrorText = '';
+      platformErrorText = '';
+      platformNameErrorText = '';
+    });
   }
 
   _displaySnackBar(String message, {MaterialColor color}) {
     final snackBar = IPPSnackBar.formSavingSnackBar(message, bgColor: color);
     _scaffoldKey.currentState.showSnackBar(snackBar);
-  }
-
-  _addDummyProjects() async {
-    await ProjectsBloc().add(new ProjectDetails(
-        "Project A", "PR-1234", "Manager", 'descr', ["java, #net"], "1 year"));
-    await ProjectsBloc().add(new ProjectDetails("Project B", "PR-12798",
-        "Manager", 'descr', ["python, java, #net"], "2 year"));
   }
 
   void populateForm(ProjectDetails project) {
@@ -197,5 +247,148 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
     projectDescTextEditor.text = project.description;
     skillSetsTextEditor.text = project.skills.toString();
     tenureTextEditor.text = project.tenure;
+  }
+
+  Widget workLocationDropdown() {
+    return FutureBuilder(
+        future: citiesFuture,
+        builder: (context, snapshot) {
+          List<String> cities = snapshot.hasData ? snapshot.data : [];
+          return DropdownButton<String>(
+            value: _locationSelected,
+            onChanged: (String newValue) {
+              _changeWorkLocation(newValue);
+            },
+            hint: new Text('Select'),
+            items: cities.map((String value) {
+              return DropdownMenuItem(
+                value: value,
+                child: Container(
+                  width: 200,
+                  child: IPPText.simpleText(value, overflow: TextOverflow.clip),
+                ),
+              );
+            }).toList(),
+          );
+        });
+  }
+
+  _changeWorkLocation(String value) {
+    setState(() {
+      _locationSelected = value;
+    });
+  }
+
+  Widget workBuildingDropdown() {
+    return FutureBuilder(
+        future: buildingsFuture,
+        builder: (context, snapshot) {
+          List<String> buildings = snapshot.hasData ? snapshot.data : [];
+          return DropdownButton<String>(
+            value: _buildingSelected,
+            onChanged: (String newValue) {
+              _changeWorkBuilding(newValue);
+            },
+            hint: new Text('Select'),
+            items: buildings.map((String value) {
+              return DropdownMenuItem(
+                value: value,
+                child: Container(
+                  width: 200,
+                  child: IPPText.simpleText(value, overflow: TextOverflow.clip),
+                ),
+              );
+            }).toList(),
+          );
+        });
+  }
+
+  _changeWorkBuilding(String value) {
+    setState(() {
+      _buildingSelected = value;
+    });
+  }
+
+  Widget platformDropdown() {
+    return FutureBuilder(
+        future: platforms,
+        builder: (context, snapshot) {
+          List<PrimarySkill> platforms = snapshot.hasData ? snapshot.data : [];
+          return DropdownButton<String>(
+            value: _platformSelected,
+            onChanged: (String newValue) {
+              _changePlatform(platforms, newValue);
+            },
+            hint: new Text('Select'),
+            items: platforms
+                .map((e) => e.platformName)
+                .toList()
+                .map((String value) {
+              return DropdownMenuItem(
+                value: value,
+                child: Container(
+                  width: 200,
+                  child: IPPText.simpleText(value, overflow: TextOverflow.clip),
+                ),
+              );
+            }).toList(),
+          );
+        });
+  }
+
+  _changePlatform(List<PrimarySkill> platform, String newValue) {
+    setState(() {
+      _platformSelected = newValue;
+      platformNames = [];
+      _platformNameSelected = null;
+      platformNames = List<String>.from(platform
+          .singleWhere((element) =>
+              StringUtils.equalsIgnoreCase(element.platformName, newValue))
+          .types);
+    });
+  }
+
+  Widget platformSkillsDropdown() {
+    return DropdownButton<String>(
+      value: _platformNameSelected,
+      onChanged: (String newValue) {
+        _changePlatformType(newValue);
+      },
+      hint: new Text('Select'),
+      items: platformNames.map((String value) {
+        return DropdownMenuItem(
+          value: value,
+          child: Container(
+            width: 200,
+            child: IPPText.simpleText(value, overflow: TextOverflow.clip),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  _changePlatformType(String value) {
+    setState(() {
+      _platformNameSelected = value;
+    });
+  }
+
+  validateSelects() {
+    setState(() {
+      locErrorText = _locationSelected == null ? 'Please select Location' : '';
+      buildingErrorText =
+          _buildingSelected == null ? 'Please select Building' : '';
+      platformErrorText =
+          _platformSelected == null ? 'Please select Platform' : '';
+      platformNameErrorText =
+          _platformNameSelected == null ? 'Please select Platform Type' : '';
+    });
+    if (locErrorText.isNotEmpty ||
+        buildingErrorText.isNotEmpty ||
+        platformNameErrorText.isNotEmpty ||
+        platformErrorText.isNotEmpty) {
+      return false;
+    }
+    return true;
   }
 }

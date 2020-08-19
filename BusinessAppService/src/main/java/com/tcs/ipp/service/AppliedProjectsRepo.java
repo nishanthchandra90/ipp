@@ -71,6 +71,7 @@ public class AppliedProjectsRepo {
         return new AppliedMatchedCandidates(
                 projectID,
                 project.getProjectName(),
+                project.getProjLocation(),
                 getAppliedCandidates(projectID),
                 getMatchedCandidates(projectID));
     }

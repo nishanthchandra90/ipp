@@ -55,7 +55,7 @@ public class IPPProjectController {
 
     @GetMapping("/getApplicationsAndMatches")
     public List<AppliedMatchedCandidates> getPotentialCandidates() {
-        System.out.println("Getting Potential Candidates...");
+        System.out.println(appliedProjectsRepo.getPotentialCandidates(projectRepo));
         return appliedProjectsRepo.getPotentialCandidates(projectRepo);
     }
 

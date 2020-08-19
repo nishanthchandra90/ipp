@@ -4,8 +4,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 
 @Document(collection = "project")
@@ -19,14 +17,15 @@ public class ProjectDTO {
     private final String description;
     private final String projLocation;
     private final String projBuilding;
-    private final Map<String, String> primarySkills;
+    private String platform;
+    private String platformName;
     private final List<String> requiredSkills;
     private final String tenure;
 
 
     public ProjectDTO(String projectId, String projectName,
                       String managerName, String description, List<String> requiredSkills, String tenure,
-                      String projLocation, String projBuilding, Map<String, String> primarySkills) {
+                      String projLocation, String projBuilding, String platform, String platformName) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.managerName = managerName;
@@ -35,7 +34,8 @@ public class ProjectDTO {
         this.tenure = tenure;
         this.projLocation = projLocation;
         this.projBuilding = projBuilding;
-        this.primarySkills = primarySkills;
+        this.platform = platform;
+        this.platformName = platformName;
     }
 
     public String getProjectId() {
@@ -70,44 +70,13 @@ public class ProjectDTO {
         return projBuilding;
     }
 
-    public Map<String, String> getPrimarySkills() {
-        return primarySkills;
+    public String getPlatform() {
+        return platform;
     }
 
-    @Override
-    public String toString() {
-        return "ProjectDTO{" +
-                "projectId='" + projectId + '\'' +
-                ", projectName='" + projectName + '\'' +
-                ", managerName='" + managerName + '\'' +
-                ", description='" + description + '\'' +
-                ", projLocation='" + projLocation + '\'' +
-                ", projBuilding='" + projBuilding + '\'' +
-                ", primarySkills=" + primarySkills +
-                ", requiredSkills=" + requiredSkills +
-                ", tenure='" + tenure + '\'' +
-                '}';
+    public String getPlatformName() {
+        return platformName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ProjectDTO)) return false;
-        ProjectDTO that = (ProjectDTO) o;
-        return getProjectId().equals(that.getProjectId()) &&
-                getProjectName().equals(that.getProjectName()) &&
-                getManagerName().equals(that.getManagerName()) &&
-                getDescription().equals(that.getDescription()) &&
-                getProjLocation().equals(that.getProjLocation()) &&
-                getProjBuilding().equals(that.getProjBuilding()) &&
-                getPrimarySkills().equals(that.getPrimarySkills()) &&
-                getRequiredSkills().equals(that.getRequiredSkills()) &&
-                getTenure().equals(that.getTenure());
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getProjectId(), getProjectName(), getManagerName(), getDescription(), getProjLocation(),
-                getProjBuilding(), getPrimarySkills(), getRequiredSkills(), getTenure());
-    }
 }

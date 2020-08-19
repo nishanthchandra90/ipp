@@ -105,6 +105,7 @@ class ProjectManagementService {
         return [];
       }
       final decoded = _decodeResponse(reply);
+      print(decoded);
       return decoded
           .map<PotentialCandidates>((j) => PotentialCandidates.fromJson(j))
           .toList();
