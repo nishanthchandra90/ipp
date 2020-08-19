@@ -90,8 +90,8 @@ public class ProjectCandidateService {
             ProjectDTO projectDTO = projectRepo.findById(projectEmployee.getProjectId()).orElse(null);
             if (projectDTO != null) {
                 List<EmployeeDto> appliedEmps = getAppliedEmployeesById(projectEmployee.getAppliedEmpIds());
-                List<EmployeeDto> matchedEmps = getMatchedEmployeesById(projectEmployee.getAppliedEmpIds());
-                List<EmployeeDto> confirmedEmps = getConfirmedEmployeesById(projectEmployee.getAppliedEmpIds());
+                List<EmployeeDto> matchedEmps = getMatchedEmployeesById(projectEmployee.getMatchedEmpIds());
+                List<EmployeeDto> confirmedEmps = getConfirmedEmployeesById(projectEmployee.getConfirmedEmpIds());
                 ProjectEmployeeMatches.add(new ProjectCandidateMatch(projectDTO, appliedEmps, matchedEmps, confirmedEmps));
             }
         }

@@ -62,7 +62,7 @@ class ProjectsRepo {
     urlStringBuffer.write(localIp);
     urlStringBuffer.write(":");
     urlStringBuffer.write(port);
-    urlStringBuffer.write("/getApplicationsAndMatches");
+    urlStringBuffer.write("/getPotentialCandidates");
     final request =
         await httpClient.getUrl(Uri.parse(urlStringBuffer.toString()));
     request.headers

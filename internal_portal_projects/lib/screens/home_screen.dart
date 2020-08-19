@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:internal_portal_projects/common_components/ipp_text.dart';
 import 'package:internal_portal_projects/model/employee_details.dart';
-import 'package:internal_portal_projects/screens/admin_screens/show_all_employees_screen.dart';
-import 'package:internal_portal_projects/screens/admin_screens/show_all_projects.dart';
+import 'package:internal_portal_projects/screens/admin_screens/admin_employees_tab_screen.dart';
+import 'package:internal_portal_projects/screens/admin_screens/admin_projects_tab_screen';
 import 'package:internal_portal_projects/screens/candidate_screens/show_matched_projects_screen.dart';
 import 'package:internal_portal_projects/service/auth_service.dart';
 
-import 'admin_screens/show_matched_candidates.dart';
+import 'admin_screens/admin_matched_tab.dart';
 import 'candidate_screens/show_applied_projects_screen.dart';
 import 'login_screen.dart';
 

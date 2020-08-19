@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:internal_portal_projects/bloc/project_bloc.dart';
 import 'package:internal_portal_projects/common_components/ipp_text.dart';
 import 'package:internal_portal_projects/model/potential_candidates.dart';
-import 'package:internal_portal_projects/screens/admin_screens/show_mat-appl_screen.dart';
+import 'package:internal_portal_projects/screens/admin_screens/applicatoins_matches_detail_screen.dart';
 
 class MatchedCandidates extends StatefulWidget {
   @override
@@ -28,7 +28,6 @@ class _MatchedCandidateState extends State<MatchedCandidates> {
           if (snapshot.hasData) {
             return Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   new Expanded(child: _createProjectList(snapshot.data)),
                 ]);
@@ -42,7 +41,7 @@ class _MatchedCandidateState extends State<MatchedCandidates> {
 
   _createProjectList(List<PotentialCandidates> potentialCandidates) {
     return new ListView.separated(
-      padding: const EdgeInsets.all(2),
+      padding: const EdgeInsets.all(5),
       itemCount: potentialCandidates.length,
       itemBuilder: (BuildContext _context, int index) {
         PotentialCandidates potentialCandidate = potentialCandidates[index];
@@ -66,12 +65,11 @@ class _MatchedCandidateState extends State<MatchedCandidates> {
 
   Widget _createListItem(PotentialCandidates potentialCandidate) {
     Widget projId = IPPText.simpleText(
-        'Project: ' + potentialCandidate.projectId,
+        'Project ' + potentialCandidate.project.projectId,
         fontWeight: FontWeight.bold,
         fontSize: 18,
         color: Colors.blue);
-    Widget projLoc = IPPText.simpleText(
-        potentialCandidate.location??'',
+    Widget projLoc = IPPText.simpleText(potentialCandidate.project.currLocation,
         fontSize: 15);
     Widget matched = IPPText.simpleText(
         'Matched: ' + potentialCandidate.matchedCandidates.length.toString(),
@@ -80,16 +78,20 @@ class _MatchedCandidateState extends State<MatchedCandidates> {
     Widget applied = IPPText.simpleText(
         'Applied: ' + potentialCandidate.appliedCandidates.length.toString(),
         fontWeight: FontWeight.bold,
-        color: Colors.brown);
+        color: Colors.orange);
     Widget skills = Container(
         width: MediaQuery.of(context).size.width * 0.9,
         child: IPPText.simpleText(
-            'Java, SpringsJava, SpringsJava, SpringsJava, SpringsJava, SpringsJava, SpringsJava, Springs',
+            'Primary Skill: ' +
+                potentialCandidate.project.platform +
+                ' (' +
+                potentialCandidate.project.platformName +
+                ')',
             fontWeight: FontWeight.bold,
             fontSize: 15));
     return Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           _createList(projId, projLoc),
           _createRow([skills]),

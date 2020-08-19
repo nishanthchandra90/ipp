@@ -93,7 +93,6 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
         0,
         25,
         (newValue) => setState(() => {
-              print(newValue),
               _yearsSelected =
                   newValue != null ? newValue.toString() : _yearsSelected,
             }),
