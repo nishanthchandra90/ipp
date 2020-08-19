@@ -1,8 +1,8 @@
-import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:internal_portal_projects/bloc/project_bloc.dart';
 import 'package:internal_portal_projects/common_components/ipp_text.dart';
 import 'package:internal_portal_projects/model/potential_candidates.dart';
+import 'package:internal_portal_projects/screens/admin_screens/show_mat-appl_screen.dart';
 
 class MatchedCandidates extends StatefulWidget {
   @override
@@ -50,6 +50,10 @@ class _MatchedCandidateState extends State<MatchedCandidates> {
           width: MediaQuery.of(context).size.width,
           child: InkWell(
             child: _createListItem(potentialCandidate),
+            onTap: () => Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (context) => new ShowMatchApplication(potentialCandidate))),
           ),
         );
       },
@@ -60,68 +64,56 @@ class _MatchedCandidateState extends State<MatchedCandidates> {
   }
 
   Widget _createListItem(PotentialCandidates potentialCandidate) {
+    Widget projId = IPPText.simpleText(
+        'Project: ' + potentialCandidate.projectId,
+        fontWeight: FontWeight.bold,
+        fontSize: 18,
+        color: Colors.blue);
+    Widget projLoc = IPPText.simpleText(
+        'TCS-Banglore dfddfdfdfdfdfdfadfhweuogi'.toUpperCase(),
+        fontSize: 15);
+    Widget matched = IPPText.simpleText(
+        'Matched: ' + potentialCandidate.matchedCandidates.length.toString(),
+        fontWeight: FontWeight.bold,
+        color: Colors.green);
+    Widget applied = IPPText.simpleText(
+        'Applied: ' + potentialCandidate.appliedCandidates.length.toString(),
+        fontWeight: FontWeight.bold,
+        color: Colors.brown);
+    Widget skills = Container(
+        width: MediaQuery.of(context).size.width * 0.9,
+        child: IPPText.simpleText(
+            'Java, SpringsJava, SpringsJava, SpringsJava, SpringsJava, SpringsJava, SpringsJava, Springs',
+            fontWeight: FontWeight.bold,
+            fontSize: 15));
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _createList(projId, projLoc),
+          _createRow([skills]),
+          _createRow([matched, applied])
+        ]);
+  }
+
+  _createList(Widget projId, Widget projLoc) {
+    return Container(
+      height: 50,
+      child: ListTile(
+        leading: projId,
+        title: projLoc,
+      ),
+    );
+  }
+
+  _createRow(List<Widget> widgets) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(20, 10, 10, 0),
-      child: new SingleChildScrollView(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-            _createRow(potentialCandidate.projectName.toUpperCase(),
-                potentialCandidate.projectId.toUpperCase()),
-            SizedBox(
-              height: 30,
-            ),
-            _createCustomRow("Matched", potentialCandidate.matchedCandidates),
-            SizedBox(
-              height: 10,
-            ),
-            _createCustomRow("Applied", potentialCandidate.appliedCandidates)
-          ])),
-    );
-  }
-
-  _createRow(String fieldName, String fieldVal) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        IPPText.simpleText(fieldName,
-            fontWeight: FontWeight.bold, fontSize: 18, color: Colors.blue),
-        SizedBox(
-          width: 50,
-        ),
-        Expanded(
-            child: IPPText.simpleText(
-          fieldVal,
-          fontSize: 18,
-        )),
-      ],
-    );
-  }
-
-  _createCustomRow(String fieldName, List<dynamic> fieldVal) {
-    return fieldVal.isNotEmpty
-        ? Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                color: StringUtils.equalsIgnoreCase("matched", fieldName)
-                    ? Colors.green
-                    : Colors.yellow,
-                child: Padding(
-                    padding: EdgeInsets.all(5),
-                    child: IPPText.simpleText(fieldName,
-                        fontWeight: FontWeight.bold, fontSize: 13)),
-              ),
-              SizedBox(
-                width: 30,
-              ),
-              Expanded(
-                  child: IPPText.simpleText(
-                fieldVal.toString().replaceAll("[", "").replaceAll("]", ""),
-                fontSize: 15,
-              )),
-            ],
-          )
-        : Container();
+        padding: EdgeInsets.all(10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: widgets,
+        ));
   }
 }
+
+

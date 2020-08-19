@@ -49,7 +49,7 @@ public class DemoData {
                         "Cloud", "GOOGLE", "", "java", false)
 
         ));
-
+        projectRepo.deleteAll();
         projectRepo.saveAll(List.of(
                 new ProjectDTO("2328356", "sita", "Manager1", "Hobby Project",
                         List.of("Java", "Spring", "Hibernates", "Docker"), "5 Years", "APOL - Hyderabad",
