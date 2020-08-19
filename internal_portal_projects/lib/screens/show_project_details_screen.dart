@@ -21,6 +21,7 @@ class ShowProjectState extends State<ShowProjectScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+            centerTitle: true,
             leading: BackButton(onPressed: () => Navigator.pop(context)),
             title: IPPText.simpleText('Project Details',
                 fontSize: 22.0, fontWeight: FontWeight.bold)),
@@ -36,44 +37,52 @@ class ShowProjectState extends State<ShowProjectScreen> {
               children: [
             _createRow("Name", project.projectName.toUpperCase()),
             SizedBox(
-              height: 30,
+              height: 20,
             ),
             _createRow("Project Id", project.projectId.toUpperCase()),
             SizedBox(
-              height: 30,
+              height: 20,
             ),
             _createRow("Manager", project.managerName.toUpperCase()),
             SizedBox(
-              height: 30,
+              height: 20,
             ),
             _createRow("Description", project.description),
             SizedBox(
-              height: 30,
+              height: 20,
             ),
-            _createRow("Skill Sets", project.skills.toString()),
+            _createRow("Primary Skill", project.platform),
+            _createRow("", project.platformName),
             SizedBox(
-              height: 30,
+              height: 20,
             ),
-            _createRow("Duration", project.tenure)
+            _createRow("Skills", project.skills.join(", ")),
+            SizedBox(
+              height: 20,
+            ),
+            _createRow("Duration", project.tenure),
+            SizedBox(
+              height: 20,
+            ),
+            _createRow("Location", project.currLocation),
+            _createRow("", project.building ?? ''),
           ])),
     );
   }
-}
 
-_createRow(String fieldName, String fieldVal) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      IPPText.simpleText(fieldName,
-          fontWeight: FontWeight.bold, fontSize: 22, color: Colors.blue),
-      SizedBox(
-        width: 50,
-      ),
-      Expanded(
-          child: IPPText.simpleText(
-        fieldVal,
-        fontSize: 20,
-      )),
-    ],
-  );
+  _createRow(String fieldName, String fieldVal) {
+    return Padding(
+        padding: EdgeInsets.fromLTRB(5, 0, 20, 0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IPPText.simpleText(fieldName,
+                fontWeight: FontWeight.bold, fontSize: 18, color: Colors.blue),
+            IPPText.simpleText(
+              fieldVal,
+              fontSize: 16,
+            )
+          ],
+        ));
+  }
 }

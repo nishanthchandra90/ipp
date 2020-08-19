@@ -44,8 +44,7 @@ class _ProjectState extends State<Projects> {
             AsyncSnapshot<List<ProjectDetails>> snapshot) {
           if (snapshot.hasData) {
             return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   new Expanded(child: _createProjectList(snapshot.data)),
                 ]);
@@ -84,9 +83,10 @@ class _ProjectState extends State<Projects> {
           context,
           new MaterialPageRoute(
               builder: (context) => new ShowProjectScreen(project))),
-      leading:
-          IPPText.simpleText(project.projectName.toUpperCase(), fontSize: 20.0),
-      title: Container(width: 40, child: Text(project.skills.toString())),
+      leading: IPPText.simpleText(
+          'ProjectId: ' + project.projectId.toUpperCase(),
+          fontSize: 18.0),
+      title: Container(width: 40, child: Text(project.currLocation.toString())),
     );
   }
 

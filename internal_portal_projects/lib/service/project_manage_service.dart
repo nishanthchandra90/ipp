@@ -41,6 +41,7 @@ class ProjectManagementService {
     if (response.statusCode == 200) {
       String reply = await response.transform(utf8.decoder).join();
       final decoded = _decodeResponse(reply);
+      print(decoded);
       return decoded
           .map<ProjectDetails>((json) => ProjectDetails.fromJson(json))
           .toList();

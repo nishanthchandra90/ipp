@@ -21,6 +21,7 @@ class ShowEmployeeState extends State<ShowEmployeeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          centerTitle: true,
             leading: BackButton(onPressed: () => Navigator.pop(context)),
             title: IPPText.simpleText('Employee Details',
                 fontSize: 22.0, fontWeight: FontWeight.bold)),
