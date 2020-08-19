@@ -4,12 +4,12 @@ import 'package:internal_portal_projects/common_components/ipp_text.dart';
 import 'package:internal_portal_projects/model/potential_candidates.dart';
 import 'package:internal_portal_projects/screens/admin_screens/applicatoins_matches_detail_screen.dart';
 
-class MatchedCandidates extends StatefulWidget {
+class MatchesTabScreen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _MatchedCandidateState();
+  State<StatefulWidget> createState() => _MatchesTabScreenState();
 }
 
-class _MatchedCandidateState extends State<MatchedCandidates> {
+class _MatchesTabScreenState extends State<MatchesTabScreen> {
   final bloc = ProjectsBloc();
 
   @override
@@ -53,7 +53,7 @@ class _MatchedCandidateState extends State<MatchedCandidates> {
                 context,
                 new MaterialPageRoute(
                     builder: (context) =>
-                        new ShowMatchApplication(potentialCandidate))),
+                        new ApplicationAndMatchesScreen(potentialCandidate))),
           ),
         );
       },

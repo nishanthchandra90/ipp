@@ -7,12 +7,12 @@ import 'package:internal_portal_projects/screens/show_project_details_screen.dar
 
 import 'add_project_screen.dart';
 
-class Projects extends StatefulWidget {
+class ProjectsTabScreen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _ProjectState();
+  State<StatefulWidget> createState() => _ProjectsTabScreenState();
 }
 
-class _ProjectState extends State<Projects> {
+class _ProjectsTabScreenState extends State<ProjectsTabScreen> {
   final bloc = ProjectsBloc();
 
   @override

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:internal_portal_projects/common_components/ipp_text.dart';
 import 'package:internal_portal_projects/model/employee_details.dart';
 import 'package:internal_portal_projects/screens/admin_screens/admin_employees_tab_screen.dart';
-import 'package:internal_portal_projects/screens/admin_screens/admin_projects_tab_screen';
+import 'package:internal_portal_projects/screens/admin_screens/admin_projects_tab_screen.dart';
 import 'package:internal_portal_projects/screens/candidate_screens/show_matched_projects_screen.dart';
 import 'package:internal_portal_projects/service/auth_service.dart';
 
@@ -41,7 +41,7 @@ class MyHomePage extends StatelessWidget {
                 fontSize: 20.0, align: TextAlign.right, color: Colors.white)),
         body: TabBarView(
           children: employee.isAdmin
-              ? [Projects(), MatchedCandidates(), EmployeesScreen()]
+              ? [ProjectsTabScreen(), MatchesTabScreen(), EmployeesTabScreen()]
               : [
                   ShowMatchedProjects(employee.employeeId),
                   ShowAppliedProjects(employee.employeeId),

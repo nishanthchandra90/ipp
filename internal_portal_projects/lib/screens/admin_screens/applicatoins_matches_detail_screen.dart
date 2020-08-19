@@ -5,19 +5,21 @@ import 'package:internal_portal_projects/model/employee_details.dart';
 import 'package:internal_portal_projects/model/potential_candidates.dart';
 import 'package:internal_portal_projects/model/project_details.dart';
 
-class ShowMatchApplication extends StatefulWidget {
+class ApplicationAndMatchesScreen extends StatefulWidget {
   final PotentialCandidates potentialCandidates;
 
-  ShowMatchApplication(this.potentialCandidates);
+  ApplicationAndMatchesScreen(this.potentialCandidates);
 
   @override
-  State<StatefulWidget> createState() => ShowProjectState(potentialCandidates);
+  State<StatefulWidget> createState() =>
+      ApplicationAndMatchesScreenState(potentialCandidates);
 }
 
-class ShowProjectState extends State<ShowMatchApplication> {
+class ApplicationAndMatchesScreenState
+    extends State<ApplicationAndMatchesScreen> {
   final PotentialCandidates potentialCandidates;
 
-  ShowProjectState(this.potentialCandidates);
+  ApplicationAndMatchesScreenState(this.potentialCandidates);
 
   @override
   Widget build(BuildContext context) {
