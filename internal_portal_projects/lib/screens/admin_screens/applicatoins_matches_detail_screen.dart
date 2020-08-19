@@ -4,6 +4,10 @@ import 'package:internal_portal_projects/common_components/ipp_text.dart';
 import 'package:internal_portal_projects/model/employee_details.dart';
 import 'package:internal_portal_projects/model/potential_candidates.dart';
 import 'package:internal_portal_projects/model/project_details.dart';
+import 'package:page_view_indicators/circle_page_indicator.dart';
+
+import 'applied_candidates.dart';
+import 'matched_candidates.dart';
 
 class ApplicationAndMatchesScreen extends StatefulWidget {
   final PotentialCandidates potentialCandidates;
@@ -18,6 +22,7 @@ class ApplicationAndMatchesScreen extends StatefulWidget {
 class ApplicationAndMatchesScreenState
     extends State<ApplicationAndMatchesScreen> {
   final PotentialCandidates potentialCandidates;
+  final _currentPageNotifier = ValueNotifier<int>(0);
 
   ApplicationAndMatchesScreenState(this.potentialCandidates);
 
@@ -26,59 +31,58 @@ class ApplicationAndMatchesScreenState
     return Scaffold(
         appBar: AppBar(
             leading: BackButton(onPressed: () => Navigator.pop(context)),
-            title: IPPText.simpleText('Potential Candidates',
+            title: IPPText.simpleText('Applications and Matches',
                 fontSize: 22.0, fontWeight: FontWeight.bold)),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _createProjectSection(),
-            IPPText.simpleText("Applied Candidates",
-                color: Colors.blue, fontSize: 20),
-            _createCandidateList(potentialCandidates.appliedCandidates),
-            IPPText.simpleText("Matched Candidates",
-                color: Colors.deepOrange, fontSize: 20),
-            _createCandidateList(potentialCandidates.matchedCandidates),
-          ],
-        ));
+        body: _buildPageBar());
   }
 
-  _createCandidateList(List<dynamic> appliedCandidates) {
-    List<EmployeeDetails> candidates =
-        appliedCandidates.map((i) => EmployeeDetails.fromJson(i)).toList();
-    return Expanded(
-        child: new ListView.separated(
-      itemCount: candidates.length,
-      itemBuilder: (BuildContext _context, int index) {
-        EmployeeDetails employee = candidates[index];
-        return ListTile(
-          leading: IPPText.simpleText(employee.email.toLowerCase()),
-          title: IPPText.simpleText(employee.empName.toUpperCase()),
-          trailing: IconButton(
-            icon: Icon(Icons.done),
-            iconSize: 25.0,
-            onPressed: () => {print('cliked')},
-          ),
-        );
-      },
-      separatorBuilder: (BuildContext _context, int index) => const Divider(
-        thickness: 1,
+  _buildPageBar() {
+    List<EmployeeDetails> appliedCandidates = potentialCandidates
+        .appliedCandidates
+        .map((i) => EmployeeDetails.fromJson(i))
+        .toList();
+    List<EmployeeDetails> matchedCandidates = potentialCandidates
+        .matchedCandidates
+        .map((i) => EmployeeDetails.fromJson(i))
+        .toList();
+    return new Column(
+      children: <Widget>[
+        _createProjectSection(),
+        Expanded(
+            child: new PageView(
+          children: <Widget>[
+            ShowAppliedScreen(appliedCandidates),
+            ShowMatchedScreen(matchedCandidates),
+          ],
+          onPageChanged: (int index) {
+            _currentPageNotifier.value = index;
+          },
+        )),
+        _pageViewIndicators(),
+      ],
+    );
+  }
+
+  _pageViewIndicators() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 10),
+      child: CirclePageIndicator(
+        itemCount: 2,
+        selectedDotColor: Colors.deepOrangeAccent,
+        currentPageNotifier: _currentPageNotifier,
       ),
-    ));
+    );
   }
 
   _createProjectSection() {
     ProjectDetails project = potentialCandidates.project;
     return Padding(
-        padding: EdgeInsets.fromLTRB(20, 20, 20, 50),
+        padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _createRow("Name", project.projectName.toUpperCase()),
               _createRow("Project Id", project.projectId.toUpperCase()),
               _createRow("Primary Skill", project.platform),
-              _createRow("", project.platformName),
-              _createRow("Skills", project.skills.join(", ")),
               _createRow("Location", project.currLocation),
               _createRow("", project.building ?? ''),
             ]));
@@ -86,15 +90,14 @@ class ApplicationAndMatchesScreenState
 
   _createRow(String fieldName, String fieldVal) {
     return Padding(
-        padding: EdgeInsets.fromLTRB(5, 0, 20, 0),
+        padding: EdgeInsets.fromLTRB(5, 0, 20, 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IPPText.simpleText(fieldName,
-                fontWeight: FontWeight.bold, fontSize: 18, color: Colors.blue),
+                fontWeight: FontWeight.bold, fontSize: 16, color: Colors.blue),
             IPPText.simpleText(
               fieldVal,
-              fontSize: 16,
             )
           ],
         ));
