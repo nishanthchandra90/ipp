@@ -1,22 +1,32 @@
 package com.tcs.ipp.service;
 
-import com.tcs.ipp.model.AppliedMatchedCandidates;
+import com.tcs.ipp.model.EmployeeDto;
+import com.tcs.ipp.model.ProjectCandidateMatch;
 import com.tcs.ipp.model.ProjectDTO;
+import com.tcs.ipp.model.ProjectEmployee;
 import com.tcs.ipp.repository.EmployeeRepo;
+import com.tcs.ipp.repository.ProjectEmployeeRepo;
 import com.tcs.ipp.repository.ProjectRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
-public class AppliedProjectsRepo {
+public class ProjectCandidateService {
 
     @Autowired
     private EmployeeRepo employeesRepo;
+
+    @Autowired
+    private ProjectRepo projectRepo;
+
+    @Autowired
+    private ProjectEmployeeRepo projectEmployeeRepo;
 
     private static final Map<String, List<String>> employeeProjectMatches = new HashMap<>();
     private static final Map<String, List<String>> appliedProjects = new HashMap<>();
@@ -61,19 +71,32 @@ public class AppliedProjectsRepo {
                 .collect(Collectors.toList());
     }
 
-    public List<AppliedMatchedCandidates> getPotentialCandidates(ProjectRepo projectsRepo) {
-        return projectsRepo.findAll().stream()
-                .map(this::createPotentialCandidateList).collect(Collectors.toList());
+    private List<EmployeeDto> getAppliedEmployeesById(List<String> empIds) {
+        return empIds.stream().map(empId -> employeesRepo.findById(empId).get()).collect(Collectors.toList());
     }
 
-    private AppliedMatchedCandidates createPotentialCandidateList(ProjectDTO project) {
-        String projectID = project.getProjectId();
-        return new AppliedMatchedCandidates(
-                projectID,
-                project.getProjectName(),
-                project.getProjLocation(),
-                getAppliedCandidates(projectID),
-                getMatchedCandidates(projectID));
+    private List<EmployeeDto> getMatchedEmployeesById(List<String> empIds) {
+        return empIds.stream().map(empId -> employeesRepo.findById(empId).get()).collect(Collectors.toList());
     }
+
+    private List<EmployeeDto> getConfirmedEmployeesById(List<String> empIds) {
+        return empIds.stream().map(empId -> employeesRepo.findById(empId).get()).collect(Collectors.toList());
+    }
+
+    public List<ProjectCandidateMatch> getPotentialCandidates() {
+        List<ProjectEmployee> projectEmployees = projectEmployeeRepo.findAll();
+        List<ProjectCandidateMatch> ProjectEmployeeMatches = new ArrayList<>();
+        for (ProjectEmployee projectEmployee : projectEmployees) {
+            ProjectDTO projectDTO = projectRepo.findById(projectEmployee.getProjectId()).orElse(null);
+            if (projectDTO != null) {
+                List<EmployeeDto> appliedEmps = getAppliedEmployeesById(projectEmployee.getAppliedEmpIds());
+                List<EmployeeDto> matchedEmps = getMatchedEmployeesById(projectEmployee.getAppliedEmpIds());
+                List<EmployeeDto> confirmedEmps = getConfirmedEmployeesById(projectEmployee.getAppliedEmpIds());
+                ProjectEmployeeMatches.add(new ProjectCandidateMatch(projectDTO, appliedEmps, matchedEmps, confirmedEmps));
+            }
+        }
+        return ProjectEmployeeMatches;
+    }
+
 }
 

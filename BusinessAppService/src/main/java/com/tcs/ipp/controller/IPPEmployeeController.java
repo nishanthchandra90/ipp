@@ -4,7 +4,7 @@ import com.tcs.ipp.model.EmployeeDto;
 import com.tcs.ipp.model.ProjectDTO;
 import com.tcs.ipp.repository.EmployeeRepo;
 import com.tcs.ipp.repository.ProjectRepo;
-import com.tcs.ipp.service.AppliedProjectsRepo;
+import com.tcs.ipp.service.ProjectCandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +23,7 @@ public class IPPEmployeeController {
     private ProjectRepo projectsRepo;
 
     @Autowired
-    private AppliedProjectsRepo appliedProjectsRepo;
+    private ProjectCandidateService projectCandidateService;
 
     @GetMapping(value = "/isNewUser", produces = "application/json")
     public Map<String, Boolean> isNewUser(@RequestParam String email) {
@@ -94,7 +94,7 @@ public class IPPEmployeeController {
     @GetMapping("/getAppliedProjects")
     public List<ProjectDTO> getAppliedProjectsById(@RequestParam String empId) {
         System.out.println("Getting Projects applied by Employee with Id:" + empId);
-        return appliedProjectsRepo.getAppliedProjectByEmpId(empId).stream()
+        return projectCandidateService.getAppliedProjectByEmpId(empId).stream()
                 .filter(p -> projectsRepo.findById(p).isPresent())
                 .map(p -> projectsRepo.findById(p).get()).collect(Collectors.toList());
     }
@@ -102,7 +102,7 @@ public class IPPEmployeeController {
     @GetMapping("/getMatchedProjects")
     public List<ProjectDTO> getMatchedProjects(@RequestParam String empId) {
         System.out.println("Getting Projects matching with Employee skills for Employee:" + empId);
-        return appliedProjectsRepo.getMyMatchedProjects(empId).stream()
+        return projectCandidateService.getMyMatchedProjects(empId).stream()
                 .filter(p -> projectsRepo.findById(p).isPresent())
                 .map(p -> projectsRepo.findById(p).get()).collect(Collectors.toList());
     }

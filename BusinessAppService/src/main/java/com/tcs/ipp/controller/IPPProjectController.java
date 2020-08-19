@@ -1,11 +1,11 @@
 package com.tcs.ipp.controller;
 
-import com.tcs.ipp.model.AppliedMatchedCandidates;
 import com.tcs.ipp.model.PrimarySkillsDTO;
+import com.tcs.ipp.model.ProjectCandidateMatch;
 import com.tcs.ipp.model.ProjectDTO;
 import com.tcs.ipp.repository.PlatformRepo;
 import com.tcs.ipp.repository.ProjectRepo;
-import com.tcs.ipp.service.AppliedProjectsRepo;
+import com.tcs.ipp.service.ProjectCandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +18,7 @@ public class IPPProjectController {
     private ProjectRepo projectRepo;
 
     @Autowired
-    private AppliedProjectsRepo appliedProjectsRepo;
+    private ProjectCandidateService projectCandidateService;
 
     @Autowired
     private PlatformRepo platformRepo;
@@ -53,16 +53,15 @@ public class IPPProjectController {
         return projectRepo.findAll();
     }
 
-    @GetMapping("/getApplicationsAndMatches")
-    public List<AppliedMatchedCandidates> getPotentialCandidates() {
-        System.out.println(appliedProjectsRepo.getPotentialCandidates(projectRepo));
-        return appliedProjectsRepo.getPotentialCandidates(projectRepo);
-    }
-
     @GetMapping("/getPrimaryPlatforms")
     public List<PrimarySkillsDTO> getPrimaryPlatforms() {
         System.out.println("Getting Potential Candidates...");
         return platformRepo.findAll();
+    }
+
+    @GetMapping("/getPotentialCandidates")
+    public List<ProjectCandidateMatch> getPotentialCandidates() {
+        return projectCandidateService.getPotentialCandidates();
     }
 
 }
