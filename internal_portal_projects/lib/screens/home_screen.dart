@@ -3,6 +3,7 @@ import 'package:internal_portal_projects/common_components/ipp_text.dart';
 import 'package:internal_portal_projects/model/employee_details.dart';
 import 'package:internal_portal_projects/screens/admin_screens/admin_employees_tab_screen.dart';
 import 'package:internal_portal_projects/screens/admin_screens/admin_projects_tab_screen.dart';
+import 'package:internal_portal_projects/screens/candidate_screens/show_confirmed_projects_screen.dart';
 import 'package:internal_portal_projects/screens/candidate_screens/show_matched_projects_screen.dart';
 import 'package:internal_portal_projects/service/auth_service.dart';
 
@@ -30,7 +31,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     var tabs = employee.isAdmin ? _createAdminTabs() : _createEmployeeTabs();
     return DefaultTabController(
-      length: employee.isAdmin ? 3 : 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
             centerTitle: true,
@@ -45,6 +46,7 @@ class MyHomePage extends StatelessWidget {
               : [
                   ShowMatchedProjects(employee.employeeId),
                   ShowAppliedProjects(employee.employeeId),
+                  ShowConfirmedProjects(employee.employeeId)
                 ],
         ),
         drawer: _createDrawer(context),
@@ -109,7 +111,11 @@ class MyHomePage extends StatelessWidget {
       Icons.assignment_ind,
       'Applied',
     );
-    return [tab1, tab2];
+    Widget tab3 = _createTab(
+      Icons.done,
+      'Confirmed',
+    );
+    return [tab1, tab2, tab3];
   }
 
   _createTabBar(List<Widget> tabs) {

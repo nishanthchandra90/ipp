@@ -184,4 +184,16 @@ class ProjectManagementService {
     }
     return [];
   }
+
+  getConfirmedProjects(String empId) async{
+    var response = await new ProjectsRepo().getConfirmedProjects(empId);
+    if (response.statusCode == 200) {
+      String reply = await response.transform(utf8.decoder).join();
+      final decoded = _decodeResponse(reply);
+      return decoded
+          .map<ProjectDetails>((json) => ProjectDetails.fromJson(json))
+          .toList();
+    }
+    return <ProjectDetails>[];
+  }
 }

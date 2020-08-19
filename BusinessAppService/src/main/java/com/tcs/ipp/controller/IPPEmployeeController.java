@@ -102,4 +102,10 @@ public class IPPEmployeeController {
         return projectCandidateService.getMyMatchedProjects(empId);
     }
 
+    @GetMapping("/getConfirmedProjects")
+    public List<ProjectDTO> getConfirmedProjects(@RequestParam String empId) {
+        System.out.println("Getting Projects matching with Employee skills for Employee:" + empId);
+        return projectCandidateService.getConfirmedProjects(empId);
+    }
+
 }

@@ -40,6 +40,14 @@ public class ProjectCandidateService {
         return projectIds.stream().map(pid -> projectRepo.findById(pid).orElse(null)).collect(Collectors.toList());
     }
 
+
+    public List<ProjectDTO> getConfirmedProjects(String employeeID) {
+        List<String> projectIds = projectEmployeeRepo.findAll().stream()
+                .filter(pe -> pe.getConfirmedEmpIds().contains(employeeID))
+                .map(ProjectEmployee::getProjectId).collect(Collectors.toList());
+        return projectIds.stream().map(pid -> projectRepo.findById(pid).orElse(null)).collect(Collectors.toList());
+    }
+
     private List<EmployeeDto> getAppliedEmployeesById(List<String> empIds) {
         return empIds.stream().map(empId -> employeesRepo.findById(empId).get()).collect(Collectors.toList());
     }
