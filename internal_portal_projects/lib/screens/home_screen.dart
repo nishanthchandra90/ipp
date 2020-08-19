@@ -6,7 +6,7 @@ import 'package:internal_portal_projects/screens/admin_screens/admin_projects_ta
 import 'package:internal_portal_projects/screens/candidate_screens/show_matched_projects_screen.dart';
 import 'package:internal_portal_projects/service/auth_service.dart';
 
-import 'admin_screens/admin_matched_tab.dart';
+import 'admin_screens/admin_matches_tab.dart';
 import 'candidate_screens/show_applied_projects_screen.dart';
 import 'login_screen.dart';
 
@@ -61,7 +61,11 @@ class MyHomePage extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.width * 0.4,
             child: Center(
-              child: IPPText.simpleText(employee.empName.toUpperCase(),
+              child: IPPText.simpleText(
+                  employee.empName.toUpperCase() +
+                      '\n(' +
+                      employee.employeeId +
+                      ')',
                   fontSize: 22.0),
             )),
         Row(

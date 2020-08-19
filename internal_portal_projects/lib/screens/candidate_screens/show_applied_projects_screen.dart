@@ -70,22 +70,25 @@ class ShowAppliedProjectsState extends State<ShowAppliedProjects> {
 
   _createListItem(ProjectDetails project) {
     return ListTile(
-      onTap: () => Navigator.push(
-          context,
-          new MaterialPageRoute(
-              builder: (context) => new ShowProjectScreen(project))),
-      leading:
-          IPPText.simpleText(project.projectName.toUpperCase(), fontSize: 20.0),
-      title: Container(width: 40, child: Text(project.skills.toString())),
-      trailing: Container(
-        color: Colors.red,
-        child: FlatButton(
-          onPressed: () {
-            bloc.deleteAppliedProject(project);
-          },
-          child: Text("Withdraw"),
-        ),
-      ),
-    );
+        onTap: () => Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => new ShowProjectScreen(project))),
+        leading: IPPText.simpleText(
+            project.projectName.toUpperCase() + '\n(' + project.projectId + ')',
+            fontSize: 16.0),
+        title: IPPText.simpleText(project.currLocation),
+        trailing: Container(
+          height: 30,
+          color: Colors.red,
+          child: FlatButton(
+            onPressed: () {
+              setState(() {
+
+              });
+            },
+            child: Text('Withdraw'),
+          ),
+        ));
   }
 }

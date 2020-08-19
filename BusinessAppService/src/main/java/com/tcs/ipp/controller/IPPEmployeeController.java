@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 public class IPPEmployeeController {
@@ -94,17 +93,13 @@ public class IPPEmployeeController {
     @GetMapping("/getAppliedProjects")
     public List<ProjectDTO> getAppliedProjectsById(@RequestParam String empId) {
         System.out.println("Getting Projects applied by Employee with Id:" + empId);
-        return projectCandidateService.getAppliedProjectByEmpId(empId).stream()
-                .filter(p -> projectsRepo.findById(p).isPresent())
-                .map(p -> projectsRepo.findById(p).get()).collect(Collectors.toList());
+        return projectCandidateService.getAppliedProjectByEmpId(empId);
     }
 
     @GetMapping("/getMatchedProjects")
     public List<ProjectDTO> getMatchedProjects(@RequestParam String empId) {
         System.out.println("Getting Projects matching with Employee skills for Employee:" + empId);
-        return projectCandidateService.getMyMatchedProjects(empId).stream()
-                .filter(p -> projectsRepo.findById(p).isPresent())
-                .map(p -> projectsRepo.findById(p).get()).collect(Collectors.toList());
+        return projectCandidateService.getMyMatchedProjects(empId);
     }
 
 }

@@ -18,7 +18,6 @@ class ShowMatchedProjects extends StatefulWidget {
 class ShowMatchedProjectsState extends State<ShowMatchedProjects> {
   final bloc = ProjectsBloc();
   String empId;
-  String _actionText = 'Apply';
 
   ShowMatchedProjectsState(this.empId);
 
@@ -71,20 +70,22 @@ class ShowMatchedProjectsState extends State<ShowMatchedProjects> {
 
   _createListItem(ProjectDetails project) {
     return ListTile(
-      onTap: () => Navigator.push(
-          context,
-          new MaterialPageRoute(
-              builder: (context) => new ShowProjectScreen(project))),
-      leading:
-          IPPText.simpleText(project.projectName.toUpperCase(), fontSize: 20.0),
-      title: Container(width: 40, child: Text(project.skills.toString())),
-      trailing: Container(
-        color: Colors.blue,
-        child: FlatButton(
-          onPressed: () {},
-          child: Text(_actionText),
-        ),
-      ),
-    );
+        onTap: () => Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => new ShowProjectScreen(project))),
+        leading: IPPText.simpleText(
+            project.projectName.toUpperCase() + '\n(' + project.projectId + ')',
+            fontSize: 16.0),
+        title: IPPText.simpleText(project.currLocation),
+        trailing: Container(
+          height: 30,
+          width: 70,
+          color: Colors.blue,
+          child: FlatButton(
+            onPressed: () {},
+            child: Text('Apply'),
+          ),
+        ));
   }
 }

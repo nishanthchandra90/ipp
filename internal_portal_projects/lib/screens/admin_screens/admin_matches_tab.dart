@@ -95,7 +95,7 @@ class _MatchesTabScreenState extends State<MatchesTabScreen> {
         children: [
           _createList(projId, projLoc),
           _createRow([skills]),
-          _createRow([matched, applied])
+          _createRow([applied, matched])
         ]);
   }
 
