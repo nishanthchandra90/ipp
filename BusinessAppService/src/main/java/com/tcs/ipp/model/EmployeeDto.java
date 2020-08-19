@@ -3,52 +3,62 @@ package com.tcs.ipp.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Map;
 import java.util.Objects;
 
 @Document(collection = "employee")
 public class EmployeeDto {
 
     @Id
-    String employeeId;
+    private String employeeId;
 
-    String empFName;
+    private String password;
 
-    String empLName;
+    private String email;
 
-    int experience;
+    private String empName;
 
-    String workLocation;
+    private int expYears;
 
-    String building;
+    private int expMonths;
 
-    Map<String, String> primarySecondarySkills;
+    private String currLocation;
 
-    String password;
+    private String building;
 
-    String email;
+    private String platform;
 
-    boolean isAdmin;
+    private String platformName;
 
-    public EmployeeDto(String employeeId, String empFName, String empLName, String password, String email, boolean isAdmin) {
+    private String secSkills;
+
+    private String certificates;
+
+    private boolean isAdmin;
+
+    public EmployeeDto(String employeeId, String password, String email, String empName, int expYears, int expMonths,
+                       String currLocation, String building, String platform, String platformName, String secSkills,
+                       String certificates, boolean isAdmin) {
         this.employeeId = employeeId;
-        this.empFName = empFName;
-        this.empLName = empLName;
         this.password = password;
         this.email = email;
+        this.empName = empName;
+        this.expYears = expYears;
+        this.expMonths = expMonths;
+        this.currLocation = currLocation;
+        this.building = building;
+        this.platform = platform;
+        this.platformName = platformName;
+        this.secSkills = secSkills;
+        this.certificates = certificates;
         this.isAdmin = isAdmin;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmployeeId() {
         return employeeId;
-    }
-
-    public String getEmpFName() {
-        return empFName;
-    }
-
-    public String getEmpLName() {
-        return empLName;
     }
 
     public String getPassword() {
@@ -59,32 +69,63 @@ public class EmployeeDto {
         return email;
     }
 
+    public String getEmpName() {
+        return empName;
+    }
+
+    public int getExpYears() {
+        return expYears;
+    }
+
+    public int getExpMonths() {
+        return expMonths;
+    }
+
+    public String getCurrLocation() {
+        return currLocation;
+    }
+
+    public String getBuilding() {
+        return building;
+    }
+
+    public String getPlatform() {
+        return platform;
+    }
+
+    public String getPlatformName() {
+        return platformName;
+    }
+
+    public String getSecSkills() {
+        return secSkills;
+    }
+
+    public String getCertificates() {
+        return certificates;
+    }
+
     public boolean isAdmin() {
         return isAdmin;
     }
 
-    public void setEmployeeId(String employeeId) {
-        this.employeeId = employeeId;
-    }
-
-    public void setEmpFName(String empFName) {
-        this.empFName = empFName;
-    }
-
-    public void setEmpLName(String empLName) {
-        this.empLName = empLName;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
+    @Override
+    public String toString() {
+        return "EmployeeDto{" +
+                "employeeId='" + employeeId + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", empName='" + empName + '\'' +
+                ", expYears=" + expYears +
+                ", expMonths=" + expMonths +
+                ", currLocation='" + currLocation + '\'' +
+                ", building='" + building + '\'' +
+                ", platform='" + platform + '\'' +
+                ", platformName='" + platformName + '\'' +
+                ", secSkills='" + secSkills + '\'' +
+                ", certificates='" + certificates + '\'' +
+                ", isAdmin=" + isAdmin +
+                '}';
     }
 
     @Override
@@ -92,28 +133,25 @@ public class EmployeeDto {
         if (this == o) return true;
         if (!(o instanceof EmployeeDto)) return false;
         EmployeeDto that = (EmployeeDto) o;
-        return isAdmin() == that.isAdmin() &&
+        return getExpYears() == that.getExpYears() &&
+                getExpMonths() == that.getExpMonths() &&
+                isAdmin() == that.isAdmin() &&
                 getEmployeeId().equals(that.getEmployeeId()) &&
-                getEmpFName().equals(that.getEmpFName()) &&
-                getEmpLName().equals(that.getEmpLName()) &&
                 getPassword().equals(that.getPassword()) &&
-                getEmail().equals(that.getEmail());
+                getEmail().equals(that.getEmail()) &&
+                getEmpName().equals(that.getEmpName()) &&
+                getCurrLocation().equals(that.getCurrLocation()) &&
+                getBuilding().equals(that.getBuilding()) &&
+                getPlatform().equals(that.getPlatform()) &&
+                getPlatformName().equals(that.getPlatformName()) &&
+                getSecSkills().equals(that.getSecSkills()) &&
+                getCertificates().equals(that.getCertificates());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getEmployeeId(), getEmpFName(), getEmpLName(), getPassword(), getEmail(), isAdmin());
-    }
-
-    @Override
-    public String toString() {
-        return "EmployeeDto{" +
-                "employeeId='" + employeeId + '\'' +
-                ", empFName='" + empFName + '\'' +
-                ", empLName='" + empLName + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", isAdmin=" + isAdmin +
-                '}';
+        return Objects.hash(getEmployeeId(), getPassword(), getEmail(), getEmpName(), getExpYears(), getExpMonths(),
+                getCurrLocation(), getBuilding(), getPlatform(), getPlatformName(), getSecSkills(), getCertificates(),
+                isAdmin());
     }
 }

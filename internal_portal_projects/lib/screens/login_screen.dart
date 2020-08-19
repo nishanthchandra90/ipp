@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:internal_portal_projects/common_components/ipp_text.dart';
 import 'package:internal_portal_projects/model/employee_details.dart';
+import 'package:internal_portal_projects/screens/candidate_screens/reset_password_screen.dart';
 import 'package:internal_portal_projects/screens/home_screen.dart';
 import 'package:internal_portal_projects/service/auth_service.dart';
-import 'package:internal_portal_projects/service/project_manage_service.dart';
 
 import '../common_components/ipp_inputelements.dart';
 import 'candidate_screens/employee_signup_screen.dart';
@@ -66,8 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                                       child: IPPText.simpleText(
                                           'Forgot Password?',
                                           color: Colors.blue),
-                                      onTap: () =>
-                                          _navigateToRegisterScreen(false)),
+                                      onTap: () => _navigateToResetPWSScreen()),
                                 ],
                               ),
                               Visibility(
@@ -142,8 +141,16 @@ class _LoginPageState extends State<LoginPage> {
       context,
       MaterialPageRoute(
           settings: RouteSettings(name: "/register"),
-          builder: (BuildContext context) =>
-              EmployeeSignUpScreen()),
+          builder: (BuildContext context) => EmployeeSignUpScreen()),
+    );
+  }
+
+  _navigateToResetPWSScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          settings: RouteSettings(name: "/resetPWD"),
+          builder: (BuildContext context) => NewPasswordScreen()),
     );
   }
 }

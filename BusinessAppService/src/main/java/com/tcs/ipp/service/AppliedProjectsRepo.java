@@ -48,7 +48,7 @@ public class AppliedProjectsRepo {
                 .filter((e) -> e.getValue().contains(projectId))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList()).stream().filter(eId -> employeesRepo.findById(eId).isPresent())
-                .map(emp -> employeesRepo.findById(emp).get().getEmpFName())
+                .map(emp -> employeesRepo.findById(emp).get().getEmpName())
                 .collect(Collectors.toList());
     }
 
@@ -57,7 +57,7 @@ public class AppliedProjectsRepo {
                 .filter((e) -> e.getValue().contains(projectId))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList()).stream().filter(eId -> employeesRepo.findById(eId).isPresent())
-                .map(emp -> employeesRepo.findById(emp).get().getEmpFName())
+                .map(emp -> employeesRepo.findById(emp).get().getEmpName())
                 .collect(Collectors.toList());
     }
 

@@ -61,9 +61,7 @@ class MyHomePage extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.width * 0.4,
             child: Center(
-              child: IPPText.simpleText(
-                  employee.empFName.toUpperCase() +
-                      employee.empLName.toUpperCase(),
+              child: IPPText.simpleText(employee.empName.toUpperCase(),
                   fontSize: 22.0),
             )),
         Row(

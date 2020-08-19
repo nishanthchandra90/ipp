@@ -24,7 +24,6 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
   final TextEditingController empIdEditCntrlr = TextEditingController();
   final TextEditingController empEmailEditCntrlr = TextEditingController();
   final TextEditingController nameEditCntrlr = TextEditingController();
-  final TextEditingController lNameEditCntrlr = TextEditingController();
   final TextEditingController pwdEditCntrlr = TextEditingController();
   final TextEditingController skillsEditCntrlr = TextEditingController();
   final TextEditingController certsEditCntrlr = TextEditingController();
@@ -32,18 +31,18 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
   String locErrorText = '';
   String buildingErrorText = '';
   String platformErrorText = '';
-  String platformTypeErrorText = '';
+  String platformNameErrorText = '';
   bool validExperiencePeriod = false;
   String _yearsSelected = '0';
   String _monthsSelected = '0';
   var citiesFuture;
   var buildingsFuture;
-  var primarySkills;
+  var platforms;
   String _locationSelected;
   String _buildingSelected;
   String _platformSelected;
-  String _platformTypeSelected;
-  List<String> platformTypes = [];
+  String _platformNameSelected;
+  List<String> platformNames = [];
 
   _EmployeeSignUpScreenState();
 
@@ -52,7 +51,7 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
     super.initState();
     citiesFuture = new ProjectManagementService().getAllLocations();
     buildingsFuture = new ProjectManagementService().getAllBuildings();
-    primarySkills = new ProjectManagementService().getPrimaryPlatforms();
+    platforms = new ProjectManagementService().getPrimaryPlatforms();
   }
 
   @override
@@ -178,17 +177,32 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
   Future<void> _saveEmployee() async {
     var formState = _employeeFormKey.currentState;
     formState.save();
-    validateSelects();
-    if (!formState.validate() || !validateSelects()) {
+    int yearsSelected = int.parse(_yearsSelected);
+    int monthsSelected = int.parse(_monthsSelected);
+    bool validSelects = validateSelects(yearsSelected, monthsSelected);
+    if (!formState.validate() || !validSelects) {
       return;
     }
     String _employeeId = empIdEditCntrlr.text;
     String email = empEmailEditCntrlr.text;
-    String _empFName = nameEditCntrlr.text;
-    String _empLName = lNameEditCntrlr.text;
+    String _empName = nameEditCntrlr.text;
     String password = pwdEditCntrlr.text;
+    String _empcerts = certsEditCntrlr.text;
+    String skills = skillsEditCntrlr.text;
     EmployeeDetails employee = new EmployeeDetails(
-        _employeeId, _empFName, _empLName, email, password, false);
+        _employeeId,
+        password,
+        email,
+        _empName,
+        yearsSelected,
+        monthsSelected,
+        _locationSelected,
+        _buildingSelected,
+        _platformSelected,
+        _platformNameSelected,
+        skills,
+        _empcerts,
+        false);
     new EmployeesRepo().newUser(employee);
     try {
       Dialogs.showProgressDialog(context, globalStateKey, "Please wait...!");
@@ -217,7 +231,6 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
     formState.reset();
     empIdEditCntrlr.clear();
     nameEditCntrlr.clear();
-    lNameEditCntrlr.clear();
     empIdEditCntrlr.clear();
     pwdEditCntrlr.clear();
     skillsEditCntrlr.clear();
@@ -228,12 +241,12 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
       _locationSelected = null;
       _buildingSelected = null;
       _platformSelected = null;
-      _platformTypeSelected = null;
+      _platformNameSelected = null;
       experienceErrorText = '';
       locErrorText = '';
       buildingErrorText = '';
       platformErrorText = '';
-      platformTypeErrorText = '';
+      platformNameErrorText = '';
     });
   }
 
@@ -299,7 +312,7 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
 
   Widget platformDropdown() {
     return FutureBuilder(
-        future: primarySkills,
+        future: platforms,
         builder: (context, snapshot) {
           List<PrimarySkill> platforms = snapshot.hasData ? snapshot.data : [];
           return DropdownButton<String>(
@@ -327,24 +340,23 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
   _changePlatform(List<PrimarySkill> platform, String newValue) {
     setState(() {
       _platformSelected = newValue;
-      platformTypes = [];
-      _platformTypeSelected = null;
-      platformTypes = List<String>.from(platform
+      platformNames = [];
+      _platformNameSelected = null;
+      platformNames = List<String>.from(platform
           .singleWhere((element) =>
               StringUtils.equalsIgnoreCase(element.platformName, newValue))
           .types);
-      print(platformTypes.length);
     });
   }
 
   Widget platformSkillsDropdown() {
     return DropdownButton<String>(
-      value: _platformTypeSelected,
+      value: _platformNameSelected,
       onChanged: (String newValue) {
         _changePlatformType(newValue);
       },
       hint: new Text('Select'),
-      items: platformTypes.map((String value) {
+      items: platformNames.map((String value) {
         return DropdownMenuItem(
           value: value,
           child: Container(
@@ -358,13 +370,11 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
 
   _changePlatformType(String value) {
     setState(() {
-      _platformTypeSelected = value;
+      _platformNameSelected = value;
     });
   }
 
-  validateSelects() {
-    int yearsSelected = int.parse(_yearsSelected);
-    int monthsSelected = int.parse(_monthsSelected);
+  validateSelects(int yearsSelected, int monthsSelected) {
     setState(() {
       experienceErrorText = yearsSelected + monthsSelected < 1
           ? 'Please enter your Experience'
@@ -374,13 +384,13 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
           _buildingSelected == null ? 'Please select Building' : '';
       platformErrorText =
           _platformSelected == null ? 'Please select Platform' : '';
-      platformTypeErrorText =
-          _platformTypeSelected == null ? 'Please select Platform Type' : '';
+      platformNameErrorText =
+          _platformNameSelected == null ? 'Please select Platform Type' : '';
     });
     if (experienceErrorText.isNotEmpty ||
         locErrorText.isNotEmpty ||
         buildingErrorText.isNotEmpty ||
-        platformTypeErrorText.isNotEmpty ||
+        platformNameErrorText.isNotEmpty ||
         platformErrorText.isNotEmpty) {
       return false;
     }

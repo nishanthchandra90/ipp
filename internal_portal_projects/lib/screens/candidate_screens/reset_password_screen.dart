@@ -7,24 +7,24 @@ import 'package:internal_portal_projects/common_components/ipp_text.dart';
 import 'package:internal_portal_projects/repo/employees_repo.dart';
 
 class NewPasswordScreen extends StatefulWidget {
-  final String email;
-
-  const NewPasswordScreen(this.email);
+  const NewPasswordScreen();
 
   @override
-  State<StatefulWidget> createState() => _NewPasswordScreenState(email);
+  State<StatefulWidget> createState() => _NewPasswordScreenState();
 }
 
 class _NewPasswordScreenState extends State<NewPasswordScreen> {
   final _employeeFormKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<State> globalStateKey = new GlobalKey<State>();
-  final String email;
+  final TextEditingController empIdController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
   final TextEditingController repeatPasswordController =
       TextEditingController();
 
-  _NewPasswordScreenState(this.email);
+  String _pwdError = '';
+
+  _NewPasswordScreenState();
 
   @override
   Widget build(BuildContext context) {
@@ -35,23 +35,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
         title: IPPText.simpleText('Set New Password',
             fontWeight: FontWeight.bold, fontSize: 22.0),
       ),
-      body: _buildEmployeeForm(),
-    );
-  }
-
-  _buildEmployeeForm() {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          IPPText.simpleText(email,
-              fontSize: 22.0, fontWeight: FontWeight.bold),
-          Divider(
-            thickness: 2.0,
-          ),
-          _form(),
-        ],
-      ),
+      body: SingleChildScrollView(child: _form()),
     );
   }
 
@@ -64,11 +48,14 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 IPPInputs.simpleTextFormField(
+                    "Employee Id", '', empIdController, true, context),
+                IPPInputs.simpleTextFormField(
                     "new password", '', newPasswordController, true, context,
                     obscureText: true),
                 IPPInputs.simpleTextFormField("Repeat Password", '',
                     repeatPasswordController, true, context,
                     obscureText: true),
+                IPPText.simpleText(_pwdError, color: Colors.red),
                 ButtonBar(
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
@@ -91,8 +78,18 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
   Future<void> _saveEmployee() async {
     var formState = _employeeFormKey.currentState;
     formState.save();
-    formState.validate();
-    new EmployeesRepo().updatePWD(email, newPasswordController.text);
+    if (!formState.validate()) {
+      return;
+    }
+    String newPwd = newPasswordController.text;
+    String repPwd = repeatPasswordController.text;
+    if (newPwd != repPwd) {
+      setState(() {
+        _pwdError = 'Passwords do not match!';
+      });
+      return;
+    }
+    new EmployeesRepo().updatePWD(empIdController.text, newPwd);
     try {
       Dialogs.showProgressDialog(context, globalStateKey, "Please wait...!");
       await new Future.delayed(const Duration(seconds: 1));
@@ -119,5 +116,8 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
     formState.reset();
     newPasswordController.clear();
     repeatPasswordController.clear();
+    setState(() {
+      _pwdError = '';
+    });
   }
 }

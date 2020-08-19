@@ -36,7 +36,7 @@ class ShowEmployeeState extends State<ShowEmployeeScreen> {
               children: [
             _createRow(
               "Name",
-              employee.empFName.toUpperCase() + employee.empLName.toUpperCase(),
+              employee.empName.toUpperCase(),
             ),
             SizedBox(
               height: 30,

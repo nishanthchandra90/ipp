@@ -28,7 +28,7 @@ class EmployeesRepo {
     return await request.close();
   }
 
-  updatePWD(String email, String pwd) async {
+  updatePWD(String empId, String pwd) async {
     StringBuffer urlStringBuffer = new StringBuffer("http://");
     urlStringBuffer.write(localIp);
     urlStringBuffer.write(":");
@@ -39,7 +39,7 @@ class EmployeesRepo {
     request.headers
         .set(HttpHeaders.contentTypeHeader, "application/json; charset=UTF-8");
     urlStringBuffer.clear();
-    String data = email + ":" + pwd;
+    String data = empId + ":" + pwd;
     request.add(utf8.encode(data));
     return await request.close();
   }

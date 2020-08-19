@@ -80,7 +80,7 @@ public class IPPEmployeeController {
     public void updatePWD(@RequestBody String data) {
         System.out.println("Saving new password");
         String[] split = data.split(":");
-        EmployeeDto emp = employeeRepo.findByEmail(split[0]);
+        EmployeeDto emp = employeeRepo.findByEmployeeId(split[0]);
         emp.setPassword(split[1].trim());
         employeeRepo.save(emp);
     }
