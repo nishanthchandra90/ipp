@@ -41,35 +41,59 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
   }
 
   _createEmployeeList(List<EmployeeDetails> employees) {
-    return new ListView.separated(
-      padding: const EdgeInsets.all(2),
-      itemCount: employees.length,
-      itemBuilder: (BuildContext _context, int index) {
-        EmployeeDetails employee = employees[index];
-        return Container(
-          height: 60,
-          width: MediaQuery.of(context).size.width,
-          child: InkWell(
-            child: _createListItem(employee),
+    return Container(
+        height: 50,
+        width: MediaQuery.of(context).size.width * 0.9,
+        child: new ListView.separated(
+          padding: const EdgeInsets.all(20),
+          itemCount: employees.length,
+          itemBuilder: (BuildContext _context, int index) {
+            EmployeeDetails employee = employees[index];
+            return InkWell(
+              onTap: () => Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => new ShowEmployeeScreen(employee))),
+              child: _displayEmployees(employee),
+            );
+          },
+          separatorBuilder: (BuildContext _context, int index) => const Divider(
+            thickness: 1,
           ),
-        );
-      },
-      separatorBuilder: (BuildContext _context, int index) => const Divider(
-        thickness: 1,
-      ),
+        ));
+  }
+
+  Widget _displayEmployees(EmployeeDetails employeeDetails) {
+    if (employeeDetails.employeeId == 'admin') {
+      return Container();
+    }
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        _createRow(
+            employeeDetails.empName.toUpperCase(), employeeDetails.employeeId),
+        SizedBox(
+          height: 10,
+        ),
+        _createRow('', employeeDetails.currLocation.toUpperCase()),
+      ],
     );
   }
 
-  _createListItem(EmployeeDetails employee) {
-    return ListTile(
-      onTap: () => Navigator.push(
-          context,
-          new MaterialPageRoute(
-              builder: (context) => new ShowEmployeeScreen(employee))),
-      leading: IPPText.simpleText(
-          employee.empName.toUpperCase(),
-          fontSize: 20.0),
-      title: Container(width: 40, child: Text(employee.employeeId)),
+  _createRow(String fieldName, String fieldVal) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        IPPText.simpleText(fieldName,
+            fontWeight: FontWeight.bold, fontSize: 18, color: Colors.blue),
+        SizedBox(
+          width: 30,
+        ),
+        IPPText.simpleText(
+          fieldVal,
+        ),
+      ],
     );
   }
 

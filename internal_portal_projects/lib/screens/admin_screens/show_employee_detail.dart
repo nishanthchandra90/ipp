@@ -39,36 +39,59 @@ class ShowEmployeeState extends State<ShowEmployeeScreen> {
               employee.empName.toUpperCase(),
             ),
             SizedBox(
-              height: 30,
+              height: 20,
             ),
             _createRow("Employee Id", employee.employeeId.toUpperCase()),
             SizedBox(
-              height: 30,
+              height: 20,
             ),
-            _createRow("Manager", employee.email),
+            _createRow("Email", employee.email),
             SizedBox(
-              height: 30,
+              height: 20,
             ),
-            _createRow("Admin", employee.isAdmin ? 'Yes' : 'No'),
+            _createRow(
+                "Experience",
+                employee.expYears.toString() +
+                    ' Yr(s), ' +
+                    employee.expMonths.toString() +
+                    ' Mn(s)'),
+            SizedBox(
+              height: 20,
+            ),
+            _createRow("Current Location",
+                employee.building + '\n' + employee.currLocation),
+            SizedBox(
+              height: 20,
+            ),
+            _createRow("Primary Skills",
+                employee.platform + '-' + employee.platformName),
+            SizedBox(
+              height: 20,
+            ),
+            _createRow("Skills",
+                employee.secSkills.isEmpty ? '- - - ' : employee.secSkills),
+            SizedBox(
+              height: 20,
+            ),
+            _createRow("Certificates",
+                employee.secSkills.isEmpty ? '- - - ' : employee.certificates),
           ])),
     );
   }
 
   _createRow(String fieldName, String fieldVal) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        IPPText.simpleText(fieldName,
-            fontWeight: FontWeight.bold, fontSize: 22, color: Colors.blue),
-        SizedBox(
-          width: 50,
-        ),
-        Expanded(
-            child: IPPText.simpleText(
-          fieldVal,
-          fontSize: 20,
-        )),
-      ],
-    );
+    return Padding(
+        padding: EdgeInsets.fromLTRB(5, 0, 20, 0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IPPText.simpleText(fieldName,
+                fontWeight: FontWeight.bold, fontSize: 18, color: Colors.blue),
+            IPPText.simpleText(
+              fieldVal,
+              fontSize: 16,
+            )
+          ],
+        ));
   }
 }

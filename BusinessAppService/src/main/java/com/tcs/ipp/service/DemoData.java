@@ -32,9 +32,9 @@ public class DemoData {
 
     @EventListener
     public void appReady(ApplicationReadyEvent event) {
-
+        employeeRepo.deleteAll();
         employeeRepo.saveAll(List.of(
-                new EmployeeDto("emp-2328356", "12345", "john.joey@tcs.com",
+                new EmployeeDto("admin", "admin", "john.joey@tcs.com",
                         "john joey", 4, 6, "TCS - Goa", "GG VII - STP",
                         "Cloud", "GOOGLE", "", "java", true),
                 new EmployeeDto("emp-2332332", "12354", "blob.byne@tcs.com",
