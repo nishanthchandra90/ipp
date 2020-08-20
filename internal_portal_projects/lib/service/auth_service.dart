@@ -17,12 +17,6 @@ class AuthService with ChangeNotifier {
     return Future.value(currentUser);
   }
 
-  Future createUser(
-      {String firstName,
-      String lastName,
-      String email,
-      String password}) async {}
-
   Future loginUser({String email, String password}) async {
     return await EmployeeService.getUserById(email.toLowerCase());
   }

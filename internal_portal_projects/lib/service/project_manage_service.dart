@@ -30,33 +30,6 @@ class ProjectManagementService {
     await new ProjectsRepo().deleteProject(projectId);
   }
 
-  static getAppliedProjects(String empId) async {
-    var response = await new ProjectsRepo().getAppliedProjects(empId);
-    if (response.statusCode == 200) {
-      String reply = await response.transform(utf8.decoder).join();
-      if (reply.length < 5) {
-        return [];
-      }
-      final decoded = _decodeResponse(reply);
-      return decoded
-          .map<ProjectDetails>((json) => ProjectDetails.fromJson(json))
-          .toList();
-    }
-    return <ProjectDetails>[];
-  }
-
-  static getMatchedProjects(String empId) async {
-    var response = await new ProjectsRepo().getMatchedProjects(empId);
-    if (response.statusCode == 200) {
-      String reply = await response.transform(utf8.decoder).join();
-      final decoded = _decodeResponse(reply);
-      return decoded
-          .map<ProjectDetails>((json) => ProjectDetails.fromJson(json))
-          .toList();
-    }
-    return <ProjectDetails>[];
-  }
-
   static getProjectApplications() async {
     var response = await new ProjectsRepo().getProjectApplications();
     if (response.statusCode == 200) {
@@ -65,6 +38,7 @@ class ProjectManagementService {
         return [];
       }
       final decoded = _decodeResponse(reply);
+      print(reply.length);
       return decoded
           .map<ProjectApplications>((j) => ProjectApplications.fromJson(j))
           .toList();
@@ -85,18 +59,6 @@ class ProjectManagementService {
           .toList();
     }
     return [];
-  }
-
-  static getConfirmedProjects(String empId) async {
-    var response = await new ProjectsRepo().getConfirmedProjects(empId);
-    if (response.statusCode == 200) {
-      String reply = await response.transform(utf8.decoder).join();
-      final decoded = _decodeResponse(reply);
-      return decoded
-          .map<ProjectDetails>((json) => ProjectDetails.fromJson(json))
-          .toList();
-    }
-    return <ProjectDetails>[];
   }
 
   static _decodeResponse(String responseBody) {
