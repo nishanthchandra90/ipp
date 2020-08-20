@@ -21,7 +21,7 @@ class ProjectsBloc {
       StreamController<List<ProjectDetails>>.broadcast();
 
   final _applicationsAndMatchesController =
-      StreamController<List<PotentialCandidates>>.broadcast();
+      StreamController<List<ProjectApplications>>.broadcast();
 
   get allProjects => _projectController.stream;
 
@@ -43,41 +43,41 @@ class ProjectsBloc {
 
   getProjects() async {
     _projectController.sink
-        .add(await ProjectManagementService().getAllProjects());
+        .add(await ProjectManagementService.getAllProjects());
   }
 
   getMatchedProjects(String empId) async {
     _matchedProjectsController.sink
-        .add(await ProjectManagementService().getMatchedProjects(empId));
+        .add(await ProjectManagementService.getMatchedProjects(empId));
   }
 
   getAppliedProjects(String empId) async {
     _appliedProjectsController.sink
-        .add(await ProjectManagementService().getAppliedProjects(empId));
+        .add(await ProjectManagementService.getAppliedProjects(empId));
   }
 
   getConfirmedProjects(String empId) async {
     _confirmedProjectsController.sink
-        .add(await ProjectManagementService().getConfirmedProjects(empId));
+        .add(await ProjectManagementService.getConfirmedProjects(empId));
   }
 
-  getApplicationsAndMatches() async {
+  getProjectApplications() async {
     _applicationsAndMatchesController.sink
-        .add(await ProjectManagementService().getApplicationsAndMatches());
+        .add(await ProjectManagementService.getProjectApplications());
   }
 
   add(ProjectDetails project) {
-    ProjectManagementService().newProject(project);
+    ProjectManagementService.newProject(project);
     getProjects();
   }
 
   edit(ProjectDetails project) {
-    ProjectManagementService().updateProject(project);
+    ProjectManagementService.updateProject(project);
     getProjects();
   }
 
   delete(String projectId) {
-    ProjectManagementService().deleteProject(projectId);
+    ProjectManagementService.deleteProject(projectId);
     getProjects();
   }
 

@@ -2,13 +2,13 @@ import 'dart:core';
 
 import 'package:internal_portal_projects/model/project_details.dart';
 
-class PotentialCandidates {
+class ProjectApplications {
   ProjectDetails _project;
   List<dynamic> _appliedCandidates;
   List<dynamic> _matchedCandidates;
   List<dynamic> _confirmedCandidates;
 
-  PotentialCandidates(this._project, this._appliedCandidates,
+  ProjectApplications(this._project, this._appliedCandidates,
       this._matchedCandidates, this._confirmedCandidates);
 
   ProjectDetails get project => _project;
@@ -19,19 +19,19 @@ class PotentialCandidates {
 
   List<dynamic> get confirmedCandidates => _confirmedCandidates;
 
-  factory PotentialCandidates.fromJson(Map<String, dynamic> parsedJson) {
-    return PotentialCandidates(
+  factory ProjectApplications.fromJson(Map<String, dynamic> parsedJson) {
+    return ProjectApplications(
       ProjectDetails.fromJson(parsedJson['project']),
-      parsedJson["appliedEmployees"] =
-          (parsedJson['appliedEmployees'] as List)
+      parsedJson["appliedCandidates"] =
+          (parsedJson['appliedCandidates'] as List)
               ?.map((e) => e == null ? null : Map<String, dynamic>.from(e))
               ?.toList(),
-      parsedJson["matchedEmployees"] =
-          (parsedJson['matchedEmployees'] as List)
+      parsedJson["matchedCandidates"] =
+          (parsedJson['matchedCandidates'] as List)
               ?.map((e) => e == null ? null : Map<String, dynamic>.from(e))
               ?.toList(),
-      parsedJson["confirmedEmployees"] =
-          (parsedJson['confirmedEmployees'] as List)
+      parsedJson["confirmedCandidates"] =
+          (parsedJson['confirmedCandidates'] as List)
               ?.map((e) => e == null ? null : Map<String, dynamic>.from(e))
               ?.toList(),
     );

@@ -1,11 +1,11 @@
-import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:internal_portal_projects/service/project_manage_service.dart';
+
+import 'employee_service.dart';
 
 class AuthService with ChangeNotifier {
   var currentUser;
 
-  AuthService() {}
+  AuthService();
 
   Future getUser() {
     return Future.value(currentUser);
@@ -28,17 +28,16 @@ class AuthService with ChangeNotifier {
             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(email);
     if (isEmail) {
-      return await ProjectManagementService()
-          .getUserByEmail(email.toLowerCase());
+      return await EmployeeService.getUserByEmail(email.toLowerCase());
     } else
-      return await ProjectManagementService().getUserById(email.toLowerCase());
+      return await EmployeeService.getUserById(email.toLowerCase());
   }
 
   Future isNewUser(String emailId) async {
-    return await ProjectManagementService().isNewUser(emailId.toLowerCase());
+    return await EmployeeService.isNewUser(emailId.toLowerCase());
   }
 
   isRegisteredUser(String emailId) async {
-    return await ProjectManagementService().isRegisteredUser(emailId);
+    return await EmployeeService.isRegisteredUser(emailId);
   }
 }

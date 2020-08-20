@@ -14,7 +14,7 @@ class _MatchesTabScreenState extends State<MatchesTabScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bloc.getApplicationsAndMatches();
+    bloc.getProjectApplications();
 
     return Scaffold(body: _displayMatchesAndApplications());
   }
@@ -24,7 +24,7 @@ class _MatchesTabScreenState extends State<MatchesTabScreen> {
       child: StreamBuilder(
         stream: bloc.potentialCandidates,
         builder: (BuildContext context,
-            AsyncSnapshot<List<PotentialCandidates>> snapshot) {
+            AsyncSnapshot<List<ProjectApplications>> snapshot) {
           if (snapshot.hasData) {
             return Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -39,12 +39,12 @@ class _MatchesTabScreenState extends State<MatchesTabScreen> {
     );
   }
 
-  _createProjectList(List<PotentialCandidates> potentialCandidates) {
+  _createProjectList(List<ProjectApplications> potentialCandidates) {
     return new ListView.separated(
       padding: const EdgeInsets.all(5),
       itemCount: potentialCandidates.length,
       itemBuilder: (BuildContext _context, int index) {
-        PotentialCandidates potentialCandidate = potentialCandidates[index];
+        ProjectApplications potentialCandidate = potentialCandidates[index];
         return Container(
           width: MediaQuery.of(context).size.width,
           child: InkWell(
@@ -63,7 +63,7 @@ class _MatchesTabScreenState extends State<MatchesTabScreen> {
     );
   }
 
-  Widget _createListItem(PotentialCandidates potentialCandidate) {
+  Widget _createListItem(ProjectApplications potentialCandidate) {
     Widget projId = IPPText.simpleText(
         'Project ' + potentialCandidate.project.projectId,
         fontWeight: FontWeight.bold,

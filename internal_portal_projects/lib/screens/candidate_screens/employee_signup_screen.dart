@@ -8,6 +8,7 @@ import 'package:internal_portal_projects/common_components/ipp_text.dart';
 import 'package:internal_portal_projects/model/employee_details.dart';
 import 'package:internal_portal_projects/model/primary_skill_details.dart';
 import 'package:internal_portal_projects/repo/employees_repo.dart';
+import 'package:internal_portal_projects/service/location_service.dart';
 import 'package:internal_portal_projects/service/project_manage_service.dart';
 
 class EmployeeSignUpScreen extends StatefulWidget {
@@ -49,9 +50,9 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
   @override
   void initState() {
     super.initState();
-    citiesFuture = new ProjectManagementService().getAllLocations();
-    buildingsFuture = new ProjectManagementService().getAllBuildings();
-    platforms = new ProjectManagementService().getPrimaryPlatforms();
+    citiesFuture = LocationService.getAllLocations();
+    buildingsFuture = LocationService.getAllBuildings();
+    platforms = ProjectManagementService.getPrimaryPlatforms();
   }
 
   @override

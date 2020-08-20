@@ -57,12 +57,12 @@ class ProjectsRepo {
     return await request.close();
   }
 
-  getApplicationsAndMatches() async {
+  getProjectApplications() async {
     StringBuffer urlStringBuffer = new StringBuffer("http://");
     urlStringBuffer.write(localIp);
     urlStringBuffer.write(":");
     urlStringBuffer.write(port);
-    urlStringBuffer.write("/getPotentialCandidates");
+    urlStringBuffer.write("/getProjectApplications");
     final request =
         await httpClient.getUrl(Uri.parse(urlStringBuffer.toString()));
     request.headers

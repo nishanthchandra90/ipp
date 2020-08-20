@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:internal_portal_projects/common_components/ipp_text.dart';
+import 'package:internal_portal_projects/model/candidate_details.dart';
 import 'package:internal_portal_projects/model/employee_details.dart';
 import 'package:internal_portal_projects/model/potential_candidates.dart';
 import 'package:internal_portal_projects/model/project_details.dart';
@@ -10,7 +11,7 @@ import 'applied_candidates.dart';
 import 'matched_candidates.dart';
 
 class ApplicationAndMatchesScreen extends StatefulWidget {
-  final PotentialCandidates potentialCandidates;
+  final ProjectApplications potentialCandidates;
 
   ApplicationAndMatchesScreen(this.potentialCandidates);
 
@@ -21,7 +22,7 @@ class ApplicationAndMatchesScreen extends StatefulWidget {
 
 class ApplicationAndMatchesScreenState
     extends State<ApplicationAndMatchesScreen> {
-  final PotentialCandidates potentialCandidates;
+  final ProjectApplications potentialCandidates;
   final _currentPageNotifier = ValueNotifier<int>(0);
 
   ApplicationAndMatchesScreenState(this.potentialCandidates);
@@ -38,13 +39,13 @@ class ApplicationAndMatchesScreenState
 
   _buildPageBar() {
     String projectId = potentialCandidates.project.projectId;
-    List<EmployeeDetails> appliedCandidates = potentialCandidates
+    List<CandidateDetails> appliedCandidates = potentialCandidates
         .appliedCandidates
-        .map((i) => EmployeeDetails.fromJson(i))
+        .map((i) => CandidateDetails.fromJson(i))
         .toList();
-    List<EmployeeDetails> matchedCandidates = potentialCandidates
+    List<CandidateDetails> matchedCandidates = potentialCandidates
         .matchedCandidates
-        .map((i) => EmployeeDetails.fromJson(i))
+        .map((i) => CandidateDetails.fromJson(i))
         .toList();
     return new Column(
       children: <Widget>[
