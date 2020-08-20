@@ -3,11 +3,9 @@ package com.tcs.ipp.controller;
 import com.tcs.ipp.model.PrimarySkill;
 import com.tcs.ipp.model.Project;
 import com.tcs.ipp.model.ProjectApplicationDTO;
-import com.tcs.ipp.model.ProjectCandidateMatch;
 import com.tcs.ipp.repository.PlatformRepo;
 import com.tcs.ipp.repository.ProjectRepo;
 import com.tcs.ipp.service.ProjectApplicationsService;
-import com.tcs.ipp.service.ProjectCandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +16,6 @@ public class IPPProjectController {
 
     @Autowired
     private ProjectRepo projectRepo;
-
-    @Autowired
-    private ProjectCandidateService projectCandidateService;
 
     @Autowired
     ProjectApplicationsService projectApplicationsService;
@@ -64,17 +59,11 @@ public class IPPProjectController {
         return platformRepo.findAll();
     }
 
-    @GetMapping("/getPotentialCandidates")
-    public List<ProjectCandidateMatch> getPotentialCandidates() {
-        return projectCandidateService.getPotentialCandidates();
-    }
-
     @GetMapping("/confirmCandidate")
     public void confirmCandidate(@RequestParam String projectId, @RequestParam String empId) {
         System.out.println("Emp:" + empId);
         System.out.println("Proj:" + projectId);
-
-        projectCandidateService.confirmCandidate(projectId, empId);
+        projectApplicationsService.confirmCandidate(projectId, empId);
     }
 
     @GetMapping("/getProjectApplications")

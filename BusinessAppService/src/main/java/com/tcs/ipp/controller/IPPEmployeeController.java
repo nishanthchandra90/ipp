@@ -1,10 +1,8 @@
 package com.tcs.ipp.controller;
 
 import com.tcs.ipp.model.Employee;
-import com.tcs.ipp.model.Project;
 import com.tcs.ipp.repository.EmployeeRepo;
 import com.tcs.ipp.repository.ProjectRepo;
-import com.tcs.ipp.service.ProjectCandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,9 +18,6 @@ public class IPPEmployeeController {
 
     @Autowired
     private ProjectRepo projectsRepo;
-
-    @Autowired
-    private ProjectCandidateService projectCandidateService;
 
     @GetMapping(value = "/isNewUser", produces = "application/json")
     public Map<String, Boolean> isNewUser(@RequestParam String email) {
@@ -49,12 +44,6 @@ public class IPPEmployeeController {
     public List<Employee> getAllEmployees() {
         System.out.println("Sending all employees as response...");
         return employeeRepo.findAll();
-    }
-
-    @GetMapping("/getEmployeeByEmail")
-    public Employee getEmployeeByEmail(@RequestParam String email) {
-        System.out.println("Getting Employee with email:" + email);
-        return employeeRepo.findByEmail(email);
     }
 
     @GetMapping("/getEmployeeById")
@@ -88,24 +77,6 @@ public class IPPEmployeeController {
     public void deleteEmployee(@RequestParam String employeeId) {
         System.out.println("Deleting Employee with Id:" + employeeId);
         employeeRepo.deleteById(employeeId);
-    }
-
-    @GetMapping("/getAppliedProjects")
-    public List<Project> getAppliedProjectsById(@RequestParam String empId) {
-        System.out.println("Getting Projects applied by Employee with Id:" + empId);
-        return projectCandidateService.getAppliedProjectByEmpId(empId);
-    }
-
-    @GetMapping("/getMatchedProjects")
-    public List<Project> getMatchedProjects(@RequestParam String empId) {
-        System.out.println("Getting Projects matching with Employee skills for Employee:" + empId);
-        return projectCandidateService.getMyMatchedProjects(empId);
-    }
-
-    @GetMapping("/getConfirmedProjects")
-    public List<Project> getConfirmedProjects(@RequestParam String empId) {
-        System.out.println("Getting Projects matching with Employee skills for Employee:" + empId);
-        return projectCandidateService.getConfirmedProjects(empId);
     }
 
 }

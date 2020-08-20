@@ -67,4 +67,18 @@ public class ProjectApplicationsService {
         return ProjectCandidateMatches;
     }
 
+    public void confirmCandidate(String projectId, String empId) {
+        System.out.println("Confirmed project :" + projectId);
+        System.out.println(" for emp:" + empId);
+        CandidateApplication candidateApplication = candidateApplicationRepo.findById(projectId).get();
+        List<String> confirmedEmpIds = candidateApplication.getConfirmedEmpIds();
+        if (confirmedEmpIds.contains(empId)) {
+            confirmedEmpIds.remove(empId);
+        } else {
+            confirmedEmpIds.add(empId);
+
+        }
+        candidateApplicationRepo.save(candidateApplication);
+    }
+
 }
