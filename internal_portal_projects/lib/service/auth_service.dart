@@ -24,13 +24,7 @@ class AuthService with ChangeNotifier {
       String password}) async {}
 
   Future loginUser({String email, String password}) async {
-    bool isEmail = RegExp(
-            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-        .hasMatch(email);
-    if (isEmail) {
-      return await EmployeeService.getUserByEmail(email.toLowerCase());
-    } else
-      return await EmployeeService.getUserById(email.toLowerCase());
+    return await EmployeeService.getUserById(email.toLowerCase());
   }
 
   Future isNewUser(String emailId) async {

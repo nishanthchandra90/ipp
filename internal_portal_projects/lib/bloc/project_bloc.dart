@@ -20,7 +20,7 @@ class ProjectsBloc {
   final _confirmedProjectsController =
       StreamController<List<ProjectDetails>>.broadcast();
 
-  final _applicationsAndMatchesController =
+  final _projectApplicationsController =
       StreamController<List<ProjectApplications>>.broadcast();
 
   get allProjects => _projectController.stream;
@@ -31,13 +31,13 @@ class ProjectsBloc {
 
   get confirmedProjects => _confirmedProjectsController.stream;
 
-  get potentialCandidates => _applicationsAndMatchesController.stream;
+  get projectApplications => _projectApplicationsController.stream;
 
   dispose() {
     _projectController.close();
     _matchedProjectsController.close();
     _appliedProjectsController.close();
-    _applicationsAndMatchesController.close();
+    _projectApplicationsController.close();
     _confirmedProjectsController.close();
   }
 
@@ -62,7 +62,7 @@ class ProjectsBloc {
   }
 
   getProjectApplications() async {
-    _applicationsAndMatchesController.sink
+    _projectApplicationsController.sink
         .add(await ProjectManagementService.getProjectApplications());
   }
 

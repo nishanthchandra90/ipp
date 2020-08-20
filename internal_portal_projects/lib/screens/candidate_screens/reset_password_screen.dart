@@ -89,7 +89,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
       });
       return;
     }
-    new EmployeesRepo().updatePWD(empIdController.text, newPwd);
+    EmployeesRepo.updatePWD(empIdController.text, newPwd);
     try {
       Dialogs.showProgressDialog(context, globalStateKey, "Please wait...!");
       await new Future.delayed(const Duration(seconds: 1));

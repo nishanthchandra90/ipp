@@ -1,54 +1,34 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:internal_portal_projects/bloc/project_bloc.dart';
 import 'package:internal_portal_projects/common_components/ipp_text.dart';
 import 'package:internal_portal_projects/model/project_details.dart';
 
 import '../show_project_details_screen.dart';
 
 class ShowAppliedProjects extends StatefulWidget {
-  final String empId;
+  final List<ProjectDetails> appliedProjects;
 
-  const ShowAppliedProjects(this.empId);
+  const ShowAppliedProjects(this.appliedProjects);
 
   @override
-  State<StatefulWidget> createState() => ShowAppliedProjectsState(empId);
+  State<StatefulWidget> createState() =>
+      ShowAppliedProjectsState(appliedProjects);
 }
 
 class ShowAppliedProjectsState extends State<ShowAppliedProjects> {
-  final bloc = ProjectsBloc();
-  String empId;
+  List<ProjectDetails> projects;
 
-  ShowAppliedProjectsState(this.empId);
+  ShowAppliedProjectsState(this.projects);
 
   @override
   Widget build(BuildContext context) {
-    bloc.getAppliedProjects(empId);
-    return Scaffold(body: _buildScreen());
+    return Scaffold(body: _createProjectList());
   }
 
-  _buildScreen() {
-    return Container(
-      child: StreamBuilder(
-        stream: bloc.appliedProjects,
-        builder: (BuildContext context,
-            AsyncSnapshot<List<ProjectDetails>> snapshot) {
-          if (snapshot.hasData) {
-            return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  new Expanded(child: _createProjectList(snapshot.data)),
-                ]);
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
-    );
-  }
-
-  _createProjectList(List<ProjectDetails> projects) {
+  _createProjectList() {
+    if (projects.isEmpty) {
+      return Center(child: IPPText.simpleText('No applications found!'));
+    }
     return new ListView.separated(
       padding: const EdgeInsets.all(2),
       itemCount: projects.length,
@@ -84,7 +64,7 @@ class ShowAppliedProjectsState extends State<ShowAppliedProjects> {
           child: FlatButton(
             onPressed: () {
               setState(() {
-
+                projects.remove(project);
               });
             },
             child: Text('Withdraw'),

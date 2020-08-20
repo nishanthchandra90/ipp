@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:internal_portal_projects/common_components/ipp_text.dart';
 import 'package:internal_portal_projects/model/candidate_details.dart';
-import 'package:internal_portal_projects/model/employee_details.dart';
 import 'package:internal_portal_projects/model/potential_candidates.dart';
 import 'package:internal_portal_projects/model/project_details.dart';
 import 'package:page_view_indicators/circle_page_indicator.dart';
@@ -11,21 +10,21 @@ import 'applied_candidates.dart';
 import 'matched_candidates.dart';
 
 class ApplicationAndMatchesScreen extends StatefulWidget {
-  final ProjectApplications potentialCandidates;
+  final ProjectApplications projectApplications;
 
-  ApplicationAndMatchesScreen(this.potentialCandidates);
+  ApplicationAndMatchesScreen(this.projectApplications);
 
   @override
   State<StatefulWidget> createState() =>
-      ApplicationAndMatchesScreenState(potentialCandidates);
+      ApplicationAndMatchesScreenState(projectApplications);
 }
 
 class ApplicationAndMatchesScreenState
     extends State<ApplicationAndMatchesScreen> {
-  final ProjectApplications potentialCandidates;
+  final ProjectApplications projectApplications;
   final _currentPageNotifier = ValueNotifier<int>(0);
 
-  ApplicationAndMatchesScreenState(this.potentialCandidates);
+  ApplicationAndMatchesScreenState(this.projectApplications);
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +37,12 @@ class ApplicationAndMatchesScreenState
   }
 
   _buildPageBar() {
-    String projectId = potentialCandidates.project.projectId;
-    List<CandidateDetails> appliedCandidates = potentialCandidates
+    String projectId = projectApplications.project.projectId;
+    List<CandidateDetails> appliedCandidates = projectApplications
         .appliedCandidates
         .map((i) => CandidateDetails.fromJson(i))
         .toList();
-    List<CandidateDetails> matchedCandidates = potentialCandidates
+    List<CandidateDetails> matchedCandidates = projectApplications
         .matchedCandidates
         .map((i) => CandidateDetails.fromJson(i))
         .toList();
@@ -77,7 +76,7 @@ class ApplicationAndMatchesScreenState
   }
 
   _createProjectSection() {
-    ProjectDetails project = potentialCandidates.project;
+    ProjectDetails project = projectApplications.project;
     return Padding(
         padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
         child: Column(

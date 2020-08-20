@@ -203,7 +203,7 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
         skills,
         _empcerts,
         false);
-    new EmployeesRepo().newUser(employee);
+    EmployeesRepo.newUser(employee);
     try {
       Dialogs.showProgressDialog(context, globalStateKey, "Please wait...!");
       await new Future.delayed(const Duration(seconds: 1));

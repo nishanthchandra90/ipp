@@ -5,55 +5,48 @@ import 'package:internal_portal_projects/model/potential_candidates.dart';
 import 'package:internal_portal_projects/screens/admin_screens/applicatoins_matches_detail_screen.dart';
 
 class MatchesTabScreen extends StatefulWidget {
+  final List<ProjectApplications> projectApplications;
+
+  const MatchesTabScreen(this.projectApplications);
+
   @override
-  State<StatefulWidget> createState() => _MatchesTabScreenState();
+  State<StatefulWidget> createState() =>
+      _MatchesTabScreenState(projectApplications);
 }
 
 class _MatchesTabScreenState extends State<MatchesTabScreen> {
+  final List<ProjectApplications> projectApplications;
   final bloc = ProjectsBloc();
+
+  _MatchesTabScreenState(this.projectApplications);
 
   @override
   Widget build(BuildContext context) {
     bloc.getProjectApplications();
 
-    return Scaffold(body: _displayMatchesAndApplications());
+    return Scaffold(
+        body: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+          new Expanded(child: _createProjectList()),
+        ]));
   }
 
-  _displayMatchesAndApplications() {
-    return Container(
-      child: StreamBuilder(
-        stream: bloc.potentialCandidates,
-        builder: (BuildContext context,
-            AsyncSnapshot<List<ProjectApplications>> snapshot) {
-          if (snapshot.hasData) {
-            return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  new Expanded(child: _createProjectList(snapshot.data)),
-                ]);
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
-    );
-  }
-
-  _createProjectList(List<ProjectApplications> potentialCandidates) {
+  _createProjectList() {
     return new ListView.separated(
       padding: const EdgeInsets.all(5),
-      itemCount: potentialCandidates.length,
+      itemCount: projectApplications.length,
       itemBuilder: (BuildContext _context, int index) {
-        ProjectApplications potentialCandidate = potentialCandidates[index];
+        ProjectApplications projectApplication = projectApplications[index];
         return Container(
           width: MediaQuery.of(context).size.width,
           child: InkWell(
-            child: _createListItem(potentialCandidate),
+            child: _createListItem(projectApplication),
             onTap: () => Navigator.push(
                 context,
                 new MaterialPageRoute(
                     builder: (context) =>
-                        new ApplicationAndMatchesScreen(potentialCandidate))),
+                        new ApplicationAndMatchesScreen(projectApplication))),
           ),
         );
       },
@@ -63,29 +56,29 @@ class _MatchesTabScreenState extends State<MatchesTabScreen> {
     );
   }
 
-  Widget _createListItem(ProjectApplications potentialCandidate) {
+  Widget _createListItem(ProjectApplications projectApplication) {
     Widget projId = IPPText.simpleText(
-        'Project ' + potentialCandidate.project.projectId,
+        'Project ' + projectApplication.project.projectId,
         fontWeight: FontWeight.bold,
         fontSize: 18,
         color: Colors.blue);
-    Widget projLoc = IPPText.simpleText(potentialCandidate.project.currLocation,
+    Widget projLoc = IPPText.simpleText(projectApplication.project.currLocation,
         fontSize: 15);
     Widget matched = IPPText.simpleText(
-        'Matched: ' + potentialCandidate.matchedCandidates.length.toString(),
+        'Matched: ' + projectApplication.matchedCandidates.length.toString(),
         fontWeight: FontWeight.bold,
         color: Colors.green);
     Widget applied = IPPText.simpleText(
-        'Applied: ' + potentialCandidate.appliedCandidates.length.toString(),
+        'Applied: ' + projectApplication.appliedCandidates.length.toString(),
         fontWeight: FontWeight.bold,
         color: Colors.orange);
     Widget skills = Container(
         width: MediaQuery.of(context).size.width * 0.9,
         child: IPPText.simpleText(
             'Primary Skill: ' +
-                potentialCandidate.project.platform +
+                projectApplication.project.platform +
                 ' (' +
-                potentialCandidate.project.platformName +
+                projectApplication.project.platformName +
                 ')',
             fontWeight: FontWeight.bold,
             fontSize: 15));

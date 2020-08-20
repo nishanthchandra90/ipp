@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:internal_portal_projects/bloc/project_bloc.dart';
 import 'package:internal_portal_projects/common_components/ipp_text.dart';
+import 'package:internal_portal_projects/model/candidate_details.dart';
 import 'package:internal_portal_projects/model/employee_details.dart';
+import 'package:internal_portal_projects/model/potential_candidates.dart';
+import 'package:internal_portal_projects/model/project_details.dart';
 import 'package:internal_portal_projects/screens/admin_screens/admin_employees_tab_screen.dart';
 import 'package:internal_portal_projects/screens/admin_screens/admin_projects_tab_screen.dart';
 import 'package:internal_portal_projects/screens/candidate_screens/show_confirmed_projects_screen.dart';
@@ -16,19 +20,13 @@ class MyHomePage extends StatelessWidget {
 
   MyHomePage({Key key, this.title, this.employee}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
+
+  final bloc = ProjectsBloc();
 
   @override
   Widget build(BuildContext context) {
+    bloc.getProjectApplications();
     var tabs = employee.isAdmin ? _createAdminTabs() : _createEmployeeTabs();
     return DefaultTabController(
       length: 3,
@@ -40,14 +38,37 @@ class MyHomePage extends StatelessWidget {
                 child: _createTabBar(tabs)),
             title: IPPText.simpleText("Manage Projects",
                 fontSize: 20.0, align: TextAlign.right, color: Colors.white)),
-        body: TabBarView(
-          children: employee.isAdmin
-              ? [ProjectsTabScreen(), MatchesTabScreen(), EmployeesTabScreen()]
-              : [
-                  ShowMatchedProjects(employee.employeeId),
-                  ShowAppliedProjects(employee.employeeId),
-                  ShowConfirmedProjects(employee.employeeId)
-                ],
+        body: StreamBuilder(
+          stream: bloc.projectApplications,
+          builder: (BuildContext context,
+              AsyncSnapshot<List<ProjectApplications>> snapshot) {
+            List<ProjectApplications> projectApplications = snapshot.data;
+            if (snapshot.hasData) {
+              String empId = employee.employeeId;
+              var matchedProjects =
+                  _createMatchedProjects(projectApplications, empId);
+              var appliedProjects =
+                  _createAppliedProjects(projectApplications, empId);
+              var confirmedProjects =
+                  _createConfirmedProjects(projectApplications, empId);
+              return TabBarView(
+                children: employee.isAdmin
+                    ? [
+                        ProjectsTabScreen(),
+                        MatchesTabScreen(projectApplications),
+                        EmployeesTabScreen()
+                      ]
+                    : [
+                        ShowMatchedProjects(matchedProjects),
+                        ShowAppliedProjects(appliedProjects),
+                        ShowConfirmedProjects(
+                            confirmedProjects) //13,24,22,12,01
+                      ],
+              );
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          },
         ),
         drawer: _createDrawer(context),
       ),
@@ -136,4 +157,47 @@ class MyHomePage extends StatelessWidget {
       text: text,
     );
   }
+
+  _createMatchedProjects(
+      List<ProjectApplications> projectApplications, String empId) {
+    List<ProjectDetails> matchedProjects = [];
+    projectApplications.forEach((element) {
+      _dynamicToClass(element.matchedCandidates).forEach((candidateDetail) {
+        if (candidateDetail.employee.employeeId == empId) {
+          matchedProjects.add(element.project);
+        }
+      });
+    });
+    return matchedProjects;
+  }
+
+  _createAppliedProjects(
+      List<ProjectApplications> projectApplications, String empId) {
+    List<ProjectDetails> appliedProjects = [];
+    projectApplications.forEach((element) {
+      _dynamicToClass(element.appliedCandidates).forEach((candidateDetail) {
+        if (candidateDetail.employee.employeeId == empId) {
+          appliedProjects.add(element.project);
+        }
+      });
+    });
+    return appliedProjects;
+  }
+
+  _createConfirmedProjects(
+      List<ProjectApplications> projectApplications, String empId) {
+    List<ProjectDetails> confirmedProjects = [];
+    projectApplications.forEach((element) {
+      _dynamicToClass(element.confirmedCandidates).forEach((candidateDetail) {
+        if (candidateDetail.employee.employeeId == empId) {
+          confirmedProjects.add(element.project);
+        }
+      });
+    });
+    return confirmedProjects;
+  }
+}
+
+List<CandidateDetails> _dynamicToClass(List<dynamic> dynamics) {
+  return dynamics.map((i) => CandidateDetails.fromJson(i)).toList();
 }

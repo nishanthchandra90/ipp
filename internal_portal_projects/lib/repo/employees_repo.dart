@@ -5,16 +5,16 @@ import 'package:internal_portal_projects/model/employee_details.dart';
 import 'package:internal_portal_projects/model/project_details.dart';
 
 class EmployeesRepo {
-  HttpClient httpClient = new HttpClient();
+  static HttpClient httpClient = new HttpClient();
   static EmployeesRepo _instance = new EmployeesRepo.internal();
-  String localIp = "192.168.2.104";
-  String port = "8080";
+  static String localIp = "192.168.2.104";
+  static String port = "8080";
 
   EmployeesRepo.internal();
 
   factory EmployeesRepo() => _instance;
 
-  getAllUsers() async {
+  static getAllUsers() async {
     StringBuffer urlStringBuffer = new StringBuffer("http://");
     urlStringBuffer.write(localIp);
     urlStringBuffer.write(":");
@@ -28,7 +28,7 @@ class EmployeesRepo {
     return await request.close();
   }
 
-  updatePWD(String empId, String pwd) async {
+  static updatePWD(String empId, String pwd) async {
     StringBuffer urlStringBuffer = new StringBuffer("http://");
     urlStringBuffer.write(localIp);
     urlStringBuffer.write(":");
@@ -44,7 +44,7 @@ class EmployeesRepo {
     return await request.close();
   }
 
-  getUserById(String name) async {
+  static getUserById(String name) async {
     StringBuffer urlStringBuffer = new StringBuffer("http://");
     urlStringBuffer.write(localIp);
     urlStringBuffer.write(":");
@@ -60,23 +60,7 @@ class EmployeesRepo {
     return await request.close();
   }
 
-  getUserByEmail(String email) async {
-    StringBuffer urlStringBuffer = new StringBuffer("http://");
-    urlStringBuffer.write(localIp);
-    urlStringBuffer.write(":");
-    urlStringBuffer.write(port);
-    urlStringBuffer.write("/getEmployeeByEmail");
-    urlStringBuffer.write("?email=" + email);
-
-    final request =
-        await httpClient.getUrl(Uri.parse(urlStringBuffer.toString()));
-    request.headers
-        .set(HttpHeaders.contentTypeHeader, "application/json; charset=UTF-8");
-    urlStringBuffer.clear();
-    return await request.close();
-  }
-
-  isNewUser(String emailId) async {
+  static isNewUser(String emailId) async {
     StringBuffer urlStringBuffer = new StringBuffer("http://");
     urlStringBuffer.write(localIp);
     urlStringBuffer.write(":");
@@ -92,7 +76,7 @@ class EmployeesRepo {
     return await request.close();
   }
 
-  isRegisteredUser(String emailId) async {
+  static isRegisteredUser(String emailId) async {
     StringBuffer urlStringBuffer = new StringBuffer("http://");
     urlStringBuffer.write(localIp);
     urlStringBuffer.write(":");
@@ -108,7 +92,7 @@ class EmployeesRepo {
     return await request.close();
   }
 
-  newUser(EmployeeDetails employee) async {
+  static newUser(EmployeeDetails employee) async {
     StringBuffer urlStringBuffer = new StringBuffer("http://");
     urlStringBuffer.write(localIp);
     urlStringBuffer.write(":");
@@ -126,5 +110,4 @@ class EmployeesRepo {
   updateUser(ProjectDetails project) async {}
 
   deleteUser(String id) async {}
-
 }
