@@ -5,11 +5,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Objects;
 
 @Document("location")
-public class LocationDTO {
+public class Location {
 
     private String locationName;
 
-    public LocationDTO(String locationName) {
+    public Location(String locationName) {
         this.locationName = locationName;
     }
 
@@ -20,8 +20,8 @@ public class LocationDTO {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof LocationDTO)) return false;
-        LocationDTO that = (LocationDTO) o;
+        if (!(o instanceof Location)) return false;
+        Location that = (Location) o;
         return getLocationName().equals(that.getLocationName());
     }
 

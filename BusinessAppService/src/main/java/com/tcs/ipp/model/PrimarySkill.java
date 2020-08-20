@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Objects;
 
 @Document("platform")
-public class PrimarySkillsDTO {
+public class PrimarySkill {
 
     private String platform;
 
     private List<String> platformTypes;
 
-    public PrimarySkillsDTO(String platform, List<String> platformTypes) {
+    public PrimarySkill(String platform, List<String> platformTypes) {
         this.platform = platform;
         this.platformTypes = platformTypes;
     }
@@ -36,8 +36,8 @@ public class PrimarySkillsDTO {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof PrimarySkillsDTO)) return false;
-        PrimarySkillsDTO that = (PrimarySkillsDTO) o;
+        if (!(o instanceof PrimarySkill)) return false;
+        PrimarySkill that = (PrimarySkill) o;
         return getPlatform().equals(that.getPlatform()) &&
                 getPlatformTypes().equals(that.getPlatformTypes());
     }

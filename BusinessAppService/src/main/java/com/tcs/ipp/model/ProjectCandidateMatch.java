@@ -4,34 +4,34 @@ import java.util.List;
 
 public class ProjectCandidateMatch {
 
-    private final ProjectDTO project;
-    private final List<EmployeeDto> appliedEmployees;
-    private final List<EmployeeDto> matchedEmployees;
-    private final List<EmployeeDto> confirmedEmployees;
+    private final Project project;
+    private final List<Employee> appliedEmployees;
+    private final List<Employee> matchedEmployees;
+    private final List<Employee> confirmedEmployees;
 
-    public ProjectCandidateMatch(ProjectDTO project,
-                                 List<EmployeeDto> appliedEmployees,
-                                 List<EmployeeDto> matchedEmployees,
-                                 List<EmployeeDto> confirmedEmployees) {
+    public ProjectCandidateMatch(Project project,
+                                 List<Employee> appliedEmployees,
+                                 List<Employee> matchedEmployees,
+                                 List<Employee> confirmedEmployees) {
         this.project = project;
         this.appliedEmployees = appliedEmployees;
         this.matchedEmployees = matchedEmployees;
         this.confirmedEmployees = confirmedEmployees;
     }
 
-    public ProjectDTO getProject() {
+    public Project getProject() {
         return project;
     }
 
-    public List<EmployeeDto> getAppliedEmployees() {
+    public List<Employee> getAppliedEmployees() {
         return appliedEmployees;
     }
 
-    public List<EmployeeDto> getMatchedEmployees() {
+    public List<Employee> getMatchedEmployees() {
         return matchedEmployees;
     }
 
-    public List<EmployeeDto> getConfirmedEmployees() {
+    public List<Employee> getConfirmedEmployees() {
         return confirmedEmployees;
     }
 

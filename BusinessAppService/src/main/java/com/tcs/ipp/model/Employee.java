@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Objects;
 
 @Document(collection = "employee")
-public class EmployeeDto {
+public class Employee {
 
     @Id
     private String employeeId;
@@ -35,9 +35,9 @@ public class EmployeeDto {
 
     private boolean isAdmin;
 
-    public EmployeeDto(String employeeId, String password, String email, String empName, int expYears, int expMonths,
-                       String currLocation, String building, String platform, String platformName, String secSkills,
-                       String certificates, boolean isAdmin) {
+    public Employee(String employeeId, String password, String email, String empName, int expYears, int expMonths,
+                    String currLocation, String building, String platform, String platformName, String secSkills,
+                    String certificates, boolean isAdmin) {
         this.employeeId = employeeId;
         this.password = password;
         this.email = email;
@@ -131,8 +131,8 @@ public class EmployeeDto {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof EmployeeDto)) return false;
-        EmployeeDto that = (EmployeeDto) o;
+        if (!(o instanceof Employee)) return false;
+        Employee that = (Employee) o;
         return getExpYears() == that.getExpYears() &&
                 getExpMonths() == that.getExpMonths() &&
                 isAdmin() == that.isAdmin() &&

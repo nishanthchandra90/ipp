@@ -1,7 +1,7 @@
 package com.tcs.ipp.controller;
 
-import com.tcs.ipp.model.BuildingDTO;
-import com.tcs.ipp.model.LocationDTO;
+import com.tcs.ipp.model.Building;
+import com.tcs.ipp.model.Location;
 import com.tcs.ipp.repository.BuildingRepo;
 import com.tcs.ipp.repository.LocationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +24,13 @@ public class IPPLocationController {
     @GetMapping(value = "/getCompanyLocations", produces = "application/json")
     public List<String> getAllLocations() {
         System.out.println("checking email...");
-        return locationRepo.findAll().stream().map(LocationDTO::getLocationName).collect(Collectors.toList());
+        return locationRepo.findAll().stream().map(Location::getLocationName).collect(Collectors.toList());
     }
 
     @GetMapping(value = "/getBuildings", produces = "application/json")
     public List<String> getBuildings() {
         System.out.println("checking email...");
-        return buildingRepo.findAll().stream().map(BuildingDTO::getBuildingName).collect(Collectors.toList());
+        return buildingRepo.findAll().stream().map(Building::getBuildingName).collect(Collectors.toList());
     }
 
 }

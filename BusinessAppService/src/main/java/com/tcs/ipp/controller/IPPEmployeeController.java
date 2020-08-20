@@ -1,7 +1,7 @@
 package com.tcs.ipp.controller;
 
-import com.tcs.ipp.model.EmployeeDto;
-import com.tcs.ipp.model.ProjectDTO;
+import com.tcs.ipp.model.Employee;
+import com.tcs.ipp.model.Project;
 import com.tcs.ipp.repository.EmployeeRepo;
 import com.tcs.ipp.repository.ProjectRepo;
 import com.tcs.ipp.service.ProjectCandidateService;
@@ -27,8 +27,8 @@ public class IPPEmployeeController {
     @GetMapping(value = "/isNewUser", produces = "application/json")
     public Map<String, Boolean> isNewUser(@RequestParam String email) {
         System.out.println("checking email...");
-        EmployeeDto employeeDto = employeeRepo.findByEmail(email);
-        if (employeeDto == null) {
+        Employee employee = employeeRepo.findByEmail(email);
+        if (employee == null) {
             return Collections.singletonMap("newUser", true);
         }
         return Collections.singletonMap("newUser", false);
@@ -37,8 +37,8 @@ public class IPPEmployeeController {
     @GetMapping(value = "/isRegisteredUser", produces = "application/json")
     public Map<String, Boolean> isRegisteredUser(@RequestParam String email) {
         System.out.println("checking for Registered email..." + email);
-        EmployeeDto employeeDto = employeeRepo.findByEmail(email.toLowerCase());
-        if (employeeDto != null) {
+        Employee employee = employeeRepo.findByEmail(email.toLowerCase());
+        if (employee != null) {
             return Collections.singletonMap("registeredUser", true);
         }
         return Collections.singletonMap("registeredUser", false);
@@ -46,31 +46,31 @@ public class IPPEmployeeController {
 
 
     @GetMapping("/getAllEmployees")
-    public List<EmployeeDto> getAllEmployees() {
+    public List<Employee> getAllEmployees() {
         System.out.println("Sending all employees as response...");
         return employeeRepo.findAll();
     }
 
     @GetMapping("/getEmployeeByEmail")
-    public EmployeeDto getEmployeeByEmail(@RequestParam String email) {
+    public Employee getEmployeeByEmail(@RequestParam String email) {
         System.out.println("Getting Employee with email:" + email);
         return employeeRepo.findByEmail(email);
     }
 
     @GetMapping("/getEmployeeById")
-    public EmployeeDto getEmployeeById(@RequestParam String empId) {
+    public Employee getEmployeeById(@RequestParam String empId) {
         System.out.println("Getting Employee with Id:" + empId);
         return employeeRepo.findById(empId).orElse(null);
     }
 
     @PostMapping("/saveEmployee")
-    public EmployeeDto saveEmployee(@RequestBody EmployeeDto employee) {
+    public Employee saveEmployee(@RequestBody Employee employee) {
         System.out.println("Saving Employee with Id:" + employee.getEmployeeId());
         return employeeRepo.save(employee);
     }
 
     @PostMapping("/updateEmployee")
-    public EmployeeDto updateEmployee(@RequestBody EmployeeDto employee) {
+    public Employee updateEmployee(@RequestBody Employee employee) {
         System.out.println("Updating Employee with Id:" + employee.getEmployeeId());
         return employeeRepo.save(employee);
     }
@@ -79,7 +79,7 @@ public class IPPEmployeeController {
     public void updatePWD(@RequestBody String data) {
         System.out.println("Saving new password");
         String[] split = data.split(":");
-        EmployeeDto emp = employeeRepo.findByEmployeeId(split[0]);
+        Employee emp = employeeRepo.findByEmployeeId(split[0]);
         emp.setPassword(split[1].trim());
         employeeRepo.save(emp);
     }
@@ -91,19 +91,19 @@ public class IPPEmployeeController {
     }
 
     @GetMapping("/getAppliedProjects")
-    public List<ProjectDTO> getAppliedProjectsById(@RequestParam String empId) {
+    public List<Project> getAppliedProjectsById(@RequestParam String empId) {
         System.out.println("Getting Projects applied by Employee with Id:" + empId);
         return projectCandidateService.getAppliedProjectByEmpId(empId);
     }
 
     @GetMapping("/getMatchedProjects")
-    public List<ProjectDTO> getMatchedProjects(@RequestParam String empId) {
+    public List<Project> getMatchedProjects(@RequestParam String empId) {
         System.out.println("Getting Projects matching with Employee skills for Employee:" + empId);
         return projectCandidateService.getMyMatchedProjects(empId);
     }
 
     @GetMapping("/getConfirmedProjects")
-    public List<ProjectDTO> getConfirmedProjects(@RequestParam String empId) {
+    public List<Project> getConfirmedProjects(@RequestParam String empId) {
         System.out.println("Getting Projects matching with Employee skills for Employee:" + empId);
         return projectCandidateService.getConfirmedProjects(empId);
     }

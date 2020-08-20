@@ -1,20 +1,20 @@
 package com.tcs.ipp.repository;
 
 
-import com.tcs.ipp.model.EmployeeDto;
+import com.tcs.ipp.model.Employee;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface EmployeeRepo extends MongoRepository<EmployeeDto, String> {
+public interface EmployeeRepo extends MongoRepository<Employee, String> {
 
-    List<EmployeeDto> findAll();
+    List<Employee> findAll();
 
-    EmployeeDto findByEmployeeId(String id);
+    Employee findByEmployeeId(String id);
 
-    EmployeeDto findByEmail(String email);
+    Employee findByEmail(String email);
 
 
 }

@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
 @Document("project_employee")
-public class ProjectEmployee {
+public class CandidateApplication {
 
     @Id
     private final String projectId;
@@ -34,10 +34,10 @@ public class ProjectEmployee {
         return confirmedEmpIds;
     }
 
-    public ProjectEmployee(String projectId,
-                           List<String> appliedEmpIds,
-                           List<String> matchedEmpIds,
-                           List<String> confirmedEmpIds) {
+    public CandidateApplication(String projectId,
+                                List<String> appliedEmpIds,
+                                List<String> matchedEmpIds,
+                                List<String> confirmedEmpIds) {
         this.projectId = projectId;
         this.appliedEmpIds = appliedEmpIds;
         this.matchedEmpIds = matchedEmpIds;

@@ -7,7 +7,7 @@ import java.util.List;
 
 
 @Document(collection = "project")
-public class ProjectDTO {
+public class Project {
 
     @Id
     private final String projectId;
@@ -23,9 +23,9 @@ public class ProjectDTO {
     private final String tenure;
 
 
-    public ProjectDTO(String projectId, String projectName,
-                      String managerName, String description, List<String> requiredSkills, String tenure,
-                      String projLocation, String projBuilding, String platform, String platformName) {
+    public Project(String projectId, String projectName,
+                   String managerName, String description, List<String> requiredSkills, String tenure,
+                   String projLocation, String projBuilding, String platform, String platformName) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.managerName = managerName;

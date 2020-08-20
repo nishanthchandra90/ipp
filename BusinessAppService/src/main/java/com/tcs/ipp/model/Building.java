@@ -5,11 +5,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Objects;
 
 @Document("building")
-public class BuildingDTO {
+public class Building {
 
     private String buildingName;
 
-    public BuildingDTO(String buildingName) {
+    public Building(String buildingName) {
         this.buildingName = buildingName;
     }
 
@@ -27,8 +27,8 @@ public class BuildingDTO {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof BuildingDTO)) return false;
-        BuildingDTO that = (BuildingDTO) o;
+        if (!(o instanceof Building)) return false;
+        Building that = (Building) o;
         return getBuildingName().equals(that.getBuildingName());
     }
 
