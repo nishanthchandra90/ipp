@@ -2,21 +2,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:internal_portal_projects/common_components/ipp_text.dart';
 import 'package:internal_portal_projects/model/employee_details.dart';
+import 'package:internal_portal_projects/repo/projects_repo.dart';
 
 class ShowMatchedScreen extends StatefulWidget {
   final List<EmployeeDetails> matchedCandidates;
+  final String projectId;
 
-  const ShowMatchedScreen(this.matchedCandidates);
+  const ShowMatchedScreen(this.projectId, this.matchedCandidates);
 
   @override
   State<StatefulWidget> createState() =>
-      ShowMatchedScreenState(matchedCandidates);
+      ShowMatchedScreenState(projectId, matchedCandidates);
 }
 
 class ShowMatchedScreenState extends State<ShowMatchedScreen> {
   final List<EmployeeDetails> appliedCandidates;
+  final String projectId;
 
-  ShowMatchedScreenState(this.appliedCandidates);
+  ShowMatchedScreenState(this.projectId, this.appliedCandidates);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +46,10 @@ class ShowMatchedScreenState extends State<ShowMatchedScreen> {
           trailing: IconButton(
             icon: Icon(Icons.done),
             iconSize: 25.0,
-            onPressed: () => {print('cliked')},
+            onPressed: () => {
+              new ProjectsRepo()
+                  .confirmCandidate(projectId, employee.employeeId)
+            },
           ),
         );
       },

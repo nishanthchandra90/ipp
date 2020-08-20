@@ -64,4 +64,11 @@ public class IPPProjectController {
         return projectCandidateService.getPotentialCandidates();
     }
 
+    @GetMapping("/confirmCandidate")
+    public void confirmCandidate(@RequestParam String projectId, @RequestParam String empId) {
+        System.out.println("Emp:" + empId);
+        System.out.println("Proj:" + projectId);
+
+        projectCandidateService.confirmCandidate(projectId, empId);
+    }
 }

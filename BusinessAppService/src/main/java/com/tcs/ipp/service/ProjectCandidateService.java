@@ -75,5 +75,19 @@ public class ProjectCandidateService {
         return ProjectEmployeeMatches;
     }
 
+
+    public void confirmCandidate(String projectId, String empId) {
+        System.out.println("Confirmed project :" + projectId);
+        System.out.println(" for emp:" + empId);
+        ProjectEmployee projectEmployee = projectEmployeeRepo.findById(projectId).get();
+        List<String> confirmedEmpIds = projectEmployee.getConfirmedEmpIds();
+        if (confirmedEmpIds.contains(empId)) {
+            confirmedEmpIds.remove(empId);
+        } else {
+            confirmedEmpIds.add(empId);
+
+        }
+        projectEmployeeRepo.save(projectEmployee);
+    }
 }
 

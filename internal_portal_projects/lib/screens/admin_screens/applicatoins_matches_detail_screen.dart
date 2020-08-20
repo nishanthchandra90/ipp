@@ -37,6 +37,7 @@ class ApplicationAndMatchesScreenState
   }
 
   _buildPageBar() {
+    String projectId = potentialCandidates.project.projectId;
     List<EmployeeDetails> appliedCandidates = potentialCandidates
         .appliedCandidates
         .map((i) => EmployeeDetails.fromJson(i))
@@ -51,8 +52,8 @@ class ApplicationAndMatchesScreenState
         Expanded(
             child: new PageView(
           children: <Widget>[
-            ShowAppliedScreen(appliedCandidates),
-            ShowMatchedScreen(matchedCandidates),
+            ShowAppliedScreen(projectId, appliedCandidates),
+            ShowMatchedScreen(projectId, matchedCandidates),
           ],
           onPageChanged: (int index) {
             _currentPageNotifier.value = index;
