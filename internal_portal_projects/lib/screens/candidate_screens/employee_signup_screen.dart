@@ -88,7 +88,7 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
         "Password", "password", pwdEditCntrlr, true, context,
         charLimit: 20, obscureText: true);
     Widget emailTextBox = IPPInputs.simpleTextFormField(
-        "Employee Email", "abc.xyz.tcs.com", empEmailEditCntrlr, true, context,
+        "Employee Email", "abc.xyz@tcs.com", empEmailEditCntrlr, true, context,
         charLimit: 50);
     Widget empNameTextBox = IPPInputs.simpleTextFormField(
         "Name", "first name, last name", nameEditCntrlr, true, context,
@@ -179,7 +179,7 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
                         onPressed: () {
                           _saveEmployee();
                         },
-                        child: Text('Sing Up')),
+                        child: Text('Sign Up')),
                     RaisedButton(
                         onPressed: () {
                           _resetForm();
@@ -223,12 +223,12 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
     try {
       Dialogs.showProgressDialog(context, globalStateKey, "Please wait...!");
       await new Future.delayed(const Duration(seconds: 1));
-      _displaySnackBar('Employee details saved Successfully!',
+      _displaySnackBar('Sign Up was Successful!\n Please Login',
           color: Colors.green);
       Navigator.of(_scaffoldKey.currentContext, rootNavigator: true)
           .pop(); //close the dialogue
       _resetForm();
-      await new Future.delayed(const Duration(seconds: 1));
+      await new Future.delayed(const Duration(seconds: 3));
       Navigator.of(_scaffoldKey.currentContext, rootNavigator: true)
           .pushNamed('/login');
     } catch (error) {
@@ -257,7 +257,7 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
       _buildingSelected = null;
       _platformSelected = null;
       _platformNameSelected = null;
-      _expertiseSelected = 'Select';
+      _expertiseSelected = null;
       experienceErrorText = '';
       locErrorText = '';
       buildingErrorText = '';

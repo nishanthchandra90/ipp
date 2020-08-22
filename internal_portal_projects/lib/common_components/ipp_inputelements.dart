@@ -25,7 +25,7 @@ class IPPInputs {
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.next,
           onChanged: onChanged,
-          onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
+//          onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
         ));
   }
 

@@ -30,6 +30,20 @@ class _EmployeesTabScreenState extends State<EmployeesTabScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
+                  ListTile(
+                    leading: Container(
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        child: IPPText.simpleText("Name",
+                            fontSize: 18, fontWeight: FontWeight.bold)),
+                    title: Container(
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        child: IPPText.simpleText("Emp Id",
+                            fontSize: 17, fontWeight: FontWeight.bold)),
+                    trailing: Container(
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        child: IPPText.simpleText("Location",
+                            fontSize: 18, fontWeight: FontWeight.bold)),
+                  ),
                   new Expanded(child: _createEmployeeList(snapshot.data)),
                 ]);
           } else {
@@ -45,7 +59,6 @@ class _EmployeesTabScreenState extends State<EmployeesTabScreen> {
         height: 50,
         width: MediaQuery.of(context).size.width * 0.9,
         child: new ListView.separated(
-          padding: const EdgeInsets.all(20),
           itemCount: employees.length,
           itemBuilder: (BuildContext _context, int index) {
             EmployeeDetails employee = employees[index];
@@ -54,7 +67,7 @@ class _EmployeesTabScreenState extends State<EmployeesTabScreen> {
                   context,
                   new MaterialPageRoute(
                       builder: (context) => new ShowEmployeeScreen(employee))),
-              child: _displayEmployees(employee),
+              child: _displayEmployeeList(employee),
             );
           },
           separatorBuilder: (BuildContext _context, int index) => const Divider(
@@ -63,9 +76,26 @@ class _EmployeesTabScreenState extends State<EmployeesTabScreen> {
         ));
   }
 
+  Widget _displayEmployeeList(EmployeeDetails employeeDetails) {
+    return ListTile(
+      leading: Container(
+          width: MediaQuery.of(context).size.width * 0.3,
+          child: IPPText.simpleText(employeeDetails.empName.toUpperCase(),
+              fontWeight: FontWeight.bold, color: Colors.blue)),
+      title: Container(
+          width: MediaQuery.of(context).size.width * 0.3,
+          child: IPPText.simpleText(employeeDetails.employeeId)),
+      trailing: Container(
+          width: MediaQuery.of(context).size.width * 0.3,
+          child: IPPText.simpleText(employeeDetails.currLocation)),
+    );
+  }
+
   Widget _displayEmployees(EmployeeDetails employeeDetails) {
     if (employeeDetails.employeeId == 'admin') {
-      return Container();
+      return SizedBox(
+        height: 1,
+      );
     }
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -86,7 +116,7 @@ class _EmployeesTabScreenState extends State<EmployeesTabScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         IPPText.simpleText(fieldName,
-            fontWeight: FontWeight.bold, fontSize: 18, color: Colors.blue),
+            fontWeight: FontWeight.bold, color: Colors.blue),
         SizedBox(
           width: 30,
         ),
