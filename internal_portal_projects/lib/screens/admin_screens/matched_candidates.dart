@@ -24,14 +24,16 @@ class ShowMatchedScreenState extends State<ShowMatchedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+        body: Padding(
+      padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+      child: Column(
         children: <Widget>[
           IPPText.simpleText("Matched Candidates",
               color: Colors.blue, fontSize: 20),
           _createCandidateList(appliedCandidates),
         ],
       ),
-    );
+    ));
   }
 
   _createCandidateList(List<CandidateDetails> candidates) {

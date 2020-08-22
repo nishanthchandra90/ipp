@@ -35,7 +35,7 @@ class ShowProjectState extends State<ShowProjectScreen> {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-            _createRow("Name", project.projectName.toUpperCase()),
+            _createRow("Account Name", project.projectName.toUpperCase()),
             SizedBox(
               height: 20,
             ),

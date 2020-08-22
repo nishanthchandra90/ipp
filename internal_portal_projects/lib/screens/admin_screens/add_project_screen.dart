@@ -86,7 +86,7 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
 
   _accountFormWidgets(BuildContext _context) {
     Widget projectNameTextField = IPPInputs.simpleTextFormField(
-        'Name', 'project name', projectNameTextEditor, true, context,
+        'Account Name', 'account name', projectNameTextEditor, true, context,
         charLimit: 22);
 
     Widget projectIdTextField = IPPInputs.simpleTextFormField(

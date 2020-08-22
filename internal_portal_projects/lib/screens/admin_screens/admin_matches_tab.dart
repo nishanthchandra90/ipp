@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:internal_portal_projects/bloc/project_bloc.dart';
 import 'package:internal_portal_projects/common_components/ipp_text.dart';
+import 'package:internal_portal_projects/model/candidate_details.dart';
 import 'package:internal_portal_projects/model/potential_candidates.dart';
+import 'package:internal_portal_projects/model/project_details.dart';
 import 'package:internal_portal_projects/screens/admin_screens/applicatoins_matches_detail_screen.dart';
+import 'package:internal_portal_projects/screens/admin_screens/matched_candidates.dart';
+
+import 'applied_candidates.dart';
 
 class MatchesTabScreen extends StatefulWidget {
   final List<ProjectApplications> projectApplications;
@@ -16,14 +20,11 @@ class MatchesTabScreen extends StatefulWidget {
 
 class _MatchesTabScreenState extends State<MatchesTabScreen> {
   final List<ProjectApplications> projectApplications;
-  final bloc = ProjectsBloc();
 
   _MatchesTabScreenState(this.projectApplications);
 
   @override
   Widget build(BuildContext context) {
-    bloc.getProjectApplications();
-
     return Scaffold(
         body: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -38,16 +39,26 @@ class _MatchesTabScreenState extends State<MatchesTabScreen> {
       itemCount: projectApplications.length,
       itemBuilder: (BuildContext _context, int index) {
         ProjectApplications projectApplication = projectApplications[index];
+        ProjectDetails project = projectApplication.project;
+        List<CandidateDetails> appliedCandidates = projectApplication
+            .appliedCandidates
+            .map((i) => CandidateDetails.fromJson(i))
+            .toList();
+        List<CandidateDetails> matchedCandidates = projectApplication
+            .matchedCandidates
+            .map((i) => CandidateDetails.fromJson(i))
+            .toList();
+        var applicationAndMatchesScreen = ApplicationAndMatchesScreen(
+            project, appliedCandidates, matchedCandidates);
         return Container(
           width: MediaQuery.of(context).size.width,
           child: InkWell(
-            child: _createListItem(projectApplication),
-            onTap: () => Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) =>
-                        new ApplicationAndMatchesScreen(projectApplication))),
-          ),
+              child: _createListItem(
+                  project, matchedCandidates, appliedCandidates),
+              onTap: () => Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => applicationAndMatchesScreen))),
         );
       },
       separatorBuilder: (BuildContext _context, int index) => const Divider(
@@ -56,29 +67,31 @@ class _MatchesTabScreenState extends State<MatchesTabScreen> {
     );
   }
 
-  Widget _createListItem(ProjectApplications projectApplication) {
-    Widget projId = IPPText.simpleText(
-        'Project ' + projectApplication.project.projectId,
-        fontWeight: FontWeight.bold,
-        fontSize: 18,
-        color: Colors.blue);
-    Widget projLoc = IPPText.simpleText(projectApplication.project.currLocation,
-        fontSize: 15);
-    Widget matched = IPPText.simpleText(
-        'Matched: ' + projectApplication.matchedCandidates.length.toString(),
-        fontWeight: FontWeight.bold,
-        color: Colors.green);
-    Widget applied = IPPText.simpleText(
-        'Applied: ' + projectApplication.appliedCandidates.length.toString(),
-        fontWeight: FontWeight.bold,
-        color: Colors.orange);
+  Widget _createListItem(
+      ProjectDetails project,
+      List<CandidateDetails> appliedCandidates,
+      List<CandidateDetails> matchedCandidates) {
+    String projectId = project.projectId;
+    var matchedScreen = new ShowMatchedScreen(projectId, matchedCandidates);
+    var showAppliedScreen = new ShowAppliedScreen(projectId, appliedCandidates);
+    Widget projId = IPPText.simpleText('Project ' + projectId,
+        fontWeight: FontWeight.bold, fontSize: 18, color: Colors.blue);
+    Widget projLoc = IPPText.simpleText(project.currLocation, fontSize: 15);
+    Widget matched = _clickableText(
+        'Matched: ' + matchedCandidates.length.toString(),
+        Colors.green,
+        matchedScreen);
+    Widget applied = _clickableText(
+        'Applied: ' + appliedCandidates.length.toString(),
+        Colors.deepOrange,
+        showAppliedScreen);
     Widget skills = Container(
         width: MediaQuery.of(context).size.width * 0.9,
         child: IPPText.simpleText(
             'Primary Skill: ' +
-                projectApplication.project.platform +
+                project.platform +
                 ' (' +
-                projectApplication.project.platformName +
+                project.platformName +
                 ')',
             fontWeight: FontWeight.bold,
             fontSize: 15));
@@ -90,6 +103,14 @@ class _MatchesTabScreenState extends State<MatchesTabScreen> {
           _createRow([skills]),
           _createRow([applied, matched])
         ]);
+  }
+
+  _clickableText(String text, Color textColor, var screen) {
+    return InkWell(
+        onTap: () => Navigator.push(
+            context, new MaterialPageRoute(builder: (context) => screen)),
+        child: IPPText.simpleText(text,
+            fontWeight: FontWeight.bold, color: textColor));
   }
 
   _createList(Widget projId, Widget projLoc) {
