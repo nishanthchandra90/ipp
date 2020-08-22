@@ -19,7 +19,7 @@ class EmployeeDetails {
 
   String _platformName;
 
-  String _secSkills;
+  String _expertise;
 
   String _certificates;
 
@@ -36,7 +36,7 @@ class EmployeeDetails {
       this._building,
       this._platform,
       this._platformName,
-      this._secSkills,
+      this._expertise,
       this._certificates,
       this._isAdmin);
 
@@ -54,7 +54,7 @@ class EmployeeDetails {
         'building': _building,
         'platform': _platform,
         'platformName': _platformName,
-        'secSkills': _secSkills,
+        'expertise': _expertise,
         'certificates': _certificates,
         'isAdmin': _isAdmin,
       };
@@ -71,7 +71,7 @@ class EmployeeDetails {
           json['building'],
           json['platform'],
           json['platformName'],
-          json['secSkills'],
+          json['expertise'],
           json['certificates'],
           json['admin']);
 
@@ -93,7 +93,7 @@ class EmployeeDetails {
 
   String get platformName => _platformName;
 
-  String get secSkills => _secSkills;
+  String get expertise => _expertise;
 
   String get certificates => _certificates;
 

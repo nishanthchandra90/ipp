@@ -63,16 +63,16 @@ class IPPInputs {
   }
 
   static simpleNumberField(
-      String labelText,
-      String hintText,
-      TextEditingController textEditCntrlr,
-      bool requiredField,
-      BuildContext context, {
-        Function onChanged,
-        int charLimit: 20,
-        keyboardType: TextInputType.number,
-        obscureText: false,
-      }){
+    String labelText,
+    String hintText,
+    TextEditingController textEditCntrlr,
+    bool requiredField,
+    BuildContext context, {
+    Function onChanged,
+    int charLimit: 20,
+    keyboardType: TextInputType.number,
+    obscureText: false,
+  }) {
     return Padding(
         padding: EdgeInsets.fromLTRB(15, 10, 40, 0),
         child: new TextFormField(
@@ -102,7 +102,8 @@ class IPPInputs {
     return null;
   }
 
-  static formButton(String buttonText, {Function() onPressed, color:Colors.green}) {
+  static formButton(String buttonText,
+      {Function() onPressed, color: Colors.green}) {
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 15.0),
         child: RaisedButton(
@@ -149,40 +150,32 @@ class IPPInputs {
     );
   }
 
-  static Widget dropdown(List menuItems, String labelText, String field,
+  static Widget dropdown(List menuItems, String field, String hintText,
       BuildContext context, Function function) {
-    return Container(
-        width: 120,
-        child: Column(children: <Widget>[
-          InputDecorator(
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                labelText: labelText,
-                labelStyle: TextStyle(fontSize: 20),
-              ),
-              child: new DropdownButton(
-                isExpanded: true,
-                style: TextStyle(color: Colors.black, fontSize: 18),
-                isDense: true,
-                underline: SizedBox(),
-                value: field,
-                onChanged: (val) => function(val),
-                items: dropdownMenuItems(menuItems),
-              )),
-        ]));
+    return Expanded(
+        child: new DropdownButton(
+      hint: new Text(hintText),
+      style: TextStyle(color: Colors.black, fontSize: 18),
+      isDense: true,
+      isExpanded: true,
+      underline: SizedBox(),
+      value: field,
+      onChanged: (val) => function(val),
+      items: dropdownMenuItems(menuItems),
+    ));
   }
 
   static List<DropdownMenuItem> dropdownMenuItems(List options) {
     return options
         .map((val) => new DropdownMenuItem(
-      value: '$val',
-      child: SizedBox(
-          child: Text(
-            '$val',
-            softWrap: false,
-            textAlign: TextAlign.right,
-          )),
-    ))
+              value: '$val',
+              child: SizedBox(
+                  child: Text(
+                '$val',
+                softWrap: false,
+                textAlign: TextAlign.right,
+              )),
+            ))
         .toList();
   }
 }

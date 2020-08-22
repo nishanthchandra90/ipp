@@ -38,7 +38,6 @@ class ProjectManagementService {
         return [];
       }
       final decoded = _decodeResponse(reply);
-      print(reply.length);
       return decoded
           .map<ProjectApplications>((j) => ProjectApplications.fromJson(j))
           .toList();

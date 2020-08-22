@@ -43,8 +43,6 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
   TextEditingController projectIdTextEditor = new TextEditingController();
   TextEditingController projectManagerTextEditor = new TextEditingController();
   TextEditingController projectDescTextEditor = new TextEditingController();
-  TextEditingController skillSetsTextEditor = new TextEditingController();
-  TextEditingController tenureTextEditor = new TextEditingController();
   String locErrorText = '';
   String buildingErrorText = '';
   String platformErrorText = '';
@@ -56,7 +54,23 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
   String _buildingSelected;
   String _platformSelected;
   String _platformNameSelected;
+  String _tenureSelected;
   List<String> platformNames = [];
+  String _expertiseSelected;
+  List<String> expertiseOptions = [
+    'Design & Implementation',
+    'Migration Expert',
+    'Project Management',
+    'Solution Architect'
+  ];
+
+  List<String> tenureOptions = [
+    '1-3 Months',
+    '3-6 Months',
+    '6-12 Months',
+    '1-2 Years',
+    '2 Years & More'
+  ];
   ProjectDetails project;
   String _saveBtnText = 'Save';
   String _screenHeading = 'New Project';
@@ -116,12 +130,29 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
         true,
         [platformDropdown()]);
 
-    Widget skillsTextField = IPPInputs.simpleTextAreaField(
-        'Skill Sets', 'skills', skillSetsTextEditor, true, context);
+    Widget expertiseDropDown = IPPInputs.dropdown(
+        expertiseOptions, _expertiseSelected, 'Select', context,
+        (String newVal) {
+      setState(() {
+        _expertiseSelected = newVal;
+      });
+    });
 
-    Widget tenureTextField = IPPInputs.simpleTextFormField(
-        'Tenure', 'project duration', tenureTextEditor, false, context,
-        charLimit: 40);
+    Widget expertiseDownRow = IPPInputs.widgetRow(
+        IPPText.simpleText('Expertise'),
+        platformErrorText,
+        true,
+        [expertiseDropDown]);
+
+    Widget tenureDropDown = IPPInputs.dropdown(
+        tenureOptions, _tenureSelected, 'Select', context, (String newVal) {
+      setState(() {
+        _tenureSelected = newVal;
+      });
+    });
+
+    Widget tenureDownRow = IPPInputs.widgetRow(IPPText.simpleText('Tenure'),
+        platformErrorText, true, [tenureDropDown]);
 
     Widget saveButton = IPPInputs.formButton(_saveBtnText, onPressed: () {
       saveForm();
@@ -151,8 +182,8 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
       buildingDropDownRow,
       platformDropDownRow,
       platformSkillsDropdown(),
-      skillsTextField,
-      tenureTextField,
+      expertiseDownRow,
+      tenureDownRow,
       formButtonRow,
     ];
     return depositFormWidgets;
@@ -170,12 +201,6 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
     String projectName = projectNameTextEditor.text;
     String projectManager = projectManagerTextEditor.text ?? '';
     String projectDesc = projectDescTextEditor.text ?? '';
-    String skills = skillSetsTextEditor.text;
-    var skillSet = [];
-    if (skills != null && skills.isNotEmpty) {
-      skillSet = skills.split(",").toList();
-    }
-    String tenure = tenureTextEditor.text ?? '';
     var projectDetails = new ProjectDetails(
         projectName,
         projectId,
@@ -185,8 +210,8 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
         _buildingSelected,
         _platformSelected,
         _platformNameSelected,
-        skillSet,
-        tenure);
+        _expertiseSelected,
+        _tenureSelected);
     _handleSubmit(context, projectDetails);
   }
 
@@ -221,14 +246,14 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
     projectManagerTextEditor.clear();
     projectNameTextEditor.clear();
     projectIdTextEditor.clear();
-    skillSetsTextEditor.clear();
     projectDescTextEditor.clear();
-    tenureTextEditor.clear();
     setState(() {
       _locationSelected = null;
       _buildingSelected = null;
       _platformSelected = null;
       _platformNameSelected = null;
+      _expertiseSelected = '';
+      _tenureSelected = '';
       locErrorText = '';
       buildingErrorText = '';
       platformErrorText = '';
@@ -246,8 +271,12 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
     projectIdTextEditor.text = project.projectId;
     projectManagerTextEditor.text = project.managerName;
     projectDescTextEditor.text = project.description;
-    skillSetsTextEditor.text = project.skills.toString();
-    tenureTextEditor.text = project.tenure;
+    _locationSelected = project.currLocation;
+    _buildingSelected = project.building;
+    _platformSelected = project.platform;
+    _platformNameSelected = project.platformName;
+    _tenureSelected = project.tenure;
+    _expertiseSelected = project.expertise;
   }
 
   Widget workLocationDropdown() {
@@ -387,7 +416,9 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
     if (locErrorText.isNotEmpty ||
         buildingErrorText.isNotEmpty ||
         platformNameErrorText.isNotEmpty ||
-        platformErrorText.isNotEmpty) {
+        platformErrorText.isNotEmpty ||
+        _tenureSelected.isEmpty ||
+        _expertiseSelected.isEmpty) {
       return false;
     }
     return true;

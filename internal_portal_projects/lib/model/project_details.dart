@@ -14,7 +14,7 @@ class ProjectDetails {
 
   String _platformName;
 
-  List<dynamic> _requiredSkills;
+  String _expertise;
   String _tenure;
 
   ProjectDetails(
@@ -26,12 +26,12 @@ class ProjectDetails {
       this._building,
       this._platform,
       this._platformName,
-      this._requiredSkills,
+      this._expertise,
       this._tenure);
 
   String get tenure => _tenure;
 
-  List<dynamic> get skills => _requiredSkills;
+  String get expertise => _expertise;
 
   String get description => _description;
 
@@ -58,7 +58,7 @@ class ProjectDetails {
         'building': _building,
         'platform': _platform,
         'platformName': _platformName,
-        'requiredSkills': _requiredSkills,
+        'expertise': _expertise,
         'tenure': _tenure,
       };
 
@@ -71,7 +71,7 @@ class ProjectDetails {
       json['building'],
       json['platform'],
       json['platformName'],
-      json['requiredSkills'],
+      json['expertise'],
       json['tenure']);
 
   ProjectDetails projectFromJson(String str) {

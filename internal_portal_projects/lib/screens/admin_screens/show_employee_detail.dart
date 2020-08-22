@@ -21,7 +21,7 @@ class ShowEmployeeState extends State<ShowEmployeeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          centerTitle: true,
+            centerTitle: true,
             leading: BackButton(onPressed: () => Navigator.pop(context)),
             title: IPPText.simpleText('Employee Details',
                 fontSize: 22.0, fontWeight: FontWeight.bold)),
@@ -69,13 +69,15 @@ class ShowEmployeeState extends State<ShowEmployeeScreen> {
             SizedBox(
               height: 20,
             ),
-            _createRow("Skills",
-                employee.secSkills.isEmpty ? '- - - ' : employee.secSkills),
+            _createRow("Expertise", employee.expertise),
             SizedBox(
               height: 20,
             ),
-            _createRow("Certificates",
-                employee.secSkills.isEmpty ? '- - - ' : employee.certificates),
+            _createRow(
+                "Certificates",
+                employee.certificates.isEmpty
+                    ? '- - - '
+                    : employee.certificates),
           ])),
     );
   }

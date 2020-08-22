@@ -26,7 +26,6 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
   final TextEditingController empEmailEditCntrlr = TextEditingController();
   final TextEditingController nameEditCntrlr = TextEditingController();
   final TextEditingController pwdEditCntrlr = TextEditingController();
-  final TextEditingController skillsEditCntrlr = TextEditingController();
   final TextEditingController certsEditCntrlr = TextEditingController();
   String experienceErrorText = '';
   String locErrorText = '';
@@ -43,7 +42,14 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
   String _buildingSelected;
   String _platformSelected;
   String _platformNameSelected;
+  String _expertiseSelected;
   List<String> platformNames = [];
+  List<String> expertiseOptions = [
+    'Design & Implementation',
+    'Migration Expert',
+    'Project Management',
+    'Solution Architect'
+  ];
 
   _EmployeeSignUpScreenState();
 
@@ -83,10 +89,10 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
         charLimit: 20, obscureText: true);
     Widget emailTextBox = IPPInputs.simpleTextFormField(
         "Employee Email", "abc.xyz.tcs.com", empEmailEditCntrlr, true, context,
-        charLimit: 20);
+        charLimit: 50);
     Widget empNameTextBox = IPPInputs.simpleTextFormField(
         "Name", "first name, last name", nameEditCntrlr, true, context,
-        charLimit: 20);
+        charLimit: 40);
     var yearsPickerInput = Dialogs.numberPickerDialog(
         _yearsSelected,
         'Please Select number of years of experience',
@@ -130,9 +136,20 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
         validExperiencePeriod,
         [platformDropdown()]);
 
-    Widget skillsTextBox = IPPInputs.simpleTextFormField(
-        "Secondary Skills", "skills", skillsEditCntrlr, true, context,
-        charLimit: 100);
+    Widget expertiseDropDown = IPPInputs.dropdown(
+        expertiseOptions, _expertiseSelected, 'Select', context,
+        (String newVal) {
+      setState(() {
+        _expertiseSelected = newVal;
+      });
+    });
+
+    Widget expertiseTenureRow = IPPInputs.widgetRow(
+        IPPText.simpleText('Expertise'),
+        platformErrorText,
+        validExperiencePeriod,
+        [expertiseDropDown]);
+
     Widget certificationsTextBox = IPPInputs.simpleTextFormField(
         "Certifications", "certification", certsEditCntrlr, false, context,
         charLimit: 100);
@@ -153,7 +170,7 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
                 buildingDropDownRow,
                 platformDropDownRow,
                 platformSkillsDropdown(),
-                skillsTextBox,
+                expertiseTenureRow,
                 certificationsTextBox,
                 ButtonBar(
                   alignment: MainAxisAlignment.center,
@@ -187,8 +204,7 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
     String email = empEmailEditCntrlr.text;
     String _empName = nameEditCntrlr.text;
     String password = pwdEditCntrlr.text;
-    String _empcerts = certsEditCntrlr.text;
-    String skills = skillsEditCntrlr.text;
+    String _empCerts = certsEditCntrlr.text;
     EmployeeDetails employee = new EmployeeDetails(
         _employeeId,
         password,
@@ -200,8 +216,8 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
         _buildingSelected,
         _platformSelected,
         _platformNameSelected,
-        skills,
-        _empcerts,
+        _expertiseSelected,
+        _empCerts,
         false);
     EmployeesRepo.newUser(employee);
     try {
@@ -233,7 +249,6 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
     nameEditCntrlr.clear();
     empIdEditCntrlr.clear();
     pwdEditCntrlr.clear();
-    skillsEditCntrlr.clear();
     certsEditCntrlr.clear();
     setState(() {
       _yearsSelected = '0';
@@ -242,6 +257,7 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
       _buildingSelected = null;
       _platformSelected = null;
       _platformNameSelected = null;
+      _expertiseSelected = 'Select';
       experienceErrorText = '';
       locErrorText = '';
       buildingErrorText = '';
@@ -391,7 +407,8 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
         locErrorText.isNotEmpty ||
         buildingErrorText.isNotEmpty ||
         platformNameErrorText.isNotEmpty ||
-        platformErrorText.isNotEmpty) {
+        platformErrorText.isNotEmpty ||
+        _expertiseSelected == 'Select') {
       return false;
     }
     return true;

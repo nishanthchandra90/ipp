@@ -56,7 +56,7 @@ class ShowProjectState extends State<ShowProjectScreen> {
             SizedBox(
               height: 20,
             ),
-            _createRow("Skills", project.skills.join(", ")),
+            _createRow("Expertise", project.expertise),
             SizedBox(
               height: 20,
             ),
