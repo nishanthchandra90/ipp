@@ -51,22 +51,24 @@ public class DemoData {
                         "Cloud", "GOOGLE", "", "java", false)
 
         ));
+
+
         projectRepo.deleteAll();
         projectRepo.saveAll(List.of(
                 new Project("2328356", "sita", "Manager1", "Hobby Project",
-                        List.of("Java", "Spring", "Hibernates", "Docker"), "5 Years", "APOL - Hyderabad",
+                        "Solution Architect", "2 Years & More", "APOL - Hyderabad",
                         "Hyderabad - Non STP", "Cloud", "GOOGLE"),
                 new Project("2332332", "amex", "Manager2", "AMEX Project",
-                        List.of("#NET", "asp", "Database", "Docker"), "2 Years", "TCS - Indore",
+                        "Project Management", "1-3 Months", "TCS - Indore",
                         "Indore - Unit 1 - SEZ", "Cloud", "GOOGLE"),
                 new Project("273698646", "clinton", "Manager3", "Clinton Project",
-                        List.of("BigData", "AWS", "ML", "AI"), "5 Years", "TCS - Bangalore",
+                        "Migration Expert", "6-12 Months", "TCS - Bangalore",
                         "Bangalore - Salarpuria - STP", "Cloud", "GOOGLE"),
                 new Project("9876372", "dcs", "Manager4", "DCS Project",
-                        List.of("Java", "Spring", "AWS", "Elastic"), "8 Years", "TCS - Chennai",
+                        "Design & Implementation", "3-6 Months", "TCS - Chennai",
                         "Chennai-Velachery Centre - STP", "Cloud", "GOOGLE"),
                 new Project("03843984", "gsl", "Manager5", "GSL Project",
-                        List.of("Java", "Spring", "Hibernates", "AWS"), "temporary", "TCS - Kochi",
+                        "Project Management", "2 Years & More", "TCS - Kochi",
                         "Kochi - Non-STP", "Cloud", "GOOGLE")
         ));
 

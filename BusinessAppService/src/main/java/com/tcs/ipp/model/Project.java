@@ -3,8 +3,6 @@ package com.tcs.ipp.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-
 
 @Document(collection = "project")
 public class Project {
@@ -17,20 +15,20 @@ public class Project {
     private final String description;
     private final String projLocation;
     private final String projBuilding;
-    private String platform;
-    private String platformName;
-    private final List<String> requiredSkills;
+    private final String platform;
+    private final String platformName;
+    private final String expertise;
     private final String tenure;
 
 
     public Project(String projectId, String projectName,
-                   String managerName, String description, List<String> requiredSkills, String tenure,
+                   String managerName, String description, String expertise, String tenure,
                    String projLocation, String projBuilding, String platform, String platformName) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.managerName = managerName;
         this.description = description;
-        this.requiredSkills = requiredSkills;
+        this.expertise = expertise;
         this.tenure = tenure;
         this.projLocation = projLocation;
         this.projBuilding = projBuilding;
@@ -54,8 +52,8 @@ public class Project {
         return description;
     }
 
-    public List<String> getRequiredSkills() {
-        return requiredSkills;
+    public String getExpertise() {
+        return expertise;
     }
 
     public String getTenure() {
