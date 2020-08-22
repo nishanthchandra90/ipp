@@ -77,6 +77,9 @@ class _EmployeesTabScreenState extends State<EmployeesTabScreen> {
   }
 
   Widget _displayEmployeeItem(EmployeeDetails employeeDetails) {
+    if(employeeDetails.isAdmin){
+      return SizedBox();
+    }
     return ListTile(
       leading: Container(
           width: MediaQuery.of(context).size.width * 0.25,

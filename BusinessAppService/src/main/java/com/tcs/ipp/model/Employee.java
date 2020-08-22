@@ -29,14 +29,14 @@ public class Employee {
 
     private String platformName;
 
-    private String secSkills;
+    private String expertise;
 
     private String certificates;
 
     private boolean isAdmin;
 
     public Employee(String employeeId, String password, String email, String empName, int expYears, int expMonths,
-                    String currLocation, String building, String platform, String platformName, String secSkills,
+                    String currLocation, String building, String platform, String platformName, String expertise,
                     String certificates, boolean isAdmin) {
         this.employeeId = employeeId;
         this.password = password;
@@ -48,7 +48,7 @@ public class Employee {
         this.building = building;
         this.platform = platform;
         this.platformName = platformName;
-        this.secSkills = secSkills;
+        this.expertise = expertise;
         this.certificates = certificates;
         this.isAdmin = isAdmin;
     }
@@ -97,8 +97,8 @@ public class Employee {
         return platformName;
     }
 
-    public String getSecSkills() {
-        return secSkills;
+    public String getExpertise() {
+        return expertise;
     }
 
     public String getCertificates() {
@@ -122,7 +122,7 @@ public class Employee {
                 ", building='" + building + '\'' +
                 ", platform='" + platform + '\'' +
                 ", platformName='" + platformName + '\'' +
-                ", secSkills='" + secSkills + '\'' +
+                ", expertise='" + expertise + '\'' +
                 ", certificates='" + certificates + '\'' +
                 ", isAdmin=" + isAdmin +
                 '}';
@@ -144,14 +144,14 @@ public class Employee {
                 getBuilding().equals(that.getBuilding()) &&
                 getPlatform().equals(that.getPlatform()) &&
                 getPlatformName().equals(that.getPlatformName()) &&
-                getSecSkills().equals(that.getSecSkills()) &&
+                getExpertise().equals(that.getExpertise()) &&
                 getCertificates().equals(that.getCertificates());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getEmployeeId(), getPassword(), getEmail(), getEmpName(), getExpYears(), getExpMonths(),
-                getCurrLocation(), getBuilding(), getPlatform(), getPlatformName(), getSecSkills(), getCertificates(),
+                getCurrLocation(), getBuilding(), getPlatform(), getPlatformName(), getExpertise(), getCertificates(),
                 isAdmin());
     }
 }

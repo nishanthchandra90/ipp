@@ -36,19 +36,19 @@ public class DemoData {
         employeeRepo.saveAll(List.of(
                 new Employee("admin", "admin", "john.joey@tcs.com",
                         "john joey", 4, 6, "TCS - Goa", "GG VII - STP",
-                        "Cloud", "GOOGLE", "", "java", true),
+                        "Cloud", "GOOGLE", "Solution Architect", "java", true),
                 new Employee("emp-2332332", "12345", "blob.byne@tcs.com",
                         "blob byne", 6, 0, "TCS - Mumbai", "GG VII - STP",
-                        "Cloud", "GOOGLE", "", "java", false),
+                        "Cloud", "GOOGLE", "Design & Implementation", "java", false),
                 new Employee("emp-273698646", "12345", "alice.ar@tcs.com",
                         "alice ar", 3, 8, "TCS - Nagpur", "GG VII - STP",
-                        "Cloud", "GOOGLE", "", "java", false),
+                        "Cloud", "GOOGLE", "Project Management", "java", false),
                 new Employee("emp-9876372", "12345", "wells.white@tcs.com",
                         "wells white", 10, 3, "TCS - Mumbai", "GG VII - STP",
-                        "Cloud", "GOOGLE", "", "java", false),
+                        "Cloud", "GOOGLE", "Solution Architect", "java", false),
                 new Employee("emp-03843984", "12345", "micheal.est@tcs.com",
                         "micheal est", 0, 6, "TCS - Nagpur", "GG VII - STP",
-                        "Cloud", "GOOGLE", "", "java", false)
+                        "Cloud", "GOOGLE", "Project Management", "java", false)
 
         ));
 
