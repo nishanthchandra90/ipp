@@ -57,7 +57,7 @@ class _EmployeesTabScreenState extends State<EmployeesTabScreen> {
   _createEmployeeList(List<EmployeeDetails> employees) {
     return Container(
         height: 50,
-        width: MediaQuery.of(context).size.width * 0.9,
+        width: MediaQuery.of(context).size.width,
         child: new ListView.separated(
           itemCount: employees.length,
           itemBuilder: (BuildContext _context, int index) {
@@ -67,7 +67,7 @@ class _EmployeesTabScreenState extends State<EmployeesTabScreen> {
                   context,
                   new MaterialPageRoute(
                       builder: (context) => new ShowEmployeeScreen(employee))),
-              child: _displayEmployeeList(employee),
+              child: _displayEmployeeItem(employee),
             );
           },
           separatorBuilder: (BuildContext _context, int index) => const Divider(
@@ -76,54 +76,18 @@ class _EmployeesTabScreenState extends State<EmployeesTabScreen> {
         ));
   }
 
-  Widget _displayEmployeeList(EmployeeDetails employeeDetails) {
+  Widget _displayEmployeeItem(EmployeeDetails employeeDetails) {
     return ListTile(
       leading: Container(
-          width: MediaQuery.of(context).size.width * 0.3,
+          width: MediaQuery.of(context).size.width * 0.25,
           child: IPPText.simpleText(employeeDetails.empName.toUpperCase(),
               fontWeight: FontWeight.bold, color: Colors.blue)),
       title: Container(
-          width: MediaQuery.of(context).size.width * 0.3,
+          width: MediaQuery.of(context).size.width * 0.35,
           child: IPPText.simpleText(employeeDetails.employeeId)),
       trailing: Container(
-          width: MediaQuery.of(context).size.width * 0.3,
+          width: MediaQuery.of(context).size.width * 0.29,
           child: IPPText.simpleText(employeeDetails.currLocation)),
-    );
-  }
-
-  Widget _displayEmployees(EmployeeDetails employeeDetails) {
-    if (employeeDetails.employeeId == 'admin') {
-      return SizedBox(
-        height: 1,
-      );
-    }
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _createRow(
-            employeeDetails.empName.toUpperCase(), employeeDetails.employeeId),
-        SizedBox(
-          height: 10,
-        ),
-        _createRow('', employeeDetails.currLocation.toUpperCase()),
-      ],
-    );
-  }
-
-  _createRow(String fieldName, String fieldVal) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IPPText.simpleText(fieldName,
-            fontWeight: FontWeight.bold, color: Colors.blue),
-        SizedBox(
-          width: 30,
-        ),
-        IPPText.simpleText(
-          fieldVal,
-        ),
-      ],
     );
   }
 

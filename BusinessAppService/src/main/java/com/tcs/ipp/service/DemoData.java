@@ -173,7 +173,7 @@ public class DemoData {
                         "IoT CC Mgmt"))));
         candidateApplicationRepo.deleteAll();
         candidateApplicationRepo.saveAll(List.of(new CandidateApplication("2328356",
-                        List.of("emp-2332332"), List.of("emp-2332332", "emp-9876372", "emp-03843984"), List.of()),
+                        List.of("emp-2332332"), List.of("emp-2332332", "emp-9876372", "emp-03843984"), List.of("emp-2332332")),
                 new CandidateApplication("273698646",
                         List.of("emp-9876372", "emp-03843984"), List.of("emp-2332332", "emp-9876372", "emp-03843984", "emp-273698646"), List.of()),
                 new CandidateApplication("9876372",

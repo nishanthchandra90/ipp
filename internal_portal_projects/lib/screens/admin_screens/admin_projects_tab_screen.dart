@@ -46,6 +46,20 @@ class _ProjectsTabScreenState extends State<ProjectsTabScreen> {
             return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
+                  ListTile(
+                    leading: Container(
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        child: IPPText.simpleText("Project Id",
+                            fontSize: 18, fontWeight: FontWeight.bold)),
+                    title: Container(
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        child: IPPText.simpleText("Location",
+                            fontSize: 17, fontWeight: FontWeight.bold)),
+                    trailing: Container(
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        child: IPPText.simpleText("Description",
+                            fontSize: 18, fontWeight: FontWeight.bold)),
+                  ),
                   new Expanded(child: _createProjectList(snapshot.data)),
                 ]);
           } else {
@@ -57,36 +71,41 @@ class _ProjectsTabScreenState extends State<ProjectsTabScreen> {
   }
 
   _createProjectList(List<ProjectDetails> projects) {
-    return new ListView.separated(
-      padding: const EdgeInsets.all(2),
-      itemCount: projects.length,
-      itemBuilder: (BuildContext _context, int index) {
-        ProjectDetails project = projects[index];
-        return Container(
-          height: 60,
-          width: MediaQuery.of(context).size.width,
-          child: InkWell(
-            child: _createListItem(project),
+    return Container(
+        height: 50,
+        width: MediaQuery.of(context).size.width,
+        child: new ListView.separated(
+          itemCount: projects.length,
+          itemBuilder: (BuildContext _context, int index) {
+            ProjectDetails project = projects[index];
+            return InkWell(
+              onLongPress: () => _bottomSheet(context, project),
+              onTap: () => Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => new ShowProjectScreen(project))),
+              child: _displayProjectItem(project),
+            );
+          },
+          separatorBuilder: (BuildContext _context, int index) => const Divider(
+            thickness: 1,
           ),
-        );
-      },
-      separatorBuilder: (BuildContext _context, int index) => const Divider(
-        thickness: 1,
-      ),
-    );
+        ));
   }
 
-  _createListItem(ProjectDetails project) {
+  Widget _displayProjectItem(ProjectDetails project) {
     return ListTile(
-      onLongPress: () => _bottomSheet(context, project),
-      onTap: () => Navigator.push(
-          context,
-          new MaterialPageRoute(
-              builder: (context) => new ShowProjectScreen(project))),
-      leading: IPPText.simpleText(
-          'ProjectId: ' + project.projectId.toUpperCase(),
-          fontSize: 18.0),
-      title: Container(width: 40, child: Text(project.currLocation.toString())),
+      leading: Container(
+          width: MediaQuery.of(context).size.width * 0.25,
+          child: IPPText.simpleText(project.projectId,
+              fontWeight: FontWeight.bold, color: Colors.blue)),
+      title: Container(
+          width: MediaQuery.of(context).size.width * 0.5,
+          child: IPPText.simpleText(project.currLocation)),
+      trailing: Container(
+          width: MediaQuery.of(context).size.width * 0.3,
+          child: IPPText.simpleText(project.description,
+              overflow: TextOverflow.ellipsis)),
     );
   }
 

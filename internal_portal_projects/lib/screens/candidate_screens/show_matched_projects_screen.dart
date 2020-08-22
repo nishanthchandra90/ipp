@@ -22,51 +22,75 @@ class ShowMatchedProjectsState extends State<ShowMatchedProjects> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(child: _createProjectList()));
+    return Scaffold(body: Center(child: _buildScreen()));
   }
 
-  _createProjectList() {
+  _buildScreen() {
     if (projects.isEmpty) {
       return IPPText.simpleText('No Matched Projects found!');
     }
-    return new ListView.separated(
-      padding: const EdgeInsets.all(2),
-      itemCount: projects.length,
-      itemBuilder: (BuildContext _context, int index) {
-        ProjectDetails project = projects[index];
-        return Container(
-          height: 60,
-          width: MediaQuery.of(context).size.width,
-          child: InkWell(
-            child: _createListItem(project),
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          ListTile(
+            leading: Container(
+                width: MediaQuery.of(context).size.width * 0.3,
+                child: IPPText.simpleText("Project Id",
+                    fontSize: 18, fontWeight: FontWeight.bold)),
+            title: Container(
+                width: MediaQuery.of(context).size.width * 0.35,
+                child: IPPText.simpleText("Location",
+                    fontSize: 17, fontWeight: FontWeight.bold)),
+            trailing: Container(
+                width: MediaQuery.of(context).size.width * 0.2,
+                child: IPPText.simpleText("Actions",
+                    fontSize: 18, fontWeight: FontWeight.bold)),
           ),
-        );
-      },
-      separatorBuilder: (BuildContext _context, int index) => const Divider(
-        thickness: 1,
-      ),
-    );
+          new Expanded(child: _createProjectList(projects)),
+        ]);
   }
 
-  _createListItem(ProjectDetails project) {
-    return ListTile(
-        onTap: () => Navigator.push(
-            context,
-            new MaterialPageRoute(
-                builder: (context) => new ShowProjectScreen(project))),
-        leading: IPPText.simpleText(
-            project.projectName.toUpperCase() + '\n(' + project.projectId + ')',
-            fontSize: 16.0),
-        title: IPPText.simpleText(project.currLocation),
-        trailing: Container(
-          height: 30,
-          width: 70,
-          color: Colors.blue,
-          child: FlatButton(
-            onPressed: () {},
-            child: Text('Apply'),
+  _createProjectList(List<ProjectDetails> projects) {
+    return Container(
+        height: 50,
+        width: MediaQuery.of(context).size.width,
+        child: new ListView.separated(
+          itemCount: projects.length,
+          itemBuilder: (BuildContext _context, int index) {
+            ProjectDetails project = projects[index];
+            return InkWell(
+              onTap: () => Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => new ShowProjectScreen(project))),
+              child: _displayProjectItem(project),
+            );
+          },
+          separatorBuilder: (BuildContext _context, int index) => const Divider(
+            thickness: 1,
           ),
         ));
+  }
+
+  Widget _displayProjectItem(ProjectDetails project) {
+    return ListTile(
+      leading: Container(
+          width: MediaQuery.of(context).size.width * 0.25,
+          child: IPPText.simpleText(project.projectId,
+              fontWeight: FontWeight.bold, color: Colors.blue)),
+      title: Container(
+          width: MediaQuery.of(context).size.width * 0.5,
+          child: IPPText.simpleText(project.currLocation)),
+      trailing: Container(
+          width: MediaQuery.of(context).size.width * 0.2,
+          child: Container(
+            height: 30,
+            color: Colors.blue,
+            child: FlatButton(
+              onPressed: () {},
+              child: Text('Apply'),
+            ),
+          )),
+    );
   }
 }
