@@ -27,6 +27,7 @@ class ShowAppliedScreenState extends State<ShowAppliedScreen> {
         body: Padding(
       padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           IPPText.simpleText("Applied Candidates",
               color: Colors.blue, fontSize: 20),

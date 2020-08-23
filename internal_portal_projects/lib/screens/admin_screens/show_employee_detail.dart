@@ -30,7 +30,7 @@ class ShowEmployeeState extends State<ShowEmployeeScreen> {
 
   Widget _displayEmployeeDetails(EmployeeDetails employee) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(20, 70, 10, 0),
+      padding: EdgeInsets.fromLTRB(20, 50, 2, 0),
       child: new SingleChildScrollView(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -84,16 +84,22 @@ class ShowEmployeeState extends State<ShowEmployeeScreen> {
 
   _createRow(String fieldName, String fieldVal) {
     return Padding(
-        padding: EdgeInsets.fromLTRB(5, 0, 20, 0),
+        padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            IPPText.simpleText(fieldName,
-                fontWeight: FontWeight.bold, fontSize: 18, color: Colors.blue),
-            IPPText.simpleText(
-              fieldVal,
-              fontSize: 16,
-            )
+            Container(
+                width: MediaQuery.of(context).size.width * 0.3,
+                child: IPPText.simpleText(fieldName,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Colors.blue)),
+            Container(
+                width: MediaQuery.of(context).size.width * 0.55,
+                child: IPPText.simpleText(
+                  fieldVal,
+                  fontSize: 16,
+                ))
           ],
         ));
   }

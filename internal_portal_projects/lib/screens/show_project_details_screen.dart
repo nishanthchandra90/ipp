@@ -30,7 +30,7 @@ class ShowProjectState extends State<ShowProjectScreen> {
 
   Widget _displayProjectDetails(ProjectDetails project) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(20, 70, 5, 0),
+      padding: EdgeInsets.fromLTRB(20, 50, 2, 0),
       child: new SingleChildScrollView(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,8 +76,12 @@ class ShowProjectState extends State<ShowProjectScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            IPPText.simpleText(fieldName,
-                fontWeight: FontWeight.bold, fontSize: 18, color: Colors.blue),
+            Container(
+                width: MediaQuery.of(context).size.width * 0.3,
+                child: IPPText.simpleText(fieldName,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Colors.blue)),
             Container(
               width: MediaQuery.of(context).size.width * 0.55,
               child: IPPText.simpleText(fieldVal,

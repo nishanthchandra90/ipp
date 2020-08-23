@@ -11,9 +11,15 @@ class EmployeesTabScreen extends StatefulWidget {
 
 class _EmployeesTabScreenState extends State<EmployeesTabScreen> {
   final bloc = EmployeeBloc();
+  double column1Width;
+  double column2Width;
+  double column3Width;
 
   @override
   Widget build(BuildContext context) {
+    column1Width = MediaQuery.of(context).size.width * 0.25;
+    column2Width = MediaQuery.of(context).size.width * 0.4;
+    column3Width = MediaQuery.of(context).size.width * 0.25;
     return Scaffold(
       body: _buildScreen(),
     );
@@ -32,15 +38,15 @@ class _EmployeesTabScreenState extends State<EmployeesTabScreen> {
                 children: <Widget>[
                   ListTile(
                     leading: Container(
-                        width: MediaQuery.of(context).size.width * 0.3,
+                        width: column1Width,
                         child: IPPText.simpleText("Name",
                             fontSize: 18, fontWeight: FontWeight.bold)),
                     title: Container(
-                        width: MediaQuery.of(context).size.width * 0.3,
+                        width: column2Width,
                         child: IPPText.simpleText("Emp Id",
                             fontSize: 17, fontWeight: FontWeight.bold)),
                     trailing: Container(
-                        width: MediaQuery.of(context).size.width * 0.3,
+                        width: column3Width,
                         child: IPPText.simpleText("Location",
                             fontSize: 18, fontWeight: FontWeight.bold)),
                   ),
@@ -56,7 +62,6 @@ class _EmployeesTabScreenState extends State<EmployeesTabScreen> {
 
   _createEmployeeList(List<EmployeeDetails> employees) {
     return Container(
-        height: 50,
         width: MediaQuery.of(context).size.width,
         child: new ListView.separated(
           itemCount: employees.length,
@@ -77,20 +82,22 @@ class _EmployeesTabScreenState extends State<EmployeesTabScreen> {
   }
 
   Widget _displayEmployeeItem(EmployeeDetails employeeDetails) {
-    if(employeeDetails.isAdmin){
+    if (employeeDetails.isAdmin) {
       return SizedBox();
     }
     return ListTile(
       leading: Container(
-          width: MediaQuery.of(context).size.width * 0.25,
+          width: column1Width,
           child: IPPText.simpleText(employeeDetails.empName.toUpperCase(),
-              fontWeight: FontWeight.bold, color: Colors.blue)),
+              color: Colors.blue)),
       title: Container(
-          width: MediaQuery.of(context).size.width * 0.35,
-          child: IPPText.simpleText(employeeDetails.employeeId)),
+          width: column2Width,
+          child: IPPText.simpleText(employeeDetails.employeeId,
+              fontSize: 15, overflow: TextOverflow.fade)),
       trailing: Container(
-          width: MediaQuery.of(context).size.width * 0.29,
-          child: IPPText.simpleText(employeeDetails.currLocation)),
+          width: column3Width,
+          child:
+              IPPText.simpleText(employeeDetails.currLocation, fontSize: 15)),
     );
   }
 

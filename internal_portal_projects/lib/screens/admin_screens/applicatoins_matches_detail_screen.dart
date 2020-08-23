@@ -13,12 +13,13 @@ class ApplicationAndMatchesScreen extends StatefulWidget {
   final List<CandidateDetails> appliedCandidates;
   final List<CandidateDetails> matchedCandidates;
 
-  ApplicationAndMatchesScreen(
-      this.project, this.appliedCandidates, this.matchedCandidates);
+  ApplicationAndMatchesScreen(this.project, this.appliedCandidates,
+      this.matchedCandidates);
 
   @override
-  State<StatefulWidget> createState() => ApplicationAndMatchesScreenState(
-      project, appliedCandidates, matchedCandidates);
+  State<StatefulWidget> createState() =>
+      ApplicationAndMatchesScreenState(
+          project, appliedCandidates, matchedCandidates);
 }
 
 class ApplicationAndMatchesScreenState
@@ -28,8 +29,8 @@ class ApplicationAndMatchesScreenState
   List<CandidateDetails> matchedCandidates;
   final _currentPageNotifier = ValueNotifier<int>(0);
 
-  ApplicationAndMatchesScreenState(
-      this.project, this.appliedCandidates, this.matchedCandidates);
+  ApplicationAndMatchesScreenState(this.project, this.appliedCandidates,
+      this.matchedCandidates);
 
   @override
   Widget build(BuildContext context) {
@@ -47,14 +48,14 @@ class ApplicationAndMatchesScreenState
         _createProjectSection(),
         Expanded(
             child: new PageView(
-          children: <Widget>[
-            ShowAppliedScreen(project.projectId, appliedCandidates),
-            ShowMatchedScreen(project.projectId, matchedCandidates),
-          ],
-          onPageChanged: (int index) {
-            _currentPageNotifier.value = index;
-          },
-        )),
+              children: <Widget>[
+                ShowAppliedScreen(project.projectId, appliedCandidates),
+                ShowMatchedScreen(project.projectId, matchedCandidates),
+              ],
+              onPageChanged: (int index) {
+                _currentPageNotifier.value = index;
+              },
+            )),
         _pageViewIndicators(),
       ],
     );
@@ -65,7 +66,7 @@ class ApplicationAndMatchesScreenState
       padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 10),
       child: CirclePageIndicator(
         itemCount: 2,
-        selectedDotColor: Colors.deepOrangeAccent,
+        selectedDotColor: Colors.blue,
         currentPageNotifier: _currentPageNotifier,
       ),
     );
@@ -73,7 +74,7 @@ class ApplicationAndMatchesScreenState
 
   _createProjectSection() {
     return Padding(
-        padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+        padding: EdgeInsets.fromLTRB(20, 40, 5, 0),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -84,16 +85,22 @@ class ApplicationAndMatchesScreenState
             ]));
   }
 
-  _createRow(String fieldName, String fieldVal) {
+  _createRow(String fieldName, String fieldVal, {tooLong: false}) {
     return Padding(
-        padding: EdgeInsets.fromLTRB(5, 0, 20, 10),
+        padding: EdgeInsets.fromLTRB(0, 10, 20, 0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IPPText.simpleText(fieldName,
-                fontWeight: FontWeight.bold, fontSize: 16, color: Colors.blue),
-            IPPText.simpleText(
-              fieldVal,
+                fontWeight: FontWeight.bold, fontSize: 18, color: Colors.blue),
+            Container(
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width * 0.55,
+              child: IPPText.simpleText(fieldVal,
+                  fontSize: 16,
+                  overflow: tooLong ? TextOverflow.fade : TextOverflow.visible),
             )
           ],
         ));

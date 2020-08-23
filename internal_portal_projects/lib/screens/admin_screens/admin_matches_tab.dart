@@ -75,7 +75,7 @@ class _MatchesTabScreenState extends State<MatchesTabScreen> {
     var matchedScreen = new ShowMatchedScreen(projectId, matchedCandidates);
     var showAppliedScreen = new ShowAppliedScreen(projectId, appliedCandidates);
     Widget projId = IPPText.simpleText('Project ' + projectId,
-        fontWeight: FontWeight.bold, fontSize: 18, color: Colors.blue);
+        fontWeight: FontWeight.bold, color: Colors.blue);
     Widget projLoc = IPPText.simpleText(project.currLocation, fontSize: 15);
     Widget matched = _clickableText(
         'Matched: ' + matchedCandidates.length.toString(),
@@ -118,7 +118,7 @@ class _MatchesTabScreenState extends State<MatchesTabScreen> {
       height: 50,
       child: ListTile(
         leading: projId,
-        title: projLoc,
+        trailing: projLoc,
       ),
     );
   }
