@@ -20,8 +20,15 @@ class ShowConfirmedProjectsState extends State<ShowConfirmedProjects> {
 
   ShowConfirmedProjectsState(this.projects);
 
+  double column1Width;
+  double column2Width;
+  double column3Width;
+
   @override
   Widget build(BuildContext context) {
+    column1Width = MediaQuery.of(context).size.width * 0.25;
+    column2Width = MediaQuery.of(context).size.width * 0.4;
+    column3Width = MediaQuery.of(context).size.width * 0.25;
     return Scaffold(body: _buildScreen());
   }
 
@@ -43,10 +50,6 @@ class ShowConfirmedProjectsState extends State<ShowConfirmedProjects> {
                 width: MediaQuery.of(context).size.width * 0.35,
                 child: IPPText.simpleText("Location",
                     fontSize: 17, fontWeight: FontWeight.bold)),
-            trailing: Container(
-                width: MediaQuery.of(context).size.width * 0.2,
-                child: IPPText.simpleText("Actions",
-                    fontSize: 18, fontWeight: FontWeight.bold)),
           ),
           new Expanded(child: _createProjectList(projects)),
         ]);
@@ -77,22 +80,11 @@ class ShowConfirmedProjectsState extends State<ShowConfirmedProjects> {
   Widget _displayProjectItem(ProjectDetails project) {
     return ListTile(
       leading: Container(
-          width: MediaQuery.of(context).size.width * 0.25,
+          width: column1Width,
           child: IPPText.simpleText(project.projectId,
               fontWeight: FontWeight.bold, color: Colors.blue)),
       title: Container(
-          width: MediaQuery.of(context).size.width * 0.5,
-          child: IPPText.simpleText(project.currLocation)),
-      trailing: Container(
-          width: MediaQuery.of(context).size.width * 0.27,
-          child: Container(
-            height: 30,
-            color: Colors.red,
-            child: FlatButton(
-              onPressed: () {},
-              child: Text('Withdraw'),
-            ),
-          )),
+          width: column2Width, child: IPPText.simpleText(project.currLocation)),
     );
   }
 }

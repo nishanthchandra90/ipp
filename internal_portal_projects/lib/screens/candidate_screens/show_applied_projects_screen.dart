@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:internal_portal_projects/common_components/ipp_inputelements.dart';
 import 'package:internal_portal_projects/common_components/ipp_text.dart';
 import 'package:internal_portal_projects/model/project_details.dart';
 
@@ -20,8 +21,15 @@ class ShowAppliedProjectsState extends State<ShowAppliedProjects> {
 
   ShowAppliedProjectsState(this.projects);
 
+  double column1Width;
+  double column2Width;
+  double column3Width;
+
   @override
   Widget build(BuildContext context) {
+    column1Width = MediaQuery.of(context).size.width * 0.25;
+    column2Width = MediaQuery.of(context).size.width * 0.4;
+    column3Width = MediaQuery.of(context).size.width * 0.26;
     return Scaffold(body: _buildScreen());
   }
 
@@ -74,23 +82,17 @@ class ShowAppliedProjectsState extends State<ShowAppliedProjects> {
 
   Widget _displayProjectItem(ProjectDetails project) {
     return ListTile(
-      leading: Container(
-          width: MediaQuery.of(context).size.width * 0.25,
-          child: IPPText.simpleText(project.projectId,
-              fontWeight: FontWeight.bold, color: Colors.blue)),
-      title: Container(
-          width: MediaQuery.of(context).size.width * 0.5,
-          child: IPPText.simpleText(project.currLocation)),
-      trailing: Container(
-          width: MediaQuery.of(context).size.width * 0.27,
-          child: Container(
-            height: 30,
-            color: Colors.red,
-            child: FlatButton(
-              onPressed: () {},
-              child: Text('Withdraw'),
-            ),
-          )),
-    );
+        leading: Container(
+            width: column1Width,
+            child: IPPText.simpleText(project.projectId,
+                fontWeight: FontWeight.bold, color: Colors.blue)),
+        title: Container(
+            width: column2Width,
+            child: IPPText.simpleText(project.currLocation)),
+        trailing: Container(
+          width: column3Width,
+          child: IPPInputs.formButton('Withdraw',
+              color: Colors.red, onPressed: () => {}),
+        ));
   }
 }

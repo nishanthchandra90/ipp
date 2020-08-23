@@ -105,7 +105,7 @@ class IPPInputs {
   static formButton(String buttonText,
       {Function() onPressed, color: Colors.green}) {
     return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15.0),
+        padding: const EdgeInsets.symmetric(vertical: 5.0),
         child: RaisedButton(
           color: color,
           onPressed: () => onPressed(),
