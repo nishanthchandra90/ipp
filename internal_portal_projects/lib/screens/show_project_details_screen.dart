@@ -30,12 +30,12 @@ class ShowProjectState extends State<ShowProjectScreen> {
 
   Widget _displayProjectDetails(ProjectDetails project) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(20, 70, 10, 0),
+      padding: EdgeInsets.fromLTRB(20, 70, 5, 0),
       child: new SingleChildScrollView(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-            _createRow("Account Name", project.projectName.toUpperCase()),
+            _createRow("Account", project.projectName.toUpperCase()),
             SizedBox(
               height: 20,
             ),
@@ -47,7 +47,7 @@ class ShowProjectState extends State<ShowProjectScreen> {
             SizedBox(
               height: 20,
             ),
-            _createRow("Description", project.description),
+            _createRow("Description", project.description, tooLong: true),
             SizedBox(
               height: 20,
             ),
@@ -70,17 +70,19 @@ class ShowProjectState extends State<ShowProjectScreen> {
     );
   }
 
-  _createRow(String fieldName, String fieldVal) {
+  _createRow(String fieldName, String fieldVal, {tooLong: false}) {
     return Padding(
-        padding: EdgeInsets.fromLTRB(5, 0, 20, 0),
+        padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IPPText.simpleText(fieldName,
                 fontWeight: FontWeight.bold, fontSize: 18, color: Colors.blue),
-            IPPText.simpleText(
-              fieldVal,
-              fontSize: 16,
+            Container(
+              width: MediaQuery.of(context).size.width * 0.55,
+              child: IPPText.simpleText(fieldVal,
+                  fontSize: 16,
+                  overflow: tooLong ? TextOverflow.fade : TextOverflow.visible),
             )
           ],
         ));

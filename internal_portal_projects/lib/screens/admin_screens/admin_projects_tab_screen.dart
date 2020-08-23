@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:internal_portal_projects/bloc/project_bloc.dart';
 import 'package:internal_portal_projects/common_components/ipp_actionbutton.dart';
@@ -14,9 +15,15 @@ class ProjectsTabScreen extends StatefulWidget {
 
 class _ProjectsTabScreenState extends State<ProjectsTabScreen> {
   final bloc = ProjectsBloc();
+  double column1Width;
+  double column2Width;
+  double column3Width;
 
   @override
   Widget build(BuildContext context) {
+    column1Width = MediaQuery.of(context).size.width * 0.25;
+    column2Width = MediaQuery.of(context).size.width * 0.4;
+    column3Width = MediaQuery.of(context).size.width * 0.25;
     Function onAddBtnPressed = () => Navigator.push(
             context,
             MaterialPageRoute(
@@ -48,16 +55,16 @@ class _ProjectsTabScreenState extends State<ProjectsTabScreen> {
                 children: <Widget>[
                   ListTile(
                     leading: Container(
-                        width: MediaQuery.of(context).size.width * 0.3,
+                        width: column1Width,
                         child: IPPText.simpleText("Project Id",
                             fontSize: 18, fontWeight: FontWeight.bold)),
                     title: Container(
-                        width: MediaQuery.of(context).size.width * 0.3,
-                        child: IPPText.simpleText("Location",
+                        width: column2Width,
+                        child: IPPText.simpleText("Description",
                             fontSize: 17, fontWeight: FontWeight.bold)),
                     trailing: Container(
-                        width: MediaQuery.of(context).size.width * 0.3,
-                        child: IPPText.simpleText("Description",
+                        width: column3Width,
+                        child: IPPText.simpleText("Location",
                             fontSize: 18, fontWeight: FontWeight.bold)),
                   ),
                   new Expanded(child: _createProjectList(snapshot.data)),
@@ -72,7 +79,6 @@ class _ProjectsTabScreenState extends State<ProjectsTabScreen> {
 
   _createProjectList(List<ProjectDetails> projects) {
     return Container(
-        height: 50,
         width: MediaQuery.of(context).size.width,
         child: new ListView.separated(
           itemCount: projects.length,
@@ -96,16 +102,15 @@ class _ProjectsTabScreenState extends State<ProjectsTabScreen> {
   Widget _displayProjectItem(ProjectDetails project) {
     return ListTile(
       leading: Container(
-          width: MediaQuery.of(context).size.width * 0.25,
-          child: IPPText.simpleText(project.projectId,
-              fontWeight: FontWeight.bold, color: Colors.blue)),
+          width: column1Width,
+          child: IPPText.simpleText(project.projectId, color: Colors.blue)),
       title: Container(
-          width: MediaQuery.of(context).size.width * 0.5,
-          child: IPPText.simpleText(project.currLocation)),
-      trailing: Container(
-          width: MediaQuery.of(context).size.width * 0.3,
+          width: column2Width,
           child: IPPText.simpleText(project.description,
-              overflow: TextOverflow.ellipsis)),
+              fontSize: 15, overflow: TextOverflow.fade)),
+      trailing: Container(
+          width: column3Width,
+          child: IPPText.simpleText(project.currLocation, fontSize: 15)),
     );
   }
 

@@ -113,7 +113,7 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
 
     Widget descriptionTextField = IPPInputs.simpleTextFormField('Description',
         'project description', projectDescTextEditor, true, context,
-        charLimit: 20);
+        charLimit: 40);
 
     Widget locDropDownRow = IPPInputs.widgetRow(IPPText.simpleText('Location'),
         locErrorText, true, [workLocationDropdown()]);
