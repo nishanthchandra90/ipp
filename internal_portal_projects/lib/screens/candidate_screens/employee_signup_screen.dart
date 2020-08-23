@@ -12,13 +12,16 @@ import 'package:internal_portal_projects/service/location_service.dart';
 import 'package:internal_portal_projects/service/project_manage_service.dart';
 
 class EmployeeSignUpScreen extends StatefulWidget {
-  const EmployeeSignUpScreen();
+  final EmployeeDetails employee;
+
+  EmployeeSignUpScreen({this.employee});
 
   @override
-  State<StatefulWidget> createState() => _EmployeeSignUpScreenState();
+  State<StatefulWidget> createState() => _EmployeeSignUpScreenState(employee);
 }
 
 class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
+  final EmployeeDetails employee;
   final _employeeFormKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<State> globalStateKey = new GlobalKey<State>();
@@ -27,6 +30,7 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
   final TextEditingController nameEditCntrlr = TextEditingController();
   final TextEditingController pwdEditCntrlr = TextEditingController();
   final TextEditingController certsEditCntrlr = TextEditingController();
+  String screenHeading = 'New Account Information';
   String experienceErrorText = '';
   String locErrorText = '';
   String buildingErrorText = '';
@@ -51,7 +55,7 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
     'Solution Architect'
   ];
 
-  _EmployeeSignUpScreenState();
+  _EmployeeSignUpScreenState(this.employee);
 
   @override
   void initState() {
@@ -59,6 +63,10 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
     citiesFuture = LocationService.getAllLocations();
     buildingsFuture = LocationService.getAllBuildings();
     platforms = ProjectManagementService.getPrimaryPlatforms();
+    if (employee != null) {
+      screenHeading = 'Profile Information';
+      _populate(employee);
+    }
   }
 
   @override
@@ -67,7 +75,7 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
         key: _scaffoldKey,
         appBar: AppBar(
           centerTitle: true,
-          title: IPPText.simpleText('New Candidate',
+          title: IPPText.simpleText(screenHeading,
               fontWeight: FontWeight.bold, fontSize: 22.0),
         ),
         body: SafeArea(
@@ -252,7 +260,6 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
     formState.reset();
     empIdEditCntrlr.clear();
     nameEditCntrlr.clear();
-    empIdEditCntrlr.clear();
     pwdEditCntrlr.clear();
     certsEditCntrlr.clear();
     setState(() {
@@ -421,5 +428,19 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
       return false;
     }
     return true;
+  }
+
+  void _populate(EmployeeDetails employee) {
+    empIdEditCntrlr.text = employee.employeeId;
+    nameEditCntrlr.text = employee.empName;
+    pwdEditCntrlr.text = employee.password;
+    certsEditCntrlr.text = employee.certificates;
+    _yearsSelected = employee.expYears.toString();
+    _monthsSelected = employee.expMonths.toString();
+    _locationSelected = employee.currLocation;
+    _buildingSelected = employee.building;
+    _platformSelected = employee.platform;
+    _platformNameSelected = employee.platformName;
+    _expertiseSelected = employee.expertise;
   }
 }
