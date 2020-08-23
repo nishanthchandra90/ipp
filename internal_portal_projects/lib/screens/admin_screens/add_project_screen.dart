@@ -134,6 +134,7 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
         expertiseOptions, _expertiseSelected, 'Select', context,
         (String newVal) {
       setState(() {
+        FocusScope.of(context).requestFocus(FocusNode());
         _expertiseSelected = newVal;
       });
     });
@@ -147,6 +148,7 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
     Widget tenureDropDown = IPPInputs.dropdown(
         tenureOptions, _tenureSelected, 'Select', context, (String newVal) {
       setState(() {
+        FocusScope.of(context).requestFocus(FocusNode());
         _tenureSelected = newVal;
       });
     });
@@ -252,8 +254,9 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
       _buildingSelected = null;
       _platformSelected = null;
       _platformNameSelected = null;
-      _expertiseSelected = '';
-      _tenureSelected = '';
+      platformNames = [];
+      _expertiseSelected = null;
+      _tenureSelected = null;
       locErrorText = '';
       buildingErrorText = '';
       platformErrorText = '';
@@ -287,6 +290,7 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
           return DropdownButton<String>(
             value: _locationSelected,
             onChanged: (String newValue) {
+              FocusScope.of(context).requestFocus(FocusNode());
               _changeWorkLocation(newValue);
             },
             hint: new Text('Select'),
@@ -317,6 +321,7 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
           return DropdownButton<String>(
             value: _buildingSelected,
             onChanged: (String newValue) {
+              FocusScope.of(context).requestFocus(FocusNode());
               _changeWorkBuilding(newValue);
             },
             hint: new Text('Select'),
@@ -347,6 +352,7 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
           return DropdownButton<String>(
             value: _platformSelected,
             onChanged: (String newValue) {
+              FocusScope.of(context).requestFocus(FocusNode());
               _changePlatform(platforms, newValue);
             },
             hint: new Text('Select'),
@@ -382,6 +388,7 @@ class _NewProjectScreenState extends State<AddProjectScreen> {
     return DropdownButton<String>(
       value: _platformNameSelected,
       onChanged: (String newValue) {
+        FocusScope.of(context).requestFocus(FocusNode());
         _changePlatformType(newValue);
       },
       hint: new Text('Select'),

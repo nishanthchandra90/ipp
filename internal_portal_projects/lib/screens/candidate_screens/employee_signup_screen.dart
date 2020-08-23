@@ -102,6 +102,7 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
         (newValue) => setState(() => {
               _yearsSelected =
                   newValue != null ? newValue.toString() : _yearsSelected,
+              FocusScope.of(context).requestFocus(FocusNode())
             }),
         context,
         labelText: 'Years');
@@ -111,11 +112,14 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
         0,
         0,
         11,
-        (newValue) => setState(() => _monthsSelected =
-            newValue != null ? newValue.toString() : _monthsSelected),
+        (newValue) => setState(() => {
+              _monthsSelected =
+                  newValue != null ? newValue.toString() : _monthsSelected,
+              FocusScope.of(context).requestFocus(FocusNode())
+            }),
         context,
         labelText: "Months");
-    Widget experienceDropDownRow = IPPInputs.widgetRow(
+    Widget experiencePicker = IPPInputs.widgetRow(
         IPPText.simpleText('Experience'),
         experienceErrorText,
         validExperiencePeriod,
@@ -140,6 +144,7 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
         expertiseOptions, _expertiseSelected, 'Select', context,
         (String newVal) {
       setState(() {
+        FocusScope.of(context).requestFocus(FocusNode());
         _expertiseSelected = newVal;
       });
     });
@@ -165,7 +170,7 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
                 passwordTextBox,
                 emailTextBox,
                 empNameTextBox,
-                experienceDropDownRow,
+                experiencePicker,
                 locDropDownRow,
                 buildingDropDownRow,
                 platformDropDownRow,
@@ -257,6 +262,7 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
       _buildingSelected = null;
       _platformSelected = null;
       _platformNameSelected = null;
+      platformNames = [];
       _expertiseSelected = null;
       experienceErrorText = '';
       locErrorText = '';
@@ -274,6 +280,7 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
           return DropdownButton<String>(
             value: _locationSelected,
             onChanged: (String newValue) {
+              FocusScope.of(context).requestFocus(FocusNode());
               _changeWorkLocation(newValue);
             },
             hint: new Text('Select'),
@@ -304,6 +311,7 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
           return DropdownButton<String>(
             value: _buildingSelected,
             onChanged: (String newValue) {
+              FocusScope.of(context).requestFocus(FocusNode());
               _changeWorkBuilding(newValue);
             },
             hint: new Text('Select'),
@@ -334,6 +342,7 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
           return DropdownButton<String>(
             value: _platformSelected,
             onChanged: (String newValue) {
+              FocusScope.of(context).requestFocus(FocusNode());
               _changePlatform(platforms, newValue);
             },
             hint: new Text('Select'),
