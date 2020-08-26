@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:internal_portal_projects/common_components/ipp_text.dart';
+import 'package:internal_portal_projects/common_components/ipp_widget.dart';
 import 'package:internal_portal_projects/model/candidate_details.dart';
 import 'package:internal_portal_projects/model/project_details.dart';
 import 'package:page_view_indicators/circle_page_indicator.dart';
@@ -13,13 +14,12 @@ class ApplicationAndMatchesScreen extends StatefulWidget {
   final List<CandidateDetails> appliedCandidates;
   final List<CandidateDetails> matchedCandidates;
 
-  ApplicationAndMatchesScreen(this.project, this.appliedCandidates,
-      this.matchedCandidates);
+  ApplicationAndMatchesScreen(
+      this.project, this.appliedCandidates, this.matchedCandidates);
 
   @override
-  State<StatefulWidget> createState() =>
-      ApplicationAndMatchesScreenState(
-          project, appliedCandidates, matchedCandidates);
+  State<StatefulWidget> createState() => ApplicationAndMatchesScreenState(
+      project, appliedCandidates, matchedCandidates);
 }
 
 class ApplicationAndMatchesScreenState
@@ -29,16 +29,13 @@ class ApplicationAndMatchesScreenState
   List<CandidateDetails> matchedCandidates;
   final _currentPageNotifier = ValueNotifier<int>(0);
 
-  ApplicationAndMatchesScreenState(this.project, this.appliedCandidates,
-      this.matchedCandidates);
+  ApplicationAndMatchesScreenState(
+      this.project, this.appliedCandidates, this.matchedCandidates);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            leading: BackButton(onPressed: () => Navigator.pop(context)),
-            title: IPPText.simpleText('Applications and Matches',
-                fontSize: 22.0, fontWeight: FontWeight.bold)),
+        appBar: IPPWidget.appBar([], "Potential Candidates"),
         body: _buildPageBar());
   }
 
@@ -48,14 +45,14 @@ class ApplicationAndMatchesScreenState
         _createProjectSection(),
         Expanded(
             child: new PageView(
-              children: <Widget>[
-                ShowAppliedScreen(project.projectId, appliedCandidates),
-                ShowMatchedScreen(project.projectId, matchedCandidates),
-              ],
-              onPageChanged: (int index) {
-                _currentPageNotifier.value = index;
-              },
-            )),
+          children: <Widget>[
+            ShowAppliedScreen(project.projectId, appliedCandidates),
+            ShowMatchedScreen(project.projectId, matchedCandidates),
+          ],
+          onPageChanged: (int index) {
+            _currentPageNotifier.value = index;
+          },
+        )),
         _pageViewIndicators(),
       ],
     );
@@ -94,10 +91,7 @@ class ApplicationAndMatchesScreenState
             IPPText.simpleText(fieldName,
                 fontWeight: FontWeight.bold, fontSize: 18, color: Colors.blue),
             Container(
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width * 0.55,
+              width: MediaQuery.of(context).size.width * 0.55,
               child: IPPText.simpleText(fieldVal,
                   fontSize: 16,
                   overflow: tooLong ? TextOverflow.fade : TextOverflow.visible),

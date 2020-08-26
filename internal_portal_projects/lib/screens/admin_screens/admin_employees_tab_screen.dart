@@ -11,6 +11,9 @@ class EmployeesTabScreen extends StatefulWidget {
 
 class _EmployeesTabScreenState extends State<EmployeesTabScreen> {
   final bloc = EmployeeBloc();
+  TextEditingController controller = new TextEditingController();
+  List<EmployeeDetails> _searchResult = [];
+  List<EmployeeDetails> _employeeDetails = [];
   double column1Width;
   double column2Width;
   double column3Width;
@@ -32,31 +35,42 @@ class _EmployeesTabScreenState extends State<EmployeesTabScreen> {
         builder: (BuildContext context,
             AsyncSnapshot<List<EmployeeDetails>> snapshot) {
           if (snapshot.hasData) {
+            _employeeDetails = snapshot.data;
             return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  ListTile(
-                    leading: Container(
-                        width: column1Width,
-                        child: IPPText.simpleText("Name",
-                            fontSize: 18, fontWeight: FontWeight.bold)),
-                    title: Container(
-                        width: column2Width,
-                        child: IPPText.simpleText("Emp Id",
-                            fontSize: 17, fontWeight: FontWeight.bold)),
-                    trailing: Container(
-                        width: column3Width,
-                        child: IPPText.simpleText("Location",
-                            fontSize: 18, fontWeight: FontWeight.bold)),
-                  ),
-                  new Expanded(child: _createEmployeeList(snapshot.data)),
+                  new Container(
+                      color: Theme.of(context).primaryColor,
+                      child: _buildSearchBox()),
+                  _createTableHeader(),
+                  new Expanded(
+                      child: _searchResult.length != 0 ||
+                              controller.text.isNotEmpty
+                          ? _buildSearchResults()
+                          : _createEmployeeList(snapshot.data)),
                 ]);
           } else {
             return Center(child: CircularProgressIndicator());
           }
         },
       ),
+    );
+  }
+
+  _createTableHeader() {
+    return ListTile(
+      leading: Container(
+          width: column1Width,
+          child: IPPText.simpleText("Name",
+              fontSize: 18, fontWeight: FontWeight.bold)),
+      title: Container(
+          width: column2Width,
+          child: IPPText.simpleText("Emp Id",
+              fontSize: 17, fontWeight: FontWeight.bold)),
+      trailing: Container(
+          width: column3Width,
+          child: IPPText.simpleText("Location",
+              fontSize: 18, fontWeight: FontWeight.bold)),
     );
   }
 
@@ -99,6 +113,54 @@ class _EmployeesTabScreenState extends State<EmployeesTabScreen> {
           child:
               IPPText.simpleText(employeeDetails.currLocation, fontSize: 15)),
     );
+  }
+
+  Widget _buildSearchResults() {
+    return new ListView.builder(
+      itemCount: _searchResult.length,
+      itemBuilder: (context, i) {
+        return _displayEmployeeItem(_searchResult[i]);
+      },
+    );
+  }
+
+  Widget _buildSearchBox() {
+    return new Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: new Card(
+        child: new ListTile(
+          leading: new Icon(Icons.search),
+          title: new TextField(
+            controller: controller,
+            decoration: new InputDecoration(
+                hintText: 'Search', border: InputBorder.none),
+            onChanged: onSearchTextChanged,
+          ),
+          trailing: new IconButton(
+            icon: new Icon(Icons.cancel),
+            onPressed: () {
+              controller.clear();
+              onSearchTextChanged('');
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  onSearchTextChanged(String text) async {
+    _searchResult.clear();
+    if (text.isEmpty) {
+      setState(() {});
+      return;
+    }
+    _employeeDetails.forEach((employeeDetail) {
+      String loc = employeeDetail.currLocation.toLowerCase();
+      String searchText = text.toLowerCase();
+      if (loc.contains(searchText) || employeeDetail.employeeId.contains(text))
+        _searchResult.add(employeeDetail);
+      setState(() {});
+    });
   }
 
   @override

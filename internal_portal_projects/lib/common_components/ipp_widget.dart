@@ -105,7 +105,7 @@ class IPPWidget {
         ));
   }
 
-  static appBar(List<Widget> tabs) {
+  static appBar(List<Widget> tabs, String title) {
     return AppBar(
         centerTitle: true,
         bottom: tabs.length > 0
@@ -114,7 +114,7 @@ class IPPWidget {
                 child: IPPWidget.createTabBar(tabs))
             : new PreferredSize(
                 preferredSize: new Size(0, 0), child: Container()),
-        title: IPPText.simpleText("Manage Projects",
+        title: IPPText.simpleText(title,
             fontSize: 20.0, align: TextAlign.right, color: Colors.white));
   }
 }

@@ -15,6 +15,9 @@ class ProjectsTabScreen extends StatefulWidget {
 
 class _ProjectsTabScreenState extends State<ProjectsTabScreen> {
   final bloc = ProjectsBloc();
+  TextEditingController controller = new TextEditingController();
+  List<ProjectDetails> _searchResult = [];
+  List<ProjectDetails> _projectDetails = [];
   double column1Width;
   double column2Width;
   double column3Width;
@@ -50,30 +53,42 @@ class _ProjectsTabScreenState extends State<ProjectsTabScreen> {
         builder: (BuildContext context,
             AsyncSnapshot<List<ProjectDetails>> snapshot) {
           if (snapshot.hasData) {
+            _projectDetails = snapshot.data;
             return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  ListTile(
-                    leading: Container(
-                        width: column1Width,
-                        child: IPPText.simpleText("Project Id",
-                            fontSize: 18, fontWeight: FontWeight.bold)),
-                    title: Container(
-                        width: column2Width,
-                        child: IPPText.simpleText("Description",
-                            fontSize: 17, fontWeight: FontWeight.bold)),
-                    trailing: Container(
-                        width: column3Width,
-                        child: IPPText.simpleText("Location",
-                            fontSize: 18, fontWeight: FontWeight.bold)),
-                  ),
-                  new Expanded(child: _createProjectList(snapshot.data)),
+                  new Container(
+                      color: Theme.of(context).primaryColor,
+                      child: _buildSearchBox()),
+                  _createTableHeader(),
+                  new Expanded(
+                      child: _searchResult.length != 0 ||
+                              controller.text.isNotEmpty
+                          ? _buildSearchResults()
+                          : _createProjectList(snapshot.data)),
                 ]);
           } else {
             return Center(child: CircularProgressIndicator());
           }
         },
       ),
+    );
+  }
+
+  _createTableHeader() {
+    return ListTile(
+      leading: Container(
+          width: column1Width,
+          child: IPPText.simpleText("Project Id",
+              fontSize: 18, fontWeight: FontWeight.bold)),
+      title: Container(
+          width: column2Width,
+          child: IPPText.simpleText("Description",
+              fontSize: 17, fontWeight: FontWeight.bold)),
+      trailing: Container(
+          width: column3Width,
+          child: IPPText.simpleText("Location",
+              fontSize: 18, fontWeight: FontWeight.bold)),
     );
   }
 
@@ -164,6 +179,54 @@ class _ProjectsTabScreenState extends State<ProjectsTabScreen> {
         }),
       },
     );
+  }
+
+  Widget _buildSearchResults() {
+    return new ListView.builder(
+      itemCount: _searchResult.length,
+      itemBuilder: (context, i) {
+        return _displayProjectItem(_searchResult[i]);
+      },
+    );
+  }
+
+  Widget _buildSearchBox() {
+    return new Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: new Card(
+        child: new ListTile(
+          leading: new Icon(Icons.search),
+          title: new TextField(
+            controller: controller,
+            decoration: new InputDecoration(
+                hintText: 'Search', border: InputBorder.none),
+            onChanged: onSearchTextChanged,
+          ),
+          trailing: new IconButton(
+            icon: new Icon(Icons.cancel),
+            onPressed: () {
+              controller.clear();
+              onSearchTextChanged('');
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  onSearchTextChanged(String text) async {
+    _searchResult.clear();
+    if (text.isEmpty) {
+      setState(() {});
+      return;
+    }
+    _projectDetails.forEach((projectDetail) {
+      String loc = projectDetail.currLocation.toLowerCase();
+      String searchText = text.toLowerCase();
+      if (loc.contains(searchText) || projectDetail.projectId.contains(text))
+        _searchResult.add(projectDetail);
+      setState(() {});
+    });
   }
 
   @override
