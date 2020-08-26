@@ -133,7 +133,7 @@ class _EmployeesTabScreenState extends State<EmployeesTabScreen> {
           title: new TextField(
             controller: controller,
             decoration: new InputDecoration(
-                hintText: 'Search', border: InputBorder.none),
+                hintText: 'Search with Id, location', border: InputBorder.none),
             onChanged: onSearchTextChanged,
           ),
           trailing: new IconButton(
