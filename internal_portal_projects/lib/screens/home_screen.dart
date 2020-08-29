@@ -32,7 +32,8 @@ class MyHomePage extends StatelessWidget {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        appBar: IPPWidget.appBar(tabs,"Manage Projects"),
+        appBar: IPPWidget.appBar(
+            tabs, employee.isAdmin ? "Manage Projects" : "Projects Dashboard"),
         body: WillPopScope(
             onWillPop: onWillPop,
             child: StreamBuilder(
