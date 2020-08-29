@@ -8,6 +8,7 @@ import 'package:internal_portal_projects/common_components/ipp_text.dart';
 import 'package:internal_portal_projects/model/employee_details.dart';
 import 'package:internal_portal_projects/model/primary_skill_details.dart';
 import 'package:internal_portal_projects/repo/employees_repo.dart';
+import 'package:internal_portal_projects/screens/home_screen.dart';
 import 'package:internal_portal_projects/service/location_service.dart';
 import 'package:internal_portal_projects/service/project_manage_service.dart';
 
@@ -175,7 +176,12 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
                   children: [
                     BackButton(
                         onPressed: () => {
-                              Navigator.pop(context),
+                              Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) => new MyHomePage(
+                                            employee: employee,
+                                          ))),
                             }),
                     Padding(
                         padding: EdgeInsets.fromLTRB(60, 0, 0, 0),
@@ -382,12 +388,6 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
   _changePlatform(List<PrimarySkill> platform, String newValue) {
     setState(() {
       _platformSelected = newValue;
-      platformNames = [];
-      _platformNameSelected = null;
-      platformNames = List<String>.from(platform
-          .singleWhere((element) =>
-              StringUtils.equalsIgnoreCase(element.platformName, newValue))
-          .types);
     });
   }
 
