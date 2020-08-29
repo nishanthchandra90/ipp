@@ -32,7 +32,6 @@ public class DemoData {
 
     @EventListener
     public void appReady(ApplicationReadyEvent event) {
-        employeeRepo.deleteAll();
         employeeRepo.saveAll(List.of(
                 new Employee("admin", "admin", "john.joey@tcs.com",
                         "john joey", 4, 6, "TCS - Goa", "Hyderabad - Non STP",
@@ -52,8 +51,6 @@ public class DemoData {
 
         ));
 
-
-        projectRepo.deleteAll();
         projectRepo.saveAll(List.of(
                 new Project("2328356", "sita", "Manager1", "Hobby Project",
                         "Solution Architect", "2 Years & More", "APOL - Hyderabad",
@@ -72,7 +69,6 @@ public class DemoData {
                         "Kochi - Non-STP", "Cloud", "GOOGLE")
         ));
 
-        locationRepo.deleteAll();
         locationRepo.saveAll(List.of(
                 new Location("APOL - Hyderabad"),
                 new Location("CEDG - Mumbai"),
@@ -102,7 +98,6 @@ public class DemoData {
                 new Location("TCS e-Serve IL - Mumbai"),
                 new Location("TCS e-Serve IL - New Delhi"),
                 new Location("TCS e-Serve IL - Pune")));
-        buildingRepo.deleteAll();
         buildingRepo.saveAll(List.of(new Building("Abhilash - STP"),
                 new Building("Adibatla - SEZ"),
                 new Building("Adibatla - Unit 1 - SEZ"),
@@ -149,7 +144,6 @@ public class DemoData {
                 new Building(" Lucknow (Gomti Nagar) - STP"),
                 new Building(" Madhapur - STP"),
                 new Building(" Mahape - STP")));
-        platformRepo.deleteAll();
         platformRepo.saveAll(List.of(
                 new PrimarySkill("API Platform", List.of("RedHat", "Scale", "API Connect", "APIgee", "Dell Boomi", "Kong API Platform", "Mulesoft", "WSO2 OpenSource", "Zuul API Platform")),
                 new PrimarySkill("Automation", List.of("Ansible", "Chef", "Puppet", "Terraform", "CFEngine", "Python", "Json", "Shell", "Power Shell")),
@@ -172,7 +166,6 @@ public class DemoData {
                         "GOOGLE")),
                 new PrimarySkill("Command Center", List.of("Command Center Mgmt",
                         "IoT CC Mgmt"))));
-        candidateApplicationRepo.deleteAll();
         candidateApplicationRepo.saveAll(List.of(new CandidateApplication("2328356",
                         List.of("emp-2332332"), List.of("emp-2332332", "emp-9876372", "emp-03843984"), List.of("emp-2332332")),
                 new CandidateApplication("273698646",
