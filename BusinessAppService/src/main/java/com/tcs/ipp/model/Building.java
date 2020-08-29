@@ -1,5 +1,6 @@
 package com.tcs.ipp.model;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Objects;
@@ -7,6 +8,7 @@ import java.util.Objects;
 @Document("building")
 public class Building {
 
+    @Id
     private String buildingName;
 
     public Building(String buildingName) {

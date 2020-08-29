@@ -1,5 +1,6 @@
 package com.tcs.ipp.model;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Objects;
 @Document("platform")
 public class PrimarySkill {
 
+    @Id
     private String platform;
 
     private List<String> platformTypes;

@@ -33,6 +33,9 @@ public class DemoData {
     @EventListener
     public void appReady(ApplicationReadyEvent event) {
         employeeRepo.saveAll(List.of(
+                new Employee("1", "1", "1@tcs.com",
+                        "1 1", 4, 6, "TCS - Goa", "Hyderabad - Non STP",
+                        "Cloud", "GOOGLE", "Solution Architect", "java", false),
                 new Employee("admin", "admin", "john.joey@tcs.com",
                         "john joey", 4, 6, "TCS - Goa", "Hyderabad - Non STP",
                         "Cloud", "GOOGLE", "Solution Architect", "java", true),
