@@ -30,7 +30,7 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
   final TextEditingController nameEditCntrlr = TextEditingController();
   final TextEditingController pwdEditCntrlr = TextEditingController();
   final TextEditingController certsEditCntrlr = TextEditingController();
-  String screenHeading = 'New Account Information';
+  String screenHeading = 'New Account';
   String experienceErrorText = '';
   String locErrorText = '';
   String buildingErrorText = '';
@@ -73,11 +73,6 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldKey,
-        appBar: AppBar(
-          centerTitle: true,
-          title: IPPText.simpleText(screenHeading,
-              fontWeight: FontWeight.bold, fontSize: 22.0),
-        ),
         body: SafeArea(
           child: SingleChildScrollView(
             child: _form(),
@@ -87,7 +82,9 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
 
   _form() {
     Widget headingText = IPPText.simpleText(
-        'Please fill out this form to complete the registration',
+        employee == null
+            ? 'Please fill out this form to complete the registration'
+            : '',
         color: Colors.blue);
     Widget empIdTextBox = IPPInputs.simpleTextFormField(
         "Employee Id", "emp id", empIdEditCntrlr, true, context,
@@ -173,6 +170,19 @@ class _EmployeeSignUpScreenState extends State<EmployeeSignUpScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
+                new Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    BackButton(
+                        onPressed: () => {
+                              Navigator.pop(context),
+                            }),
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(60, 0, 0, 0),
+                        child: IPPText.simpleText(screenHeading,
+                            fontSize: 22.0, fontWeight: FontWeight.bold))
+                  ],
+                ),
                 headingText,
                 empIdTextBox,
                 passwordTextBox,

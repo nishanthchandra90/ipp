@@ -35,7 +35,7 @@ class ShowAppliedProjectsState extends State<ShowAppliedProjects> {
 
   _buildScreen() {
     if (projects.isEmpty) {
-      return IPPText.simpleText('No Matched Projects found!');
+      return Center(child: IPPText.simpleText('No Applications found!'));
     }
     return Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
