@@ -6,7 +6,7 @@ import 'package:internal_portal_projects/model/project_details.dart';
 class ProjectsRepo {
   HttpClient httpClient = new HttpClient();
   static ProjectsRepo _instance = new ProjectsRepo.internal();
-  String localIp = "192.168.2.104";
+  String localIp = "192.168.1.5";
   String port = "8080";
 
   ProjectsRepo.internal();

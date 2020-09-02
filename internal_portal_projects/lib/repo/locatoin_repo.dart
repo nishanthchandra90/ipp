@@ -3,7 +3,7 @@ import 'dart:io';
 class LocationRepo {
   HttpClient httpClient = new HttpClient();
   static LocationRepo _instance = new LocationRepo.internal();
-  String localIp = "192.168.2.104";
+  String localIp = "192.168.1.5";
   String port = "8080";
 
   LocationRepo.internal();

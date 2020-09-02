@@ -3,8 +3,8 @@ spring:
   data:
     mongodb:
       authentication-database: admin
-      username: myUserAdmin
-      password: root
+      username: Admin
+      password: Admin
       host: localhost
       port: 27017
-      database: test_db
+      database: EmployeeSkill_db

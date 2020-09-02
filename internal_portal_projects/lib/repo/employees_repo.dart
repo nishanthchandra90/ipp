@@ -7,7 +7,7 @@ import 'package:internal_portal_projects/model/project_details.dart';
 class EmployeesRepo {
   static HttpClient httpClient = new HttpClient();
   static EmployeesRepo _instance = new EmployeesRepo.internal();
-  static String localIp = "192.168.2.104";
+  static String localIp = "192.168.1.5";
   static String port = "8080";
 
   EmployeesRepo.internal();

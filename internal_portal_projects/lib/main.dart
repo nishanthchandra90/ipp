@@ -4,7 +4,6 @@ import 'package:internal_portal_projects/screens/candidate_screens/reset_passwor
 import 'package:internal_portal_projects/screens/login_screen.dart';
 import 'package:internal_portal_projects/service/auth_service.dart';
 import 'package:provider/provider.dart';
-
 import 'screens/home_screen.dart';
 
 void main() {
