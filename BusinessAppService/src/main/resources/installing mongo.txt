@@ -22,3 +22,28 @@ sudo echo "PATH=/usr/local/mongodb/bin/:$PATH" >> ~/.bash_profile
 sudo mongod --dbpath /System/Volumes/Data/data/db
 
 ------------------------
+
+Path to MongoDB bin
+cmd
+C:\Program Files\MongoDB\Server\4.4\bin
+mongod -- dbpath="C:\data\db"
+go to bin path in cmd - execute > mongo.exe
+
+One time run
+db.createUser(
+{
+user: "Admin",
+pwd: "Admin",
+roles: [ { role: "userAdminAnyDatabase", db: "admin" }, "readWriteAnyDatabase" ]
+}
+)
+
+mvn clean install - for changes
+cmd prompt: go to proj BusinessApp Services directory
+mvn spring-boot:run
+
+Go to Internal project directory
+flutter clean
+flutter run
+
+
